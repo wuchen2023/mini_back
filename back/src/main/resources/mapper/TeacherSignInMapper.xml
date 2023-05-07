@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.back.mapper.TeacherSignInMapper">
+
+    <resultMap id="BaseResultMap" type="com.web.back.domain.TeacherSignIn">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
+            <result property="teacherClassId" column="teacher_class_id" jdbcType="INTEGER"/>
+            <result property="signInTime" column="sign_in_time" jdbcType="TIMESTAMP"/>
+            <result property="deadlineTime" column="deadline_time" jdbcType="TIMESTAMP"/>
+            <result property="isValid" column="is_valid" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,teacher_id,teacher_class_id,
+        sign_in_time,deadline_time,is_valid
+    </sql>
+</mapper>

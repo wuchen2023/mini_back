@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.back.mapper.PkMapper">
+
+    <resultMap id="BaseResultMap" type="com.web.back.domain.Pk">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="activityId" column="activity_id" jdbcType="INTEGER"/>
+            <result property="studentId1" column="student_id1" jdbcType="INTEGER"/>
+            <result property="studentId2" column="student_id2" jdbcType="INTEGER"/>
+            <result property="isFinished" column="is_finished" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,activity_id,student_id1,
+        student_id2,is_finished
+    </sql>
+</mapper>

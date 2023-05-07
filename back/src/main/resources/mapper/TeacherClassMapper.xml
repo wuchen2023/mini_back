@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.back.mapper.TeacherClassMapper">
+
+    <resultMap id="BaseResultMap" type="com.web.back.domain.TeacherClass">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
+            <result property="courseName" column="course_name" jdbcType="VARCHAR"/>
+            <result property="classInviteCode" column="class_invite_code" jdbcType="VARCHAR"/>
+            <result property="classCreateTime" column="class_create_time" jdbcType="TIMESTAMP"/>
+            <result property="courseIsFinished" column="course_is_finished" jdbcType="TINYINT"/>
+            <result property="courseStudentCount" column="course_student_count" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,teacher_id,course_name,
+        class_invite_code,class_create_time,course_is_finished,
+        course_student_count
+    </sql>
+</mapper>
