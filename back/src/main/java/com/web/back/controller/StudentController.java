@@ -67,10 +67,27 @@ public class StudentController {
         }
     }
 
+    @ResponseBody
+    @PostMapping("add_course")
+    @ApiOperation("学生加入班级")
+    public ResposeResult add_course(@RequestParam Integer student_id, @RequestParam String invite_code, @RequestParam String code, @RequestParam String student_account)
+    {
+        if(code.equals(redis_get(student_account)))
+        {
+            return studentService.add_course(student_id, invite_code);
+        }
+        else
+        {
+            return new ResposeResult(0, "未登录，请登录！");
+        }
+    }
+
     public void redis_save(String key, String value) {
-        redisTemplate.opsForValue().set(key, value, 7, TimeUnit.DAYS);
+        redisTemplate.opsForValue().set(key + "-student", value, 7, TimeUnit.DAYS);
     }
     public String redis_get(String key) {
-        return (String) redisTemplate.opsForValue().get(key);
+        return (String) redisTemplate.opsForValue().get(key + "-student");
     }
+
+
 }

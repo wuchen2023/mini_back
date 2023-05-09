@@ -2,6 +2,10 @@ package com.web.back.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.web.back.domain.StudentClass;
+import com.web.back.domain.TeacherClass;
+import com.web.back.mapper.StudentClassMapper;
+import com.web.back.mapper.TeacherClassMapper;
 import com.web.back.service.StudentService;
 import com.web.back.domain.Student;
 import com.web.back.mapper.StudentMapper;
@@ -23,6 +27,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
 
     @Resource
     StudentMapper studentMapper;
+
+    @Resource
+    TeacherClassMapper teacherClassMapper;
+
+    @Resource
+    StudentClassMapper studentClassMapper;
 
     @Override
     public ResposeResult add_student(Student student) {
@@ -65,6 +75,39 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             log.info("登录失败");
             return new ResposeResult(0 , "登录失败");
         }
+    }
+
+    @Override
+    public ResposeResult add_course(Integer student_id, String invite_code) {
+        try{
+            QueryWrapper queryWrapper = new QueryWrapper<>().eq("class_invite_code", invite_code);
+            TeacherClass teacherClass = teacherClassMapper.selectOne(queryWrapper);
+            QueryWrapper queryWrapper1 = new QueryWrapper<>();
+            queryWrapper1.eq("student_id",student_id);
+            queryWrapper1.eq("class_invite_code", invite_code);
+            StudentClass studentClass = studentClassMapper.selectOne(queryWrapper1);
+            //第一步验证，这个班级是否存在
+            if(teacherClass == null)
+            {
+                throw new Exception();
+            }
+            //第二步，验证这个学生是否已经加入这个班级
+            if (studentClass != null)
+            {
+                throw new Exception();
+            }
+            StudentClass studentClass1 = new StudentClass(student_id, teacherClass.getCourseName(), invite_code);
+            studentClassMapper.insert(studentClass1);
+            teacherClass.setCourseStudentCount(teacherClass.getCourseStudentCount() + 1);
+            teacherClassMapper.update(teacherClass, queryWrapper);
+            log.info("id为"+ student_id + "学生加入" + teacherClass.getCourseName());
+
+        }catch (Exception e)
+        {
+            log.info("加入班级失败");
+            return new ResposeResult(0 , "加入班级失败");
+        }
+        return new ResposeResult(1, "加入班级成功");
     }
 }
 

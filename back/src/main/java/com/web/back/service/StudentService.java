@@ -17,4 +17,6 @@ public interface StudentService extends IService<Student> {
     //学生的登录
 
     public ResposeResult student_login(String account, String password);
+
+    public ResposeResult add_course(Integer student_id, String invite_code);
 }

@@ -2,6 +2,8 @@ package com.web.back.service;
 
 import com.web.back.domain.Teacher;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.web.back.domain.TeacherClass;
+import com.web.back.state.ResposeResult;
 
 /**
 * @author Dell
@@ -9,5 +11,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-05-07 13:10:23
 */
 public interface TeacherService extends IService<Teacher> {
+    public ResposeResult add_teacher(Teacher teacher);
+
+    public ResposeResult teacher_login(String account, String password);
+
+    public ResposeResult create_course(TeacherClass teacherClass);
 
 }

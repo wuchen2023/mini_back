@@ -56,4 +56,11 @@ public class TeacherClass implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public TeacherClass(Integer teacherId, String courseName, String classInviteCode, Integer courseStudentCount) {
+        this.teacherId = teacherId;
+        this.courseName = courseName;
+        this.classInviteCode = classInviteCode;
+        this.courseStudentCount = courseStudentCount;
+    }
 }

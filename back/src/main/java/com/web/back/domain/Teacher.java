@@ -56,4 +56,12 @@ public class Teacher implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public Teacher(String name, String permission, String account, String password, String gender) {
+        this.name = name;
+        this.permission = permission;
+        this.account = account;
+        this.password = password;
+        this.gender = gender;
+    }
 }
