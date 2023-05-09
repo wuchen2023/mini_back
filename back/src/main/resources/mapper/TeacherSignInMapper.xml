@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.web.back.mapper.TeacherSignInMapper">
+<mapper namespace="generator.mapper.TeacherSignInMapper">
 
-    <resultMap id="BaseResultMap" type="com.web.back.domain.TeacherSignIn">
+    <resultMap id="BaseResultMap" type="generator.domain.TeacherSignIn">
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="teacherClassId" column="teacher_class_id" jdbcType="INTEGER"/>
             <result property="signedInCount" column="signed_in_count" jdbcType="INTEGER"/>

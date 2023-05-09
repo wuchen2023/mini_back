@@ -21,7 +21,7 @@ public class TeacherSignIn implements Serializable {
     /**
      * 
      */
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     /**
@@ -51,4 +51,11 @@ public class TeacherSignIn implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public TeacherSignIn(Integer teacherClassId, Integer signedInCount, String signInTitle, Integer isValid) {
+        this.teacherClassId = teacherClassId;
+        this.signedInCount = signedInCount;
+        this.signInTitle = signInTitle;
+        this.isValid = isValid;
+    }
 }

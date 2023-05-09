@@ -3,7 +3,9 @@ package com.web.back.controller;
 
 import com.web.back.domain.Teacher;
 import com.web.back.domain.TeacherClass;
+import com.web.back.domain.TeacherSignIn;
 import com.web.back.service.TeacherService;
+import com.web.back.service.TeacherSignInService;
 import com.web.back.state.ResposeResult;
 import com.web.back.utils.GetOnlyCode;
 import io.swagger.annotations.Api;
@@ -20,6 +22,8 @@ import java.util.concurrent.TimeUnit;
 public class TeacherController {
     @Resource
     TeacherService teacherService;
+    @Resource
+    TeacherSignInService teacherSignInService;
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -72,6 +76,22 @@ public class TeacherController {
             String invite_code = getOnlyCode.get_invite_code();
             TeacherClass teacherClass = new TeacherClass(teacher_id, course_name, invite_code, 0);
             return teacherService.create_course(teacherClass);
+        }
+        else
+        {
+            return new ResposeResult(0, "未登录，请登录！");
+        }
+    }
+
+    @ResponseBody
+    @ApiOperation("老师发放签到")
+    @PostMapping("create_qiandao")
+    public ResposeResult create_qiandao(@RequestParam Integer teacher_class_id, @RequestParam String sign_in_title, @RequestParam String code, @RequestParam String teacher_account)
+    {
+        if(code.equals(redis_get(teacher_account)))
+        {
+            TeacherSignIn teacherSignIn = new TeacherSignIn(teacher_class_id, 0, sign_in_title, 1);
+            return teacherSignInService.create_qiandao(teacherSignIn);
         }
         else
         {

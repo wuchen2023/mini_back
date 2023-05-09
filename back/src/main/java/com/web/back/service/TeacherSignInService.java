@@ -2,6 +2,7 @@ package com.web.back.service;
 
 import com.web.back.domain.TeacherSignIn;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.web.back.state.ResposeResult;
 
 /**
 * @author Dell
@@ -9,5 +10,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-05-09 15:05:19
 */
 public interface TeacherSignInService extends IService<TeacherSignIn> {
+    public ResposeResult create_qiandao(TeacherSignIn teacherSignIn);
 
 }
