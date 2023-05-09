@@ -16,6 +16,7 @@ import com.web.back.viewmodel.admin.question.QuestionEditRequestVM;
 import com.web.back.viewmodel.admin.question.QuestionPageRequestVM;
 import com.web.back.viewmodel.admin.question.QuestionResponseVM;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -46,7 +47,7 @@ public class QuestionController {
     private RedisTemplate<String, Object> redisTemplate;
 
     protected final static ModelMapper modelMapper = ModelMapperSingle.Instance();
-
+    @ApiOperation("可传入questionType分别查询单选、多选等题目")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
     public RestResponse<PageInfo<QuestionResponseVM>> pageList(@RequestBody QuestionPageRequestVM model) {
         PageInfo<Question> pageInfo = questionService.page(model);
@@ -77,6 +78,7 @@ public class QuestionController {
     public String redis_get(String key) {
         return (String) redisTemplate.opsForValue().get(key);
     }
+    @ApiOperation("增加问题")
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     public RestResponse edit(@RequestBody @Valid QuestionEditRequestVM model) {
         RestResponse validQuestionEditRequestResult = validQuestionEditRequestVM(model);
@@ -93,13 +95,14 @@ public class QuestionController {
         return RestResponse.ok();
     }
 
+    @ApiOperation("查询问题")
     @RequestMapping(value = "/select/{id}", method = RequestMethod.POST)
     public RestResponse<QuestionEditRequestVM> select(@PathVariable Integer id) {
         QuestionEditRequestVM newVM = questionService.getQuestionEditRequestVM(id);
         return RestResponse.ok(newVM);
     }
 
-
+    @ApiOperation("删除问题")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public RestResponse delete(@PathVariable Integer id) {
         Question question = questionService.selectById(id);
