@@ -2,11 +2,9 @@ package com.web.back.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.web.back.domain.StudentClass;
-import com.web.back.domain.TeacherClass;
 import com.web.back.domain.TeacherSignIn;
-import com.web.back.service.TeacherSignInService;
 import com.web.back.mapper.TeacherSignInMapper;
+import com.web.back.service.TeacherSignInService;
 import com.web.back.state.ResposeResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
