@@ -3,7 +3,6 @@ package com.web.back.controller;
 
 import com.web.back.domain.Teacher;
 import com.web.back.domain.TeacherClass;
-import com.web.back.service.TeacherClassService;
 import com.web.back.service.TeacherService;
 import com.web.back.state.ResposeResult;
 import com.web.back.utils.GetOnlyCode;

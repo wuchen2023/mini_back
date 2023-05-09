@@ -6,15 +6,15 @@
 
     <resultMap id="BaseResultMap" type="com.web.back.domain.TeacherSignIn">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
             <result property="teacherClassId" column="teacher_class_id" jdbcType="INTEGER"/>
-            <result property="signInTime" column="sign_in_time" jdbcType="TIMESTAMP"/>
-            <result property="deadlineTime" column="deadline_time" jdbcType="TIMESTAMP"/>
+            <result property="signedInCount" column="signed_in_count" jdbcType="INTEGER"/>
+            <result property="signInTitle" column="sign_in_title" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="isValid" column="is_valid" jdbcType="TINYINT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,teacher_id,teacher_class_id,
-        sign_in_time,deadline_time,is_valid
+        id,teacher_class_id,signed_in_count,
+        sign_in_title,create_time,is_valid
     </sql>
 </mapper>

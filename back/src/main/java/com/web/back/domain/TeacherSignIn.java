@@ -21,13 +21,8 @@ public class TeacherSignIn implements Serializable {
     /**
      * 
      */
-    @TableId(type = IdType.AUTO)
+    @TableId
     private Integer id;
-
-    /**
-     * 
-     */
-    private Integer teacherId;
 
     /**
      * 
@@ -37,12 +32,17 @@ public class TeacherSignIn implements Serializable {
     /**
      * 
      */
-    private Date signInTime;
+    private Integer signedInCount;
 
     /**
      * 
      */
-    private Date deadlineTime;
+    private String signInTitle;
+
+    /**
+     * 
+     */
+    private Date createTime;
 
     /**
      * 
