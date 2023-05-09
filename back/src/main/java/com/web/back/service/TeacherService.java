@@ -17,4 +17,8 @@ public interface TeacherService extends IService<Teacher> {
 
     public ResposeResult create_course(TeacherClass teacherClass);
 
+    public ResposeResult get_classId_by_name(String course_name);
+
+    public ResposeResult close_qiandao(String sign_in_title);
+
 }

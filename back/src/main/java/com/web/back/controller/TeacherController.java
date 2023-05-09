@@ -99,6 +99,28 @@ public class TeacherController {
         }
     }
 
+    @ResponseBody
+    @ApiOperation("老师根据课程名字查询teacher_class_id")
+    @GetMapping("get_class_id_by_name")
+    public ResposeResult get_class_id_by_name(@RequestParam String course_name)
+    {
+        return teacherService.get_classId_by_name(course_name);
+    }
+
+    @ResponseBody
+    @ApiOperation("根据签到名称关闭签到")
+    @GetMapping("close_qiandao_by_title")
+    public ResposeResult close_qiandao(@RequestParam String sign_in_title, @RequestParam String code, @RequestParam String teacher_account)
+    {
+        if(code.equals(redis_get(teacher_account)))
+        {
+            return teacherService.close_qiandao(sign_in_title);
+        }
+        else {
+            return new ResposeResult(0, "未登录，请登录！");
+        }
+    }
+
 
     public void redis_save(String key, String value) {
         redisTemplate.opsForValue().set(key + "-teacher", value, 7, TimeUnit.DAYS);

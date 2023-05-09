@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.web.back.domain.StudentClass;
 import com.web.back.domain.TeacherClass;
+import com.web.back.domain.TeacherSignIn;
 import com.web.back.mapper.StudentClassMapper;
 import com.web.back.mapper.TeacherClassMapper;
+import com.web.back.mapper.TeacherSignInMapper;
 import com.web.back.service.StudentService;
 import com.web.back.domain.Student;
 import com.web.back.mapper.StudentMapper;
@@ -33,6 +35,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
 
     @Resource
     StudentClassMapper studentClassMapper;
+
+    @Resource
+    TeacherSignInMapper teacherSignInMapper;
 
     @Override
     public ResposeResult add_student(Student student) {
@@ -108,6 +113,41 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             return new ResposeResult(0 , "加入班级失败");
         }
         return new ResposeResult(1, "加入班级成功");
+    }
+
+    @Override
+    public Integer get_teacher_sign_in_id(String sign_in_title) {
+        try{
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("sign_in_title", sign_in_title);
+            TeacherSignIn teacherSignIn = teacherSignInMapper.selectOne(queryWrapper);
+            if(teacherSignIn == null)
+            {
+                throw new Exception();
+            }
+           return teacherSignIn.getId();
+        }catch (Exception e){
+            //表示未查询到签到
+            return -1;
+        }
+    }
+
+    @Override
+    public Student get_detail_by_account(String account) {
+        try{
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("account", account);
+            Student student = studentMapper.selectOne(queryWrapper);
+            if(student == null)
+            {
+                throw new Exception();
+            }
+            student.setPassword("不可见");
+            return student;
+        }catch (Exception e)
+        {
+            return null;
+        }
     }
 }
 

@@ -88,15 +88,35 @@ public class StudentController {
     @ResponseBody
     @ApiOperation("学生签到")
     @PostMapping("add_qiandao")
-    public ResposeResult add_qiandao(@RequestParam Integer student_id, @RequestParam Integer teacher_sign_in_id, @RequestParam String code, @RequestParam String student_account)
+    public ResposeResult add_qiandao(@RequestParam Integer student_id, @RequestParam String sign_in_title, @RequestParam String code, @RequestParam String student_account)
     {
         if(code.equals(redis_get(student_account)))
         {
+            Integer teacher_sign_in_id = studentService.get_teacher_sign_in_id(sign_in_title);
+            if(teacher_sign_in_id == -1)
+            {
+                return new ResposeResult(0 ,"签到失败");
+            }
             StudentSignIn studentSignIn = new StudentSignIn(student_id, teacher_sign_in_id, "签到成功");
             return studentSignInService.add_qiandao(studentSignIn);
         }
         else{
             return new ResposeResult(0, "未登录，请登录！");
+        }
+    }
+
+    @ResponseBody
+    @ApiOperation("根据学生的账户获取学生信息")
+    @GetMapping("get_student_detail")
+    public Student get_detail(@RequestParam  String account, @RequestParam String code)
+    {
+        if(code.equals(redis_get(account)))
+        {
+            return studentService.get_detail_by_account(account);
+        }
+        else
+        {
+            return null;
         }
     }
 

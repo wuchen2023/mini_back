@@ -3,7 +3,9 @@ package com.web.back.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.web.back.domain.TeacherClass;
+import com.web.back.domain.TeacherSignIn;
 import com.web.back.mapper.TeacherClassMapper;
+import com.web.back.mapper.TeacherSignInMapper;
 import com.web.back.service.TeacherService;
 import com.web.back.domain.Teacher;
 import com.web.back.mapper.TeacherMapper;
@@ -26,6 +28,9 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
     TeacherMapper teacherMapper;
     @Resource
     TeacherClassMapper teacherClassMapper;
+
+    @Resource
+    TeacherSignInMapper teacherSignInMapper;
 
     @Override
     public ResposeResult add_teacher(Teacher teacher) {
@@ -85,6 +90,42 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
             return new ResposeResult(0, "创建失败");
         }
         return new ResposeResult(1, "创建成功");
+    }
+
+    @Override
+    public ResposeResult get_classId_by_name(String course_name) {
+        try {
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("course_name", course_name);
+            TeacherClass teacherClass = teacherClassMapper.selectOne(queryWrapper);
+            if(teacherClass == null)
+            {
+                throw new Exception();
+            }
+            return new ResposeResult(1, "" + teacherClass.getId());
+        }catch (Exception e)
+        {
+            return new ResposeResult(0, "查询失败");
+        }
+    }
+
+    @Override
+    public ResposeResult close_qiandao(String sign_in_title) {
+        try {
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("sign_in_title", sign_in_title);
+            TeacherSignIn teacherSignIn = teacherSignInMapper.selectOne(queryWrapper);
+            if(teacherSignIn == null)
+            {
+                throw new Exception();
+            }
+            teacherSignIn.setIsValid(0);
+            teacherSignInMapper.update(teacherSignIn, queryWrapper);
+            return new ResposeResult(1, sign_in_title + "-签到关闭成功");
+        }catch (Exception e)
+        {
+            return new ResposeResult(0, "关闭签到失败");
+        }
     }
 
 }

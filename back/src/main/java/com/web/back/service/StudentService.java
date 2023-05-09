@@ -18,4 +18,8 @@ public interface StudentService extends IService<Student> {
     public ResposeResult student_login(String account, String password);
 
     public ResposeResult add_course(Integer student_id, String invite_code);
+
+    public Integer get_teacher_sign_in_id(String sign_in_title);
+
+    public Student get_detail_by_account(String account);
 }

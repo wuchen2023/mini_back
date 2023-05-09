@@ -37,8 +37,16 @@ public class StudentSignInServiceImpl extends ServiceImpl<StudentSignInMapper, S
             queryWrapper.eq("student_id", studentSignIn.getStudentId());
             queryWrapper.eq("teacher_sign_in_id", studentSignIn.getTeacherSignInId());
             StudentSignIn studentSignIn1 = studentSignInMapper.selectOne(queryWrapper);
+            QueryWrapper queryWrapper1 = new QueryWrapper<>();
+            queryWrapper1.eq("id", studentSignIn.getTeacherSignInId());
+            TeacherSignIn teacherSignIn = teacherSignInMapper.selectOne(queryWrapper1);
             //第一步判断是否签到
             if(studentSignIn1 != null)
+            {
+                throw new Exception();
+            }
+            //判断签到是否截至
+            if(teacherSignIn.getIsValid() == 0)
             {
                 throw new Exception();
             }
@@ -46,9 +54,6 @@ public class StudentSignInServiceImpl extends ServiceImpl<StudentSignInMapper, S
             studentSignInMapper.insert(studentSignIn);
             log.info(studentSignIn.getStudentId() + "签到成功！");
             //更新签到人数
-            QueryWrapper queryWrapper1 = new QueryWrapper<>();
-            queryWrapper1.eq("id", studentSignIn.getTeacherSignInId());
-            TeacherSignIn teacherSignIn = teacherSignInMapper.selectOne(queryWrapper1);
             teacherSignIn.setSignedInCount(teacherSignIn.getSignedInCount() + 1);
             teacherSignInMapper.update(teacherSignIn, queryWrapper1);
         }catch (Exception e)
