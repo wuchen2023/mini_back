@@ -2,6 +2,7 @@ package com.web.back.service;
 
 import com.web.back.domain.StudentSignIn;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.web.back.state.ResposeResult;
 
 /**
 * @author Dell
@@ -9,5 +10,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-05-07 13:10:20
 */
 public interface StudentSignInService extends IService<StudentSignIn> {
+
+    public ResposeResult add_qiandao(StudentSignIn studentSignIn);
 
 }

@@ -2,7 +2,9 @@ package com.web.back.controller;
 
 
 import com.web.back.domain.Student;
+import com.web.back.domain.StudentSignIn;
 import com.web.back.service.StudentService;
+import com.web.back.service.StudentSignInService;
 import com.web.back.state.ResposeResult;
 import com.web.back.utils.GetOnlyCode;
 import io.swagger.annotations.Api;
@@ -20,6 +22,9 @@ import java.util.concurrent.TimeUnit;
 public class StudentController {
     @Resource
     StudentService studentService;
+
+    @Resource
+    StudentSignInService studentSignInService;
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -76,6 +81,21 @@ public class StudentController {
         }
         else
         {
+            return new ResposeResult(0, "未登录，请登录！");
+        }
+    }
+
+    @ResponseBody
+    @ApiOperation("学生签到")
+    @PostMapping("add_qiandao")
+    public ResposeResult add_qiandao(@RequestParam Integer student_id, @RequestParam Integer teacher_sign_in_id, @RequestParam String code, @RequestParam String student_account)
+    {
+        if(code.equals(redis_get(student_account)))
+        {
+            StudentSignIn studentSignIn = new StudentSignIn(student_id, teacher_sign_in_id, "签到成功");
+            return studentSignInService.add_qiandao(studentSignIn);
+        }
+        else{
             return new ResposeResult(0, "未登录，请登录！");
         }
     }

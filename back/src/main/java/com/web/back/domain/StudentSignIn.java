@@ -46,4 +46,10 @@ public class StudentSignIn implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public StudentSignIn(Integer studentId, Integer teacherSignInId, String signInStatus) {
+        this.studentId = studentId;
+        this.teacherSignInId = teacherSignInId;
+        this.signInStatus = signInStatus;
+    }
 }
