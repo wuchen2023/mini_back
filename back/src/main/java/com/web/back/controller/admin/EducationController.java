@@ -3,7 +3,6 @@ package com.web.back.controller.admin;
 import com.github.pagehelper.PageInfo;
 import com.web.back.domain.Subject;
 import com.web.back.service.SubjectService;
-import com.web.back.state.ResponseResult;
 import com.web.back.state.RestResponse;
 import com.web.back.utils.ModelMapperSingle;
 import com.web.back.utils.PageInfoHelper;
@@ -14,7 +13,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

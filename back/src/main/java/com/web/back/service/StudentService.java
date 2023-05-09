@@ -2,7 +2,7 @@ package com.web.back.service;
 
 import com.web.back.domain.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.web.back.state.ResponseResult;
+import com.web.back.state.ResposeResult;
 
 /**
 * @author Dell
@@ -12,7 +12,7 @@ import com.web.back.state.ResponseResult;
 public interface StudentService extends IService<Student> {
 
     //学生的注册
-    public ResponseResult add_student(Student student);
+    public ResposeResult add_student(Student student);
 
     //学生的登录
     public ResposeResult student_login(String account, String password);
