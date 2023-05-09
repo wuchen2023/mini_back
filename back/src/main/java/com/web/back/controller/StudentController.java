@@ -3,7 +3,7 @@ package com.web.back.controller;
 
 import com.web.back.domain.Student;
 import com.web.back.service.StudentService;
-import com.web.back.state.ResposeResult;
+import com.web.back.state.ResponseResult;
 import com.web.back.utils.GetOnlyCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,8 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 @Controller
@@ -30,7 +28,7 @@ public class StudentController {
     @ResponseBody
     @PostMapping("add_student")
     @ApiOperation("添加学生,注册")
-    public ResposeResult add_student(@RequestParam String name, @RequestParam String account, @RequestParam String password, @RequestParam String gender)
+    public ResponseResult add_student(@RequestParam String name, @RequestParam String account, @RequestParam String password, @RequestParam String gender)
     {
         Student student = new Student(name, "0", account, password, gender);
         return studentService.add_student(student);
@@ -43,12 +41,12 @@ public class StudentController {
     @ResponseBody
     @GetMapping ("login_student")
     @ApiOperation("学生登录，获取唯一的标识码")
-    public ResposeResult student_login(@RequestParam String account, @RequestParam String password)
+    public ResponseResult student_login(@RequestParam String account, @RequestParam String password)
     {
-        ResposeResult re = studentService.student_login(account, password);
+        ResponseResult re = studentService.student_login(account, password);
         if (re.getCode() == 0)
         {
-            return new ResposeResult(0, "登录失败");
+            return new ResponseResult(0, "登录失败");
         }
         else
         {
@@ -58,11 +56,11 @@ public class StudentController {
             {
                 only_code = getOnlyCode.get_code();
                 redis_save(account, only_code);
-                return new ResposeResult(1, only_code);
+                return new ResponseResult(1, only_code);
             }
             else
             {
-                return new ResposeResult(1, only_code);
+                return new ResponseResult(1, only_code);
             }
         }
     }
