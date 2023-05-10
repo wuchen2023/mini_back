@@ -32,4 +32,6 @@ public interface TeacherService extends IService<Teacher> {
 
     public List<StudentPoints> get_points_sort(String course_name);
 
+    public List<Teacher> get_all_teacher();
+
 }

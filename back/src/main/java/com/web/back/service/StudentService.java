@@ -4,6 +4,8 @@ import com.web.back.domain.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.web.back.state.ResposeResult;
 
+import java.util.List;
+
 /**
 * @author Dell
 * @description 针对表【student】的数据库操作Service
@@ -22,4 +24,6 @@ public interface StudentService extends IService<Student> {
     public Integer get_teacher_sign_in_id(String sign_in_title);
 
     public Student get_detail_by_account(String account);
+
+    public List<Student> get_all_students();
 }

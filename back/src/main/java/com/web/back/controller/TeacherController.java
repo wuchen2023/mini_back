@@ -168,6 +168,13 @@ public class TeacherController {
         return teacherService.get_points_sort(course_name);
     }
 
+    @ResponseBody
+    @ApiOperation("获取全部老师的信息")
+    @GetMapping("get_all_teachers")
+    public List<Teacher> get_all_teachers(){
+        return teacherService.get_all_teacher();
+    }
+
 
     public void redis_save(String key, String value) {
         redisTemplate.opsForValue().set(key + "-teacher", value, 7, TimeUnit.DAYS);

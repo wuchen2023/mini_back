@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
 * @author Dell
@@ -155,6 +157,18 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         {
             return null;
         }
+    }
+
+    @Override
+    public List<Student> get_all_students() {
+        QueryWrapper queryWrapper = new QueryWrapper<>();
+        List<Student>studentList = studentMapper.selectList(queryWrapper);
+        return studentList.stream().map(student -> {return get_safe_teacher(student);}).collect(Collectors.toList());
+    }
+    public Student get_safe_teacher(Student student)
+    {
+        student.setPassword("不可见");
+        return student;
     }
 }
 

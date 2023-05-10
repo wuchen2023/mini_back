@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.web.back.state.ResposeResult;
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
 * @author Dell
@@ -190,6 +191,18 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
     @Override
     public List<StudentPoints> get_points_sort(String course_name) {
         return studentPointsMapper.get_points_sort(course_name);
+    }
+
+    @Override
+    public List<Teacher> get_all_teacher() {
+        QueryWrapper queryWrapper = new QueryWrapper<>();
+        List<Teacher> teacherList = teacherMapper.selectList(queryWrapper);
+        return teacherList.stream().map(teacher -> {return get_safe_teacher(teacher);}).collect(Collectors.toList());
+    }
+    public Teacher get_safe_teacher(Teacher teacher)
+    {
+        teacher.setPassword("不可见");
+        return teacher;
     }
 }
 

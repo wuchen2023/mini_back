@@ -3,6 +3,7 @@ package com.web.back.controller;
 
 import com.web.back.domain.Student;
 import com.web.back.domain.StudentSignIn;
+import com.web.back.domain.Teacher;
 import com.web.back.service.StudentService;
 import com.web.back.service.StudentSignInService;
 import com.web.back.state.ResposeResult;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Controller
@@ -118,6 +120,12 @@ public class StudentController {
         {
             return null;
         }
+    }
+    @ResponseBody
+    @ApiOperation("获取全部学生的信息")
+    @GetMapping("get_all_students")
+    public List<Student> get_all_students(){
+        return studentService.get_all_students();
     }
 
     public void redis_save(String key, String value) {
