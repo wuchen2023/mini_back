@@ -1,11 +1,21 @@
 package com.web.back.controller.admin;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
+import com.web.back.domain.StudentClass;
 import com.web.back.service.QuestionService;
+import com.web.back.service.StudentClassService;
+import com.web.back.service.StudentService;
 import com.web.back.service.TextContentService;
 import com.web.back.state.RestResponse;
+import com.web.back.utils.ModelMapperSingle;
+import com.web.back.utils.PageInfoHelper;
 import com.web.back.viewmodel.admin.question.QuestionEditRequestVM;
+import com.web.back.viewmodel.admin.studentclass.StudentClassPageRequestVM;
+import com.web.back.viewmodel.admin.studentclass.StudentClassResponseVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -29,14 +39,39 @@ public class BlindboxController {
 
     private final TextContentService textContentService;
 
+    private StudentService studentService;
+
+    private final StudentClassService studentClassService;
     @Autowired
-    public BlindboxController(QuestionService questionService, TextContentService textContentService){
+    public BlindboxController(QuestionService questionService, TextContentService textContentService,StudentService studentService,StudentClassService studentClassService){
         this.questionService = questionService;
         this.textContentService = textContentService;
+        this.studentService = studentService;
+        this.studentClassService = studentClassService;
     }
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+
+
+    /**
+     * 随机抽取一位学生
+     */
+    protected final static ModelMapper modelMapper = ModelMapperSingle.Instance();
+
+    @ResponseBody
+    @ApiOperation("依据老师课程名称查询到当前课程中学生课程中所有学生的id,前端调用此接口获取到当前课程下的所有学生id，在前端处理随机选取一名学生的id")
+    @PostMapping("course_get_student")
+    public RestResponse<PageInfo<StudentClassResponseVM>> pageList(@RequestBody StudentClassPageRequestVM model){
+        PageInfo<StudentClass> pageInfo = studentClassService.page(model);
+        PageInfo<StudentClassResponseVM> page = PageInfoHelper.copyMap(pageInfo,q->{
+            StudentClassResponseVM vm = modelMapper.map(q, StudentClassResponseVM.class);
+            vm.setStudent_id(q.getStudentId());
+            return vm;
+        });
+        return RestResponse.ok(page);
+    }
+
 
     /**
      * 传入老师标识码和账户验证老师登录，然后调用盲盒接口开始抽题，

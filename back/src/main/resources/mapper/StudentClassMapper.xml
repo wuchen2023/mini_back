@@ -16,4 +16,17 @@
         id,student_id,class_name,
         class_invite_code,join_class_time
     </sql>
+    <select id="page" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.admin.studentclass.StudentClassPageRequestVM">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM student_class
+        <where>
+            <if test="id != null ">
+                and id= #{id}
+            </if>
+            <if test="className != null ">
+                and class_Name= #{className}
+            </if>
+        </where>
+    </select>
 </mapper>

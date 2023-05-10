@@ -4,7 +4,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.web.back.domain.TeacherClass;
 import com.web.back.service.TeacherClassService;
 import com.web.back.mapper.TeacherClassMapper;
+import com.web.back.state.ResposeResult;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
 * @author Dell
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TeacherClassServiceImpl extends ServiceImpl<TeacherClassMapper, TeacherClass>
     implements TeacherClassService{
+
 
 }
 
