@@ -45,6 +45,7 @@ public class EducationController {
 
         return RestResponse.ok(subjects);
     }
+    @ApiOperation("可以按条件查询学科")
     @RequestMapping(value = "/subject/page", method = RequestMethod.POST)
     public RestResponse<PageInfo<SubjectResponseVM>> pageList(@RequestBody SubjectPageRequestVM model) {
         PageInfo<Subject> pageInfo = subjectService.page(model);
@@ -52,7 +53,7 @@ public class EducationController {
         return RestResponse.ok(page);
     }
 
-
+    @ApiOperation("编辑学科，新增学科也是调用这个接口")
     @RequestMapping(value = "/subject/edit", method = RequestMethod.POST)
     public RestResponse edit(@RequestBody @Valid SubjectEditRequestVM model) {
         Subject subject = modelMapper.map(model, Subject.class);
@@ -77,7 +78,7 @@ public class EducationController {
         }
     }
 
-
+    @ApiOperation("删除学科")
     @RequestMapping(value = "/subject/delete/{id}", method = RequestMethod.POST)
     public RestResponse delete(@PathVariable Integer id) {
         Subject subject = subjectService.selectById(id);
