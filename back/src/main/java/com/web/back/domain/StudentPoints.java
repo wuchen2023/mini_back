@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -13,6 +15,7 @@ import lombok.Data;
  */
 @TableName(value ="student_points")
 @Data
+@AllArgsConstructor
 public class StudentPoints implements Serializable {
     /**
      * 
@@ -37,4 +40,10 @@ public class StudentPoints implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public StudentPoints(Integer studentId, String courseName, Integer points) {
+        this.studentId = studentId;
+        this.courseName = courseName;
+        this.points = points;
+    }
 }

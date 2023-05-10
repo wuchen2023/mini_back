@@ -2,15 +2,9 @@ package com.web.back.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.web.back.domain.StudentClass;
-import com.web.back.domain.TeacherClass;
-import com.web.back.domain.TeacherSignIn;
-import com.web.back.mapper.StudentClassMapper;
-import com.web.back.mapper.TeacherClassMapper;
-import com.web.back.mapper.TeacherSignInMapper;
+import com.web.back.domain.*;
+import com.web.back.mapper.*;
 import com.web.back.service.StudentService;
-import com.web.back.domain.Student;
-import com.web.back.mapper.StudentMapper;
 import com.web.back.state.ResposeResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,6 +32,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
 
     @Resource
     TeacherSignInMapper teacherSignInMapper;
+
+    @Resource
+    StudentPointsMapper studentPointsMapper;
 
     @Override
     public ResposeResult add_student(Student student) {
@@ -106,7 +103,17 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             teacherClass.setCourseStudentCount(teacherClass.getCourseStudentCount() + 1);
             teacherClassMapper.update(teacherClass, queryWrapper);
             log.info("id为"+ student_id + "学生加入" + teacherClass.getCourseName());
-
+            //更新积分表
+            QueryWrapper queryWrapper2 = new QueryWrapper<>();
+            queryWrapper2.eq("student_id", student_id);
+            queryWrapper2.eq("course_name", teacherClass.getCourseName());
+            StudentPoints studentPoints = studentPointsMapper.selectOne(queryWrapper2);
+            if(studentPoints != null)
+            {
+                throw new Exception();
+            }
+            StudentPoints studentPoints1 = new StudentPoints(student_id, teacherClass.getCourseName(), 0);
+            studentPointsMapper.insert(studentPoints1);
         }catch (Exception e)
         {
             log.info("加入班级失败");
