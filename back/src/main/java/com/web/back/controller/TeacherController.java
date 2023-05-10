@@ -1,6 +1,7 @@
 package com.web.back.controller;
 
 
+import com.web.back.domain.Student;
 import com.web.back.domain.Teacher;
 import com.web.back.domain.TeacherClass;
 import com.web.back.domain.TeacherSignIn;
@@ -75,7 +76,9 @@ public class TeacherController {
             GetOnlyCode getOnlyCode = new GetOnlyCode();
             String invite_code = getOnlyCode.get_invite_code();
             TeacherClass teacherClass = new TeacherClass(teacher_id, course_name, invite_code, 0);
-            return teacherService.create_course(teacherClass);
+            ResposeResult resposeResult = teacherService.create_course(teacherClass);
+            resposeResult.setMessage(invite_code);
+            return resposeResult;
         }
         else
         {
@@ -118,6 +121,21 @@ public class TeacherController {
         }
         else {
             return new ResposeResult(0, "未登录，请登录！");
+        }
+    }
+
+    @ResponseBody
+    @ApiOperation("根据老师的账户获取老师信息")
+    @GetMapping("get_teacher_detail")
+    public Teacher get_detail(@RequestParam  String account, @RequestParam String code)
+    {
+        if(code.equals(redis_get(account)))
+        {
+            return teacherService.get_detail_by_account(account);
+        }
+        else
+        {
+            return null;
         }
     }
 

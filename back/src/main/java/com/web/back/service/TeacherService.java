@@ -21,4 +21,6 @@ public interface TeacherService extends IService<Teacher> {
 
     public ResposeResult close_qiandao(String sign_in_title);
 
+    public Teacher get_detail_by_account(String account);
+
 }

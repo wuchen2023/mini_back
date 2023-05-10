@@ -2,6 +2,7 @@ package com.web.back.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.web.back.domain.Student;
 import com.web.back.domain.TeacherClass;
 import com.web.back.domain.TeacherSignIn;
 import com.web.back.mapper.TeacherClassMapper;
@@ -125,6 +126,24 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
         }catch (Exception e)
         {
             return new ResposeResult(0, "关闭签到失败");
+        }
+    }
+
+    @Override
+    public Teacher get_detail_by_account(String account) {
+        try{
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("account", account);
+            Teacher teacher = teacherMapper.selectOne(queryWrapper);
+            if(teacher == null)
+            {
+                throw new Exception();
+            }
+            teacher.setPassword("不可见");
+            return teacher;
+        }catch (Exception e)
+        {
+            return null;
         }
     }
 
