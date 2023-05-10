@@ -23,4 +23,6 @@ public interface TeacherService extends IService<Teacher> {
 
     public Teacher get_detail_by_account(String account);
 
+    public String get_invite_code_by_course_name(String course_name);
+
 }

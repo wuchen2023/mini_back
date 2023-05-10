@@ -139,6 +139,14 @@ public class TeacherController {
         }
     }
 
+    @ResponseBody
+    @ApiOperation("根据课程名称查询邀请码")
+    @GetMapping("get_invite_code")
+    public String get_invite_code_by_course_name(@RequestParam String course_name)
+    {
+        return teacherService.get_invite_code_by_course_name(course_name);
+    }
+
 
     public void redis_save(String key, String value) {
         redisTemplate.opsForValue().set(key + "-teacher", value, 7, TimeUnit.DAYS);

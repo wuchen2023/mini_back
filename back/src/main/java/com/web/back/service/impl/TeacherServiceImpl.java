@@ -147,6 +147,23 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
         }
     }
 
+    @Override
+    public String get_invite_code_by_course_name(String course_name) {
+        try {
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("course_name", course_name);
+            TeacherClass teacherClass = teacherClassMapper.selectOne(queryWrapper);
+            if(teacherClass == null)
+            {
+                throw new Exception();
+            }
+            return teacherClass.getClassInviteCode();
+
+        }catch (Exception e)
+        {
+            return "未查询到";
+        }
+    }
 }
 
 
