@@ -1,9 +1,12 @@
 package com.web.back.service;
 
+import com.web.back.domain.StudentPoints;
 import com.web.back.domain.Teacher;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.web.back.domain.TeacherClass;
 import com.web.back.state.ResposeResult;
+
+import java.util.List;
 
 /**
 * @author Dell
@@ -24,5 +27,9 @@ public interface TeacherService extends IService<Teacher> {
     public Teacher get_detail_by_account(String account);
 
     public String get_invite_code_by_course_name(String course_name);
+
+    public ResposeResult add_student_points(Integer points, String student_id, String course_name);
+
+    public List<StudentPoints> get_points_sort(String course_name);
 
 }

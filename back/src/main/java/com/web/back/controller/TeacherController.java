@@ -1,10 +1,7 @@
 package com.web.back.controller;
 
 
-import com.web.back.domain.Student;
-import com.web.back.domain.Teacher;
-import com.web.back.domain.TeacherClass;
-import com.web.back.domain.TeacherSignIn;
+import com.web.back.domain.*;
 import com.web.back.service.TeacherService;
 import com.web.back.service.TeacherSignInService;
 import com.web.back.state.ResposeResult;
@@ -16,6 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -145,6 +143,29 @@ public class TeacherController {
     public String get_invite_code_by_course_name(@RequestParam String course_name)
     {
         return teacherService.get_invite_code_by_course_name(course_name);
+    }
+
+    @ResponseBody
+    @ApiOperation("给学生加分")
+    @PostMapping("add_student_pounts")
+    public ResposeResult add_student_points(@RequestParam Integer points, @RequestParam String student_id, @RequestParam String course_name, @RequestParam String teacher_account, @RequestParam String code)
+    {
+        if(code.equals(redis_get(teacher_account)))
+        {
+            return teacherService.add_student_points(points, student_id, course_name);
+        }
+        else
+        {
+            return new ResposeResult(0, "未登录，请登录！");
+        }
+    }
+
+    @ResponseBody
+    @ApiOperation("获取学生积分排名，降序")
+    @GetMapping("get_points_sort")
+    public List<StudentPoints> get_points_sort(@RequestParam String course_name)
+    {
+        return teacherService.get_points_sort(course_name);
     }
 
 

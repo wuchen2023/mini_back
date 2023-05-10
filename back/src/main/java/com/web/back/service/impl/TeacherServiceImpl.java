@@ -2,18 +2,17 @@ package com.web.back.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.web.back.domain.Student;
-import com.web.back.domain.TeacherClass;
-import com.web.back.domain.TeacherSignIn;
+import com.web.back.domain.*;
+import com.web.back.mapper.StudentPointsMapper;
 import com.web.back.mapper.TeacherClassMapper;
 import com.web.back.mapper.TeacherSignInMapper;
 import com.web.back.service.TeacherService;
-import com.web.back.domain.Teacher;
 import com.web.back.mapper.TeacherMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import com.web.back.state.ResposeResult;
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
 * @author Dell
@@ -32,6 +31,9 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
 
     @Resource
     TeacherSignInMapper teacherSignInMapper;
+
+    @Resource
+    StudentPointsMapper studentPointsMapper;
 
     @Override
     public ResposeResult add_teacher(Teacher teacher) {
@@ -163,6 +165,31 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
         {
             return "未查询到";
         }
+    }
+
+    @Override
+    public ResposeResult add_student_points(Integer points, String student_id, String course_name) {
+        try{
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("student_id", student_id);
+            queryWrapper.eq("course_name", course_name);
+            StudentPoints studentPoints = studentPointsMapper.selectOne(queryWrapper);
+            if(studentPoints == null)
+            {
+                throw new Exception();
+            }
+            studentPoints.setPoints(studentPoints.getPoints() + points);
+            studentPointsMapper.update(studentPoints, queryWrapper);
+            return new ResposeResult(1, "加" + points + "分成功");
+        }catch (Exception e)
+        {
+            return new ResposeResult(0, "加分失败");
+        }
+    }
+
+    @Override
+    public List<StudentPoints> get_points_sort(String course_name) {
+        return studentPointsMapper.get_points_sort(course_name);
     }
 }
 

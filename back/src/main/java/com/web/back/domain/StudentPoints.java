@@ -39,6 +39,9 @@ public class StudentPoints implements Serializable {
     private Integer points;
 
     @TableField(exist = false)
+    private String student_name;
+
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
     public StudentPoints(Integer studentId, String courseName, Integer points) {
