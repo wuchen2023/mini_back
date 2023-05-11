@@ -18,5 +18,6 @@ spring:
   main:
     allow-circular-references: true
   redis:
-    host: localhost
+    host: 1.117.75.111
     port: 6379
+    password: 123456
