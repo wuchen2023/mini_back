@@ -63,11 +63,20 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Override
     public Post selectById(Integer id){
-        return postMapper.selectById(id);
+        return postMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public int updateByIdFilter(Post post) {
-        return postMapper.updateById(post);
+    public ResposeResult delete_post(Integer id){
+        try{
+            Post post = postMapper.delete_post(id);
+            if (post ==null){
+                throw new Exception();
+            }
+        }catch (Exception e){
+            return new ResposeResult(0,"删除失败");
+        }
+        return new ResposeResult(1,"删除成功");
+
     }
 }

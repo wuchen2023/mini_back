@@ -1,5 +1,7 @@
 package com.web.back.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
@@ -16,6 +18,8 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 public class Post implements Serializable {
+//    设置自增
+    @TableId(type = IdType.AUTO)
     private Integer id;
 
     private String title;

@@ -19,7 +19,7 @@ public interface PostService extends IService<Post> {
      */
     public ResposeResult add_post(Post post);
 
-//    public ResposeResult delete_post(Integer id);
+    public ResposeResult delete_post(Integer id);
     public Post selectById(Integer id);
-    public int updateByIdFilter(Post post);
+
 }
