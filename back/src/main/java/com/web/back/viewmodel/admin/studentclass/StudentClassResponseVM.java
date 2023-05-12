@@ -8,23 +8,44 @@ import com.web.back.viewmodel.admin.BaseVM;
  * @DESC:
  */
 public class StudentClassResponseVM extends BaseVM {
-    private Integer id;
-    private Integer student_id;
+//    private Integer id;
+//    private Integer student_id;
+    private String name;
 
-    public Integer getId() {
-        return id;
+    private String class_name;
+
+    public StudentClassResponseVM() {
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public String getName(){
+        return name;
     }
 
-    public Integer getStudent_id() {
-        return student_id;
+    public void setName(String name){
+        this.name = name;
     }
 
-    public void setStudent_id(Integer student_id) {
-        this.student_id = student_id;
+    public String getClass_name(){
+        return class_name;
     }
+
+    public void setClass_name(String class_name){
+        this.class_name = class_name;
+    }
+//    public Integer getId() {
+//        return id;
+//    }
+//
+//    public void setId(Integer id) {
+//        this.id = id;
+//    }
+//
+//    public Integer getStudent_id() {
+//        return student_id;
+//    }
+//
+//    public void setStudent_id(Integer student_id) {
+//        this.student_id = student_id;
+//    }
 
 }

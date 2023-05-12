@@ -26,4 +26,6 @@ public interface StudentService extends IService<Student> {
     public Student get_detail_by_account(String account);
 
     public List<Student> get_all_students();
+
+    public String student_id_get_name(Integer student_id);
 }

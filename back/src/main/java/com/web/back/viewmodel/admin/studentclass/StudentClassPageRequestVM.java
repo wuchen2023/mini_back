@@ -8,16 +8,16 @@ import com.web.back.base.BasePage;
  * @DESC:
  */
 public class StudentClassPageRequestVM extends BasePage {
-    private Integer id;
+//    private Integer id;
     private String className;
 
-    public Integer getId(){
-        return id;
-    }
+//    public Integer getId(){
+//        return id;
+//    }
 
-    public void setId(){
-        this.id = id;
-    }
+//    public void setId(){
+//        this.id = id;
+//    }
 
     public String getClassName(){
         return className;

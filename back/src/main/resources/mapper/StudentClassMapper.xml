@@ -29,4 +29,7 @@
             </if>
         </where>
     </select>
+    <select id="get_student" resultMap="BaseResultMap" parameterType="com.web.back.domain.StudentClass">
+        SELECT * FROM student_class where class_name = #{className} ORDER BY RAND() LIMIT 1;
+    </select>
 </mapper>

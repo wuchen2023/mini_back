@@ -62,4 +62,5 @@ public class SubjectServiceImpl extends BaseServiceImpl<Subject> implements Subj
                 subjectMapper.page(requestVM)
         );
     }
+
 }

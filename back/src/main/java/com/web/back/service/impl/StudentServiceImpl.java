@@ -170,6 +170,22 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         student.setPassword("不可见");
         return student;
     }
+
+    @Override
+    public String  student_id_get_name(Integer student_id){
+        try{
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("id",student_id);
+            Student student = studentMapper.selectOne(queryWrapper);
+            if(student ==null){
+                throw new Exception();
+            }
+            log.info("依据学生id查询到的学生姓名为："+student.getName());
+            return student.getName();
+        }catch (Exception e){
+            return null;
+        }
+    }
 }
 
 
