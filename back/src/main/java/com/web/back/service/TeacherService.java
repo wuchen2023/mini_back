@@ -1,10 +1,9 @@
 package com.web.back.service;
 
-import com.web.back.domain.StudentPoints;
-import com.web.back.domain.Teacher;
+import com.web.back.domain.*;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.web.back.domain.TeacherClass;
 import com.web.back.state.ResposeResult;
+import com.web.back.viewmodel.TeacherGroupResult;
 
 import java.util.List;
 
@@ -33,5 +32,9 @@ public interface TeacherService extends IService<Teacher> {
     public List<StudentPoints> get_points_sort(String course_name);
 
     public List<Teacher> get_all_teacher();
+
+    public ResposeResult<TeacherGroupResult> create_group_task(Group group, Integer teacher_id);
+
+    public ResposeResult add_group_of_number(StudentGroup studentGroup);
 
 }

@@ -35,4 +35,9 @@ public class TeacherGroup implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public TeacherGroup(Integer teacherId, Integer groupId) {
+        this.teacherId = teacherId;
+        this.groupId = groupId;
+    }
 }
