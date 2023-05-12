@@ -3,11 +3,9 @@ package com.web.back.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.web.back.domain.*;
-import com.web.back.mapper.StudentPointsMapper;
-import com.web.back.mapper.TeacherClassMapper;
-import com.web.back.mapper.TeacherSignInMapper;
+import com.web.back.mapper.*;
 import com.web.back.service.TeacherService;
-import com.web.back.mapper.TeacherMapper;
+import com.web.back.viewmodel.TeacherGroupResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import com.web.back.state.ResposeResult;
@@ -35,6 +33,15 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
 
     @Resource
     StudentPointsMapper studentPointsMapper;
+
+    @Resource
+    GroupMapper groupMapper;
+
+    @Resource
+    TeacherGroupMapper teacherGroupMapper;
+
+    @Resource
+    StudentGroupMapper studentGroupMapper;
 
     @Override
     public ResposeResult add_teacher(Teacher teacher) {
@@ -199,6 +206,58 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
         List<Teacher> teacherList = teacherMapper.selectList(queryWrapper);
         return teacherList.stream().map(teacher -> {return get_safe_teacher(teacher);}).collect(Collectors.toList());
     }
+
+    @Override
+    public ResposeResult<TeacherGroupResult> create_group_task(Group group, Integer teacher_id) {
+        try {
+            Group group1 = groupMapper.get_one(group.getGroupType());
+            if(group1 != null)
+            {
+                throw new Exception();
+            }
+            groupMapper.insert_one(group.getGroupSize(), group.getGroupType());
+            //由于自己完善的方法，所没有自动组装
+            group1 = groupMapper.get_one(group.getGroupType());
+            TeacherGroup teacherGroup = new TeacherGroup(teacher_id, group1.getId());
+            QueryWrapper queryWrapper1 = new QueryWrapper<>();
+            queryWrapper1.eq("teacher_id", teacher_id);
+            queryWrapper1.eq("group_id", group.getId());
+            TeacherGroup teacherGroup1 = teacherGroupMapper.selectOne(queryWrapper1);
+            if(teacherGroup1 != null)
+            {
+                throw new Exception();
+            }
+            teacherGroupMapper.insert(teacherGroup);
+            TeacherGroupResult teacherGroupResult = new TeacherGroupResult(teacherGroup.getGroupId(), group.getGroupSize());
+            return new ResposeResult<>(1, "创建分组成功", teacherGroupResult);
+
+
+        }catch (Exception e)
+        {
+            return new ResposeResult<>(0, "创建分组失败", null);
+        }
+    }
+
+    @Override
+    public ResposeResult add_group_of_number(StudentGroup studentGroup) {
+        try {
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("group_name", studentGroup.getGroupName());
+            queryWrapper.eq("teacher_group_id", studentGroup.getTeacherGroupId());
+            StudentGroup studentGroup1 = studentGroupMapper.selectOne(queryWrapper);
+            if(studentGroup1 != null)
+            {
+                throw new Exception();
+            }
+            studentGroupMapper.insert(studentGroup);
+            return new ResposeResult(1, "" + studentGroup.getId());
+
+        }catch (Exception e)
+        {
+            return new ResposeResult(0, "创建分组失败");
+        }
+    }
+
     public Teacher get_safe_teacher(Teacher teacher)
     {
         teacher.setPassword("不可见");

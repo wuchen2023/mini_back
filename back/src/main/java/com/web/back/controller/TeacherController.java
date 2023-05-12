@@ -6,6 +6,7 @@ import com.web.back.service.TeacherService;
 import com.web.back.service.TeacherSignInService;
 import com.web.back.state.ResposeResult;
 import com.web.back.utils.GetOnlyCode;
+import com.web.back.viewmodel.TeacherGroupResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -173,6 +174,38 @@ public class TeacherController {
     @GetMapping("get_all_teachers")
     public List<Teacher> get_all_teachers(){
         return teacherService.get_all_teacher();
+    }
+
+    @ResponseBody
+    @ApiOperation("老师进行分组，同时得到每组的分组人数,和分组表的id,group_type为分组的目的")
+    @PostMapping("create_group_task")
+    public ResposeResult<TeacherGroupResult> create_group_task(@RequestParam String teacher_account, @RequestParam Integer teacher_id, @RequestParam String code, @RequestParam Integer group_number, @RequestParam String group_type)
+    {
+        if(code.equals(redis_get(teacher_account)))
+        {
+            Group group = new Group(group_number, group_type);
+            return teacherService.create_group_task(group, teacher_id);
+        }else
+        {
+            return new ResposeResult<>(0, "未登录，请登录！", null);
+        }
+
+    }
+
+    @ResponseBody
+    @ApiOperation("老师根据teacher_group_id添加分组")
+    @PostMapping("add_group_number")
+    public ResposeResult add_group_number(@RequestParam String teacher_account, @RequestParam String code, @RequestParam String group_name, @RequestParam Integer teacher_group_id)
+    {
+        if(code.equals(redis_get(teacher_account)))
+        {
+            StudentGroup studentGroup = new StudentGroup(group_name, teacher_group_id);
+            return teacherService.add_group_of_number(studentGroup);
+        }
+        else
+        {
+            return new ResposeResult(0, "未登录，请登录!");
+        }
     }
 
 

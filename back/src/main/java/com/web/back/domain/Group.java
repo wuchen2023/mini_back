@@ -41,4 +41,9 @@ public class Group implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public Group(Integer groupSize, String groupType) {
+        this.groupSize = groupSize;
+        this.groupType = groupType;
+    }
 }
