@@ -1,6 +1,7 @@
 package com.web.back.controller;
 
 
+import com.web.back.domain.Grouping;
 import com.web.back.domain.Student;
 import com.web.back.domain.StudentSignIn;
 import com.web.back.domain.Teacher;
@@ -126,6 +127,22 @@ public class StudentController {
     @GetMapping("get_all_students")
     public List<Student> get_all_students(){
         return studentService.get_all_students();
+    }
+
+    @ResponseBody
+    @ApiOperation("加入老师的分组")
+    @PostMapping("student_add_group")
+    public ResposeResult add_group(@RequestParam String student_account, @RequestParam String code, @RequestParam Integer student_id, @RequestParam Integer student_group_id, @RequestParam Integer group_number)
+    {
+        if(code.equals(redis_get(student_account)))
+        {
+            Grouping grouping = new Grouping(student_id, student_group_id);
+            return studentService.add_group(grouping, group_number);
+        }
+        else
+        {
+            return new ResposeResult(0, "为登录，请登录！");
+        }
     }
 
     public void redis_save(String key, String value) {

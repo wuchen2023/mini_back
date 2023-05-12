@@ -38,6 +38,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     @Resource
     StudentPointsMapper studentPointsMapper;
 
+    @Resource
+    GroupingMapper groupingMapper;
+
     @Override
     public ResposeResult add_student(Student student) {
         try {
@@ -184,6 +187,28 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             return student.getName();
         }catch (Exception e){
             return null;
+        }
+    }
+
+    @Override
+    public ResposeResult add_group(Grouping grouping, Integer group_number) {
+        try{
+            Grouping grouping1 = groupingMapper.get_one(grouping.getStudentId(), grouping.getStudentGroupId());
+            List<Grouping> groupingList = groupingMapper.get_all(grouping.getStudentGroupId());
+            //判断小组人数是否已经满了
+            if(groupingList.size() == group_number)
+            {
+                throw new Exception();
+            }
+            if(grouping1 != null)
+            {
+                throw new Exception();
+            }
+            groupingMapper.insert_one(grouping.getStudentId(), grouping.getStudentGroupId());
+            return new ResposeResult(1, "加入成功!");
+        }catch (Exception e)
+        {
+            return new ResposeResult(0, "加入失败!");
         }
     }
 }

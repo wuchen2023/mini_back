@@ -35,4 +35,9 @@ public class Grouping implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public Grouping(Integer studentId, Integer studentGroupId) {
+        this.studentId = studentId;
+        this.studentGroupId = studentGroupId;
+    }
 }
