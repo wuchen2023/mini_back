@@ -31,4 +31,6 @@ public interface StudentService extends IService<Student> {
     public String student_id_get_name(Integer student_id);
 
     public ResposeResult add_group(Grouping grouping, Integer group_number);
+
+    public ResposeResult get_qiandao_state(Integer student_id, Integer teacher_sign_in_id);
 }

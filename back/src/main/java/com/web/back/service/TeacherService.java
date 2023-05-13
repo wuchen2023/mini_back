@@ -37,4 +37,6 @@ public interface TeacherService extends IService<Teacher> {
 
     public ResposeResult add_group_of_number(StudentGroup studentGroup);
 
+    public List<TeacherSignIn> get_all_qiandao(Integer teacher_class_id);
+
 }

@@ -41,6 +41,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     @Resource
     GroupingMapper groupingMapper;
 
+    @Resource
+    StudentSignInMapper studentSignInMapper;
+
     @Override
     public ResposeResult add_student(Student student) {
         try {
@@ -209,6 +212,25 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         }catch (Exception e)
         {
             return new ResposeResult(0, "加入失败!");
+        }
+    }
+
+    @Override
+    public ResposeResult get_qiandao_state(Integer student_id, Integer teacher_sign_in_id) {
+        try{
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("student_id", student_id);
+            queryWrapper.eq("teacher_sign_in_id", teacher_sign_in_id);
+            StudentSignIn studentSignIn = studentSignInMapper.selectOne(queryWrapper);
+            if(studentSignIn == null)
+            {
+                throw new Exception();
+            }
+            return new  ResposeResult(1, "已经签到成功");
+
+        }catch (Exception e)
+        {
+            return new ResposeResult(0, "未签到，请及时签到");
         }
     }
 }
