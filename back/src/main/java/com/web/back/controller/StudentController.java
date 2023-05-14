@@ -1,10 +1,7 @@
 package com.web.back.controller;
 
 
-import com.web.back.domain.Grouping;
-import com.web.back.domain.Student;
-import com.web.back.domain.StudentSignIn;
-import com.web.back.domain.Teacher;
+import com.web.back.domain.*;
 import com.web.back.service.StudentService;
 import com.web.back.service.StudentSignInService;
 import com.web.back.state.ResposeResult;
@@ -164,6 +161,14 @@ public class StudentController {
         }else{
             return new ResposeResult(0, "过期了");
         }
+    }
+
+    @ResponseBody
+    @ApiOperation("根据student_id查询学生加入的班级")
+    @PostMapping("get_all_class_by_student_id")
+    public List<StudentClass> get_all_class_by_s_id(@RequestParam Integer student_id)
+    {
+        return studentService.get_all_class_by_student_id(student_id);
     }
 
 

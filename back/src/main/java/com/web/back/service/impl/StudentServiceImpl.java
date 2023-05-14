@@ -240,6 +240,13 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         queryWrapper.eq("student_group_id", student_group_id);
         return groupingMapper.get_all(student_group_id);
     }
+
+    @Override
+    public List<StudentClass> get_all_class_by_student_id(Integer student_id) {
+        QueryWrapper queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("student_id", student_id);
+        return studentClassMapper.selectList(queryWrapper);
+    }
 }
 
 

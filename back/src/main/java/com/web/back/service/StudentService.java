@@ -3,6 +3,7 @@ package com.web.back.service;
 import com.web.back.domain.Grouping;
 import com.web.back.domain.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.web.back.domain.StudentClass;
 import com.web.back.state.ResposeResult;
 
 import java.util.List;
@@ -35,4 +36,6 @@ public interface StudentService extends IService<Student> {
     public ResposeResult get_qiandao_state(Integer student_id, Integer teacher_sign_in_id);
 
     public List<Grouping> get_all_group_member(Integer student_group_id);
+
+    public List<StudentClass> get_all_class_by_student_id(Integer student_id);
 }
