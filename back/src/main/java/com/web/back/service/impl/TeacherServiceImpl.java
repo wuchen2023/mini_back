@@ -265,6 +265,13 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
         return teacherSignInMapper.selectList(queryWrapper);
     }
 
+    @Override
+    public List<TeacherClass> get_all_class_by_teacher_id(Integer teacher_id) {
+        QueryWrapper queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("teacher_id", teacher_id);
+        return teacherClassMapper.selectList(queryWrapper);
+    }
+
     public Teacher get_safe_teacher(Teacher teacher)
     {
         teacher.setPassword("不可见");

@@ -39,4 +39,6 @@ public interface TeacherService extends IService<Teacher> {
 
     public List<TeacherSignIn> get_all_qiandao(Integer teacher_class_id);
 
+    public List<TeacherClass> get_all_class_by_teacher_id(Integer teacher_id);
+
 }

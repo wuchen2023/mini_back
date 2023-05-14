@@ -208,6 +208,15 @@ public class TeacherController {
         }
     }
 
+    @ResponseBody
+    @ApiOperation("根据tacher_id获取班级列表")
+    @GetMapping("get_all_class_by_teacher_id")
+    public List<TeacherClass> get_all_class_by_tacher_id(@RequestParam Integer teacher_id)
+    {
+        return teacherService.get_all_class_by_teacher_id(teacher_id);
+    }
+
+
 
     public void redis_save(String key, String value) {
         redisTemplate.opsForValue().set(key + "-teacher", value, 7, TimeUnit.DAYS);
