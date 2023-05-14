@@ -18,7 +18,7 @@ public interface GroupingMapper extends BaseMapper<Grouping> {
     @Select("SELECT * from `grouping` where student_id=#{student_id} and student_group_id=#{student_group_id}")
     Grouping get_one(Integer student_id, Integer student_group_id);
 
-    @Select("SELECT * from `grouping` where student_group_id=#{student_group_id}")
+    @Select("SELECT `grouping`.*, student.name from `grouping`, student where student.id=`grouping`.student_id and student_group_id=#{student_group_id}")
     List<Grouping> get_all(Integer student_group_id);
 
     @Insert("INSERT into `grouping`(student_id, student_group_id) values(#{student_id}, #{student_group_id})")

@@ -216,6 +216,29 @@ public class TeacherController {
         return teacherService.get_all_class_by_teacher_id(teacher_id);
     }
 
+    @ResponseBody
+    @ApiOperation("获取一个分组类型老师添加的所有组")
+    @GetMapping("get_all_student_group")
+    public List<StudentGroup> get_all_student_group(@RequestParam Integer teacher_group_id)
+    {
+        return teacherService.get_all_student_group_by_teacher_group_id(teacher_group_id);
+    }
+
+    @ResponseBody
+    @ApiOperation("判断老师的code是否过期")
+    @PostMapping("teacher_code_is_f")
+    public ResposeResult get_code_is_f(@RequestParam String teacher_account, @RequestParam String code)
+    {
+        if(code.equals(redis_get(teacher_account)))
+        {
+            return new ResposeResult(1, "未过期");
+        }else{
+            return new ResposeResult(0, "过期了");
+        }
+    }
+
+
+
 
 
     public void redis_save(String key, String value) {

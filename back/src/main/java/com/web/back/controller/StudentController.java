@@ -145,6 +145,28 @@ public class StudentController {
         }
     }
 
+    @ResponseBody
+    @ApiOperation("根据student_group_id获取这个分组的所有成员")
+    @GetMapping("get_all_group_member")
+    public List<Grouping> get_all_group_member(@RequestParam Integer student_group_id)
+    {
+        return studentService.get_all_group_member(student_group_id);
+    }
+
+    @ResponseBody
+    @ApiOperation("判断学生的code是否过期")
+    @PostMapping("student_code_is_f")
+    public ResposeResult get_code_is_f(@RequestParam String student_account, @RequestParam String code)
+    {
+        if(code.equals(redis_get(student_account)))
+        {
+            return new ResposeResult(1, "未过期");
+        }else{
+            return new ResposeResult(0, "过期了");
+        }
+    }
+
+
     public void redis_save(String key, String value) {
         redisTemplate.opsForValue().set(key + "-student", value, 7, TimeUnit.DAYS);
     }

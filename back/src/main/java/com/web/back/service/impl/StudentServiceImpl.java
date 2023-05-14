@@ -233,6 +233,13 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             return new ResposeResult(0, "未签到，请及时签到");
         }
     }
+
+    @Override
+    public List<Grouping> get_all_group_member(Integer student_group_id) {
+        QueryWrapper queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("student_group_id", student_group_id);
+        return groupingMapper.get_all(student_group_id);
+    }
 }
 
 
