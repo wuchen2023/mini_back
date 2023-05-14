@@ -237,6 +237,22 @@ public class TeacherController {
         }
     }
 
+    @ResponseBody
+    @ApiOperation("获取老师所有的分组任务")
+    @PostMapping("get_all_group_task")
+    public List<TeacherGroup> get_all_teacher_group_task(@RequestParam Integer teacher_id)
+    {
+        return teacherService.get_all_teacher_group_task(teacher_id);
+    }
+
+    @ResponseBody
+    @ApiOperation("根据group_id获取group")
+    @PostMapping("get_group_task_by_group_id")
+    public Group get_group_task(@RequestParam Integer group_id)
+    {
+        return teacherService.get_group_by_group_id(group_id);
+    }
+
 
 
 

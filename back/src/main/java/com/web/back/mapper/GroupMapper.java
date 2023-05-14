@@ -16,6 +16,9 @@ public interface GroupMapper extends BaseMapper<Group> {
     @Select("SELECT * from `group` where group_type=#{group_type}")
     Group get_one(String group_type);
 
+    @Select("SELECT * from `group` where id=#{group_id}")
+    Group get_one_by_group_id(Integer group_id);
+
     @Insert("INSERT into `group`(group_size, group_type) values(#{group_size}, #{group_type})")
     void insert_one(Integer group_size, String group_type);
 

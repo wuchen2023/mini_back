@@ -43,4 +43,8 @@ public interface TeacherService extends IService<Teacher> {
 
     public List<StudentGroup> get_all_student_group_by_teacher_group_id(Integer teacher_group_id);
 
+    public List<TeacherGroup> get_all_teacher_group_task(Integer teacher_id);
+
+    public Group get_group_by_group_id(Integer group_id);
+
 }
