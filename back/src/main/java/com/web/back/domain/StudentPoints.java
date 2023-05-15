@@ -49,4 +49,11 @@ public class StudentPoints implements Serializable {
         this.courseName = courseName;
         this.points = points;
     }
+
+    public StudentPoints(Integer id, Integer studentId, String courseName, Integer points) {
+        this.id = id;
+        this.studentId = studentId;
+        this.courseName = courseName;
+        this.points = points;
+    }
 }
