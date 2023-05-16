@@ -3,11 +3,18 @@ package com.web.back.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.web.back.domain.post.tag;
 import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author by hongdou
@@ -27,11 +34,24 @@ public class Post implements Serializable {
     private String content;
 
     private Boolean deleted;
-    public Post(String title, String content) {
+    public Post(String title, String content,String account) {
         this.title = title;
         this.content = content;
+        this.createUser = account;
+        this.createTime = new Date();
 
     }
+
+    private String createUser; //由于学生和老师都可以创建，因此存储的不是对应id而是直接存储用户名
+
+    private Date createTime;
+
+//    @ManyToMany
+//    @JoinTable(
+//            name = "post_tag",
+//            joinColumns = @JoinColumn(name = "post_id"),
+//            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+//    private Set<tag> tags = new HashSet<>();
 
     public Integer getId(){
         return id;
@@ -64,4 +84,28 @@ public class Post implements Serializable {
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+//    public Set<tag> getTags() {
+//        return tags;
+//    }
+//
+//    public void setTags(Set<tag> tags) {
+//        this.tags = tags;
+//    }
 }
