@@ -2,11 +2,16 @@ package com.web.back.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.web.back.config.property.SystemConfig;
 import com.web.back.domain.*;
 import com.web.back.mapper.*;
+import com.web.back.service.AuthenticationService;
 import com.web.back.service.TeacherService;
+import com.web.back.utils.RsaUtil;
 import com.web.back.viewmodel.TeacherGroupResult;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import com.web.back.state.ResposeResult;
 import javax.annotation.Resource;
@@ -20,6 +25,7 @@ import java.util.stream.Collectors;
 */
 @Service
 @Slf4j
+@Lazy
 public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
     implements TeacherService {
 
@@ -42,6 +48,37 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
 
     @Resource
     StudentGroupMapper studentGroupMapper;
+
+    @Resource
+    SystemConfig systemConfig;
+
+//    @Resource
+//    AuthenticationService authenticationService;
+
+//    private final TeacherMapper teacherMapper;
+//    private final  TeacherClassMapper teacherClassMapper;
+//
+//    private final TeacherSignInMapper teacherSignInMapper;
+//
+//    private final StudentPointsMapper studentPointsMapper;
+//    private final GroupMapper groupMapper;
+//
+//    private final TeacherGroupMapper teacherGroupMapper;
+//
+//    private final StudentGroupMapper studentGroupMapper;
+//    private final AuthenticationService authenticationService;
+//
+//    @Autowired
+//    public TeacherServiceImpl(TeacherMapper teacherMapper,TeacherClassMapper teacherClassMapper,TeacherSignInMapper teacherSignInMapper,StudentPointsMapper studentPointsMapper,GroupMapper groupMapper,TeacherGroupMapper teacherGroupMapper,StudentGroupMapper studentGroupMapper,AuthenticationService authenticationService){
+//        this.teacherMapper = teacherMapper;
+//        this.teacherClassMapper = teacherClassMapper;
+//        this.teacherSignInMapper = teacherSignInMapper;
+//        this.teacherGroupMapper = teacherGroupMapper;
+//        this.studentGroupMapper = studentGroupMapper;
+//        this.studentPointsMapper = studentPointsMapper;
+//        this.groupMapper = groupMapper;
+//        this.authenticationService = authenticationService;
+//    }
 
     @Override
     public ResposeResult add_teacher(Teacher teacher) {
@@ -71,7 +108,9 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
             {
                 throw new Exception();
             }
-            if(password.equals(teacher.getPassword()))
+
+
+            if(password.equals(pwdDecode(teacher.getPassword())))
             {
                 log.info(teacher.getName() + "登录成功");
                 return new ResposeResult(1 , "登录成功");
@@ -86,6 +125,9 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
         }
     }
 
+    public String pwdDecode(String encodePwd) {
+        return RsaUtil.rsaDecode(systemConfig.getPwdKey().getPrivateKey(), encodePwd);
+    }
     @Override
     public ResposeResult create_course(TeacherClass teacherClass) {
         try {
@@ -149,7 +191,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
             {
                 throw new Exception();
             }
-            teacher.setPassword("不可见");
+//            teacher.setPassword("不可见");
             return teacher;
         }catch (Exception e)
         {

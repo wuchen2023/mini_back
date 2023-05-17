@@ -3,6 +3,7 @@ package com.web.back.mapper;
 import com.web.back.domain.Group;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 /**
@@ -11,6 +12,7 @@ import org.apache.ibatis.annotations.Select;
 * @createDate 2023-05-07 13:09:55
 * @Entity generator.domain.Group
 */
+@Mapper
 public interface GroupMapper extends BaseMapper<Group> {
 
     @Select("SELECT * from `group` where group_type=#{group_type}")

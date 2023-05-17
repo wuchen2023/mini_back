@@ -53,20 +53,20 @@ public class EducationController {
         return RestResponse.ok(page);
     }
 
-//    @ApiOperation("编辑学科，新增学科也是调用这个接口")
-//    @RequestMapping(value = "/subject/edit", method = RequestMethod.POST)
-//    public RestResponse edit(@RequestBody @Valid SubjectEditRequestVM model) {
-//        Subject subject = modelMapper.map(model, Subject.class);
-////        如果传入的id为空，则代表是新增，
-//        if (model.getId() == null) {
-//            subject.setDeleted(false);
-//            subjectService.insertByFilter(subject);
-//        } else {
-////            反之id不为空的就是查询，所以说即使我传入id，但是数据库中没有数据也会返回ok
-//            subjectService.updateByIdFilter(subject);
-//        }
-//        return RestResponse.ok();
-//    }
+    @ApiOperation("编辑学科，新增学科也是调用这个接口")
+    @RequestMapping(value = "/subject/edit", method = RequestMethod.POST)
+    public RestResponse edit(@RequestBody @Valid SubjectEditRequestVM model) {
+        Subject subject = modelMapper.map(model, Subject.class);
+//        如果传入的id为空，则代表是新增，
+        if (model.getId() == null) {
+            subject.setDeleted(false);
+            subjectService.insertByFilter(subject);
+        } else {
+//            反之id不为空的就是查询，所以说即使我传入id，但是数据库中没有数据也会返回ok
+            subjectService.updateByIdFilter(subject);
+        }
+        return RestResponse.ok();
+    }
 
 
     @ResponseBody

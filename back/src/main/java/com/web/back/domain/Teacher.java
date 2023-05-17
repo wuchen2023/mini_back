@@ -54,14 +54,25 @@ public class Teacher implements Serializable {
      */
     private String gender;
 
+    /**
+     * 用户的角色，与web端有关的字段
+     */
+    private Integer role;
+
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    public Teacher(String name, String permission, String account, String password, String gender) {
+    public Teacher(String name, String permission, String account, String password, String gender,Integer role) {
         this.name = name;
         this.permission = permission;
         this.account = account;
         this.password = password;
         this.gender = gender;
+        this.role = role;
+    }
+
+    public Teacher() {
+
     }
 }

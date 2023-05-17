@@ -2,6 +2,7 @@ package com.web.back.mapper;
 
 import com.web.back.domain.Teacher;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author Dell
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-05-07 13:10:23
 * @Entity generator.domain.Teacher
 */
+@Mapper
 public interface TeacherMapper extends BaseMapper<Teacher> {
 
 }

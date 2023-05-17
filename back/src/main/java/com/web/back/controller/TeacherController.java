@@ -2,6 +2,7 @@ package com.web.back.controller;
 
 
 import com.web.back.domain.*;
+import com.web.back.service.AuthenticationService;
 import com.web.back.service.TeacherService;
 import com.web.back.service.TeacherSignInService;
 import com.web.back.state.ResposeResult;
@@ -20,10 +21,23 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @Api("老师的Api")
 public class TeacherController {
-    @Resource
-    TeacherService teacherService;
-    @Resource
-    TeacherSignInService teacherSignInService;
+//    @Resource
+//    TeacherService teacherService;
+//    @Resource
+//    TeacherSignInService teacherSignInService;
+//
+    private final TeacherService teacherService;
+
+    private final TeacherSignInService teacherSignInService;
+
+    private final AuthenticationService authenticationService;
+
+    @Autowired
+    public TeacherController(TeacherService teacherService, TeacherSignInService teacherSignInService, AuthenticationService authenticationService){
+        this.teacherService = teacherService;
+        this.teacherSignInService = teacherSignInService;
+        this.authenticationService = authenticationService;
+    }
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -31,9 +45,10 @@ public class TeacherController {
     @ResponseBody
     @ApiOperation("老师注册，添加")
     @PostMapping("add_teacher")
-    public ResposeResult add_teacher(@RequestParam String name, @RequestParam String account, @RequestParam String password, @RequestParam String gender)
+    public ResposeResult add_teacher(@RequestParam String name, @RequestParam String account, @RequestParam String password, @RequestParam String gender,@RequestParam Integer role)
     {
-        Teacher teacher = new Teacher(name, "0", account, password, gender);
+        String encodePwd = authenticationService.pwdEncode(password);
+        Teacher teacher = new Teacher(name, "0", account, encodePwd, gender, role);
         return teacherService.add_teacher(teacher);
     }
 
