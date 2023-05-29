@@ -119,6 +119,19 @@
     from subject
   </select>
 
-
+  <select id="page" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.admin.education.SubjectPageRequestVM">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM subject
+    <where>
+      and deleted=0
+      <if test="id != null ">
+        and id= #{id}
+      </if>
+      <if test="level != null ">
+        and level= #{level}
+      </if>
+    </where>
+  </select>
 
 </mapper>
