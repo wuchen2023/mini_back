@@ -2,10 +2,14 @@ package com.web.back.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.web.back.domain.*;
 import com.web.back.mapper.*;
 import com.web.back.service.StudentService;
 import com.web.back.state.ResposeResult;
+import com.web.back.viewmodel.admin.stu.StuPageRequestVM;
+import com.web.back.viewmodel.admin.user.UserPageRequestVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -246,6 +250,17 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         QueryWrapper queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("student_id", student_id);
         return studentClassMapper.selectList(queryWrapper);
+    }
+
+    /**
+     * 下面是管理端相关的
+     */
+
+    @Override
+    public PageInfo<Student> studentPage(StuPageRequestVM requestVM) {
+        return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
+                studentMapper.studentPage(requestVM)
+        );
     }
 }
 

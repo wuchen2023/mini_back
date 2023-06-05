@@ -54,14 +54,24 @@ public class Student implements Serializable {
      */
     private String gender;
 
+    /**
+     * 学生的角色，与web端有关的字段
+     */
+    private Integer role;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    public Student(String name, String permission, String account, String password, String gender) {
+    public Student(String name, String permission, String account, String password, String gender, Integer role) {
         this.name = name;
         this.permission = permission;
         this.account = account;
         this.password = password;
         this.gender = gender;
+        this.role = role;
+    }
+
+    public Student(){
+
     }
 }

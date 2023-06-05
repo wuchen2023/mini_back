@@ -2,6 +2,8 @@ package com.web.back.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.web.back.config.property.SystemConfig;
 import com.web.back.domain.*;
 import com.web.back.mapper.*;
@@ -9,6 +11,7 @@ import com.web.back.service.AuthenticationService;
 import com.web.back.service.TeacherService;
 import com.web.back.utils.RsaUtil;
 import com.web.back.viewmodel.TeacherGroupResult;
+import com.web.back.viewmodel.admin.user.UserPageRequestVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -337,6 +340,17 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
     {
         teacher.setPassword("不可见");
         return teacher;
+    }
+
+    /**
+     * 下面是管理端相关的
+     */
+
+    @Override
+    public PageInfo<Teacher> teacherPage(UserPageRequestVM requestVM) {
+        return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
+                teacherMapper.teacherPage(requestVM)
+        );
     }
 }
 

@@ -1,9 +1,11 @@
 package com.web.back.service;
 
+import com.github.pagehelper.PageInfo;
 import com.web.back.domain.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.web.back.state.ResposeResult;
 import com.web.back.viewmodel.TeacherGroupResult;
+import com.web.back.viewmodel.admin.user.UserPageRequestVM;
 
 import java.util.List;
 
@@ -47,4 +49,9 @@ public interface TeacherService extends IService<Teacher> {
 
     public Group get_group_by_group_id(Integer group_id);
 
+
+    /**
+     * 下面是管理端相关的
+     */
+    PageInfo<Teacher> teacherPage(UserPageRequestVM requestVM);
 }

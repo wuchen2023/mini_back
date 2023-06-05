@@ -2,7 +2,10 @@ package com.web.back.mapper;
 
 import com.web.back.domain.Teacher;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.web.back.viewmodel.admin.user.UserPageRequestVM;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
 * @author Dell
@@ -13,6 +16,8 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface TeacherMapper extends BaseMapper<Teacher> {
 
+
+    List<Teacher> teacherPage(UserPageRequestVM requestVM);
 }
 
 

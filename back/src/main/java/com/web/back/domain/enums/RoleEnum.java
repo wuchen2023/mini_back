@@ -11,7 +11,9 @@ import java.util.Map;
  */
 public enum RoleEnum {
 
-    ADMIN(1,"ADMIN");
+    STUDENT(1,"STUDNET"),
+    ADMIN(2,"ADMIN");
+
     int code;
     String name;
 

@@ -69,7 +69,7 @@ public class QuestionController {
      * @return
      */
     protected Student getName(){
-       Student student =new Student("鸭先知", "0", "1", "123456", "男");
+       Student student =new Student("鸭先知", "0", "1", "123456", "男",0);
        return student;
     }
     public void redis_save(String key, String value) {

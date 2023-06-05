@@ -19,4 +19,22 @@
         account,password,create_time,
         gender
     </sql>
+
+
+
+
+    <select id="teacherPage" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.admin.user.UserPageRequestVM">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM teacher
+        <where>
+            <if test="account != null and account != ''">
+                and account like concat('%',#{account},'%')
+            </if>
+            <if test="role != null ">
+                and role= #{role}
+            </if>
+
+        </where>
+    </select>
 </mapper>

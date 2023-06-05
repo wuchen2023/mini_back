@@ -1,10 +1,13 @@
 package com.web.back.service;
 
+import com.github.pagehelper.PageInfo;
 import com.web.back.domain.Grouping;
 import com.web.back.domain.Student;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.web.back.domain.StudentClass;
+import com.web.back.domain.Teacher;
 import com.web.back.state.ResposeResult;
+import com.web.back.viewmodel.admin.stu.StuPageRequestVM;
 
 import java.util.List;
 
@@ -38,4 +41,9 @@ public interface StudentService extends IService<Student> {
     public List<Grouping> get_all_group_member(Integer student_group_id);
 
     public List<StudentClass> get_all_class_by_student_id(Integer student_id);
+
+    /**
+     * 下面是管理端相关的
+     */
+    PageInfo<Student> studentPage(StuPageRequestVM requestVM);
 }

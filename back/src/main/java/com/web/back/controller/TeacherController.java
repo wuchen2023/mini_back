@@ -1,13 +1,18 @@
 package com.web.back.controller;
 
 
+import com.github.pagehelper.PageInfo;
 import com.web.back.domain.*;
 import com.web.back.service.AuthenticationService;
 import com.web.back.service.TeacherService;
 import com.web.back.service.TeacherSignInService;
 import com.web.back.state.ResposeResult;
+import com.web.back.state.RestResponse;
 import com.web.back.utils.GetOnlyCode;
+import com.web.back.utils.PageInfoHelper;
 import com.web.back.viewmodel.TeacherGroupResult;
+import com.web.back.viewmodel.admin.user.UserPageRequestVM;
+import com.web.back.viewmodel.admin.user.UserResponseVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -279,5 +284,14 @@ public class TeacherController {
         return (String) redisTemplate.opsForValue().get(key + "-teacher");
     }
 
+    /**
+     * 下面是管理端相关的
+     */
+    @RequestMapping(value = "api/webadmin/teacher/page/list", method = RequestMethod.POST)
+    public RestResponse<PageInfo<UserResponseVM>> pageList(@RequestBody UserPageRequestVM model) {
+        PageInfo<Teacher> pageInfo = teacherService.teacherPage(model);
+        PageInfo<UserResponseVM> page = PageInfoHelper.copyMap(pageInfo, d -> UserResponseVM.from(d));
+        return RestResponse.ok(page);
+    }
 
 }

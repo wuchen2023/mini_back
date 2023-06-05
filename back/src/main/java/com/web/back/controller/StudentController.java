@@ -1,11 +1,18 @@
 package com.web.back.controller;
 
 
+import com.github.pagehelper.PageInfo;
 import com.web.back.domain.*;
 import com.web.back.service.StudentService;
 import com.web.back.service.StudentSignInService;
 import com.web.back.state.ResposeResult;
+import com.web.back.state.RestResponse;
 import com.web.back.utils.GetOnlyCode;
+import com.web.back.utils.PageInfoHelper;
+import com.web.back.viewmodel.admin.stu.StuPageRequestVM;
+import com.web.back.viewmodel.admin.stu.StuResponseVM;
+import com.web.back.viewmodel.admin.user.UserPageRequestVM;
+import com.web.back.viewmodel.admin.user.UserResponseVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +40,9 @@ public class StudentController {
     @ResponseBody
     @PostMapping("add_student")
     @ApiOperation("添加学生,注册")
-    public ResposeResult add_student(@RequestParam String name, @RequestParam String account, @RequestParam String password, @RequestParam String gender)
+    public ResposeResult add_student(@RequestParam String name, @RequestParam String account, @RequestParam String password, @RequestParam String gender, @RequestParam Integer role)
     {
-        Student student = new Student(name, "0", account, password, gender);
+        Student student = new Student(name, "0", account, password, gender, role);
         return studentService.add_student(student);
     }
 
@@ -180,4 +187,13 @@ public class StudentController {
     }
 
 
+    /**
+     * 下面是管理端相关的
+     */
+    @RequestMapping(value = "api/webadmin/student/page/list", method = RequestMethod.POST)
+    public RestResponse<PageInfo<StuResponseVM>> pageList(@RequestBody StuPageRequestVM model) {
+        PageInfo<Student> pageInfo = studentService.studentPage(model);
+        PageInfo<StuResponseVM> page = PageInfoHelper.copyMap(pageInfo, d -> StuResponseVM.from(d));
+        return RestResponse.ok(page);
+    }
 }
