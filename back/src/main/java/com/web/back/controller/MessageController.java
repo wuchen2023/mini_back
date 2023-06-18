@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.web.back.service.user_relationService;
 import com.web.back.service.ConversationService;
+import com.web.back.service.MessageService;
+import com.web.back.domain.result.ReMessage;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -63,6 +65,25 @@ public class MessageController {
     public List<Cov> get_conversation(@RequestParam Integer userid)
     {
         return conversationService.get_all_conversation(userid);
+    }
+
+    @Resource
+    MessageService messageService;
+
+    @ResponseBody
+    @PostMapping("add_message")
+    @ApiOperation("发送消息")
+    public ResposeResult add_message(@RequestParam Integer sender_id, @RequestParam Integer receiver_id, @RequestParam String content, @RequestParam Integer identity)
+    {
+        return messageService.add_message(sender_id, receiver_id, content, identity);
+    }
+
+    @ResponseBody
+    @PostMapping("get_message")
+    @ApiOperation("获取消息")
+    public List<ReMessage> get_message(@RequestParam Integer sender_id, @RequestParam Integer receiver_id, @RequestParam Integer identity1, @RequestParam Integer identity2)
+    {
+        return messageService.get_message(sender_id, receiver_id, identity1, identity2);
     }
 
 }
