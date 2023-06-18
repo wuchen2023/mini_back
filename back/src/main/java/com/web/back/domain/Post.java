@@ -8,9 +8,9 @@ import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+//import javax.persistence.JoinColumn;
+//import javax.persistence.JoinTable;
+//import javax.persistence.ManyToMany;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;

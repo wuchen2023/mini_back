@@ -91,6 +91,10 @@ public class SecurityConfigurer {
             http.headers().frameOptions().disable();
 
             List<String> securityIgnoreUrls = systemConfig.getSecurityIgnoreUrls();
+//            String[] ignores = new String[securityIgnoreUrls.size()];
+            if(securityIgnoreUrls == null){
+                securityIgnoreUrls = new ArrayList<>();
+            }
             String[] ignores = new String[securityIgnoreUrls.size()];
             http
                     .addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
