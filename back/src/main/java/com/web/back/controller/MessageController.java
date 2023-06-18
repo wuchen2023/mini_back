@@ -1,5 +1,6 @@
 package com.web.back.controller;
 
+import com.web.back.domain.result.Cov;
 import com.web.back.domain.result.Fridend;
 import com.web.back.state.ResposeResult;
 import io.swagger.annotations.Api;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.web.back.service.user_relationService;
+import com.web.back.service.ConversationService;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -43,4 +45,24 @@ public class MessageController {
     {
         return user_relationService.get_friend(userid);
     }
+
+    @Resource
+    ConversationService conversationService;
+
+    @ResponseBody
+    @PostMapping("add_conversation")
+    @ApiOperation("添加会话")
+    public ResposeResult add_conversation(@RequestParam Integer userid, @RequestParam Integer chatid, @RequestParam Integer identity)
+    {
+        return conversationService.add_conversation(userid, chatid, identity);
+    }
+
+    @ResponseBody
+    @PostMapping("get_conversation")
+    @ApiOperation("获取会话列表")
+    public List<Cov> get_conversation(@RequestParam Integer userid)
+    {
+        return conversationService.get_all_conversation(userid);
+    }
+
 }
