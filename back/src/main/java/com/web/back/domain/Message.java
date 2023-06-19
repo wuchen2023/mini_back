@@ -47,20 +47,25 @@ public class Message implements Serializable {
      */
     private Integer identity;
 
-    public Message(Integer senderId, Integer receiverId, String content, Integer identity) {
+    private Integer identity_sender;
+
+
+    public Message(Integer senderId, Integer receiverId, String content, Integer identity, Integer identity_sender) {
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.content = content;
         this.identity = identity;
+        this.identity_sender = identity_sender;
     }
 
-    public Message(Integer id, Integer senderId, Integer receiverId, Timestamp time, String content, Integer identity) {
+    public Message(Integer id, Integer senderId, Integer receiverId, Timestamp time, String content, Integer identity, Integer identity_sender) {
         this.id = id;
         this.senderId = senderId;
         this.receiverId = receiverId;
         this.time = time;
         this.content = content;
         this.identity = identity;
+        this.identity_sender = identity_sender;
     }
 
 }

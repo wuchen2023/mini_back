@@ -14,7 +14,7 @@ import java.util.List;
 */
 public interface MessageService extends IService<Message> {
 
-    public ResposeResult add_message(Integer sender_id, Integer receiver_id, String content, Integer identity);
+    public ResposeResult add_message(Integer sender_id, Integer receiver_id, String content, Integer identity, Integer identity_sender);
 
     public List<ReMessage> get_message(Integer sender_id, Integer receiver_id, Integer identity1, Integer identity2);
 

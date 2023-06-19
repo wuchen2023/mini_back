@@ -73,9 +73,9 @@ public class MessageController {
     @ResponseBody
     @PostMapping("add_message")
     @ApiOperation("发送消息")
-    public ResposeResult add_message(@RequestParam Integer sender_id, @RequestParam Integer receiver_id, @RequestParam String content, @RequestParam Integer identity)
+    public ResposeResult add_message(@RequestParam Integer sender_id, @RequestParam Integer receiver_id, @RequestParam String content, @RequestParam Integer identity, @RequestParam Integer identity_sender)
     {
-        return messageService.add_message(sender_id, receiver_id, content, identity);
+        return messageService.add_message(sender_id, receiver_id, content, identity, identity_sender);
     }
 
     @ResponseBody

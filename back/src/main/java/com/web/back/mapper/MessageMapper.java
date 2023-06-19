@@ -17,11 +17,11 @@ import java.util.List;
 public interface MessageMapper extends BaseMapper<Message> {
 
     //查询根据receiver_id和identity查询student和teacher表中的name，如果identity为0就是student表，为1就是teacher表
-    @Select("select s.name, s.id from student s where s.id in (select receiver_id from message where sender_id = #{sender_id} and receiver_id = #{receiver_id} and identity = 0)")
-    public List<Student> get_student_friend(Integer sender_id, Integer receiver_id);
+    @Select("select s.name, s.id from student s where s.id in (select receiver_id from message where sender_id = #{sender_id} and receiver_id = #{receiver_id} and identity = 0 and identity_sender = #{identity_sender})")
+    public List<Student> get_student_friend(Integer sender_id, Integer receiver_id, Integer identity_sender);
 
-    @Select("select t.name, t.id from teacher t where t.id in (select receiver_id from message where sender_id = #{sender_id} and  receiver_id = #{receiver_id} and identity = 1)")
-    public List<Teacher> get_teacher_friend(Integer sender_id, Integer receiver_id);
+    @Select("select t.name, t.id from teacher t where t.id in (select receiver_id from message where sender_id = #{sender_id} and  receiver_id = #{receiver_id} and identity = 1 and identity_sender = #{identity_sender})")
+    public List<Teacher> get_teacher_friend(Integer sender_id, Integer receiver_id, Integer identity_sender);
 }
 
 

@@ -11,10 +11,12 @@
             <result property="time" column="time" jdbcType="TIMESTAMP"/>
             <result property="content" column="content" jdbcType="VARCHAR"/>
             <result property="identity" column="identity" jdbcType="INTEGER"/>
+            <result property="identity_sender" column="identity_sender" jdbcType="INTEGER"/>
+
     </resultMap>
 
     <sql id="Base_Column_List">
         id,sender_id,receiver_id,
-        time,content,identity
+        time,content,identity,identity_sender
     </sql>
 </mapper>

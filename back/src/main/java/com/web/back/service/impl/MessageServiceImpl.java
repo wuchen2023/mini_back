@@ -28,8 +28,8 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message>
     @Resource
     MessageMapper messageMapper;
     @Override
-    public ResposeResult add_message(Integer sender_id, Integer receiver_id, String content, Integer identity) {
-        Message message = new Message(sender_id, receiver_id, content, identity);
+    public ResposeResult add_message(Integer sender_id, Integer receiver_id, String content, Integer identity, Integer identity_sender) {
+        Message message = new Message(sender_id, receiver_id, content, identity, identity_sender);
         messageMapper.insert(message);
         return new ResposeResult(1, "发送成功");
     }
@@ -41,24 +41,25 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message>
         List<Student>  studentList = new ArrayList<>();
         List<Teacher> teacherList = new ArrayList<>();
         if(identity1 == 0) {
-            studentList = messageMapper.get_student_friend(sender_id, receiver_id);
+            studentList = messageMapper.get_student_friend(sender_id, receiver_id, identity2);
         }
         else {
-            teacherList = messageMapper.get_teacher_friend(sender_id, receiver_id);
+            teacherList = messageMapper.get_teacher_friend(sender_id, receiver_id, identity2);
         }
         List<Student> studentList1 = new ArrayList<>();
         List<Teacher> teacherList1 = new ArrayList<>();
         if(identity2 == 0) {
-            studentList1 = messageMapper.get_student_friend(receiver_id, sender_id);
+            studentList1 = messageMapper.get_student_friend(receiver_id, sender_id, identity1);
         }
         else {
-            teacherList1 = messageMapper.get_teacher_friend(receiver_id, sender_id);
+            teacherList1 = messageMapper.get_teacher_friend(receiver_id, sender_id, identity1);
         }
         QueryWrapper queryWrapper = new QueryWrapper<>();
         //查询我发送的信息
         queryWrapper.eq("sender_id", sender_id);
         queryWrapper.eq("receiver_id", receiver_id);
         queryWrapper.eq("identity", identity1);
+        queryWrapper.eq("identity_sender", identity2);
         List<Message> messageList = messageMapper.selectList(queryWrapper);
         //组装我发送的全部信息
         List<ReMessage> reMessageList = new ArrayList<>();
@@ -72,6 +73,7 @@ public class MessageServiceImpl extends ServiceImpl<MessageMapper, Message>
         queryWrapper.eq("sender_id", receiver_id);
         queryWrapper.eq("receiver_id", sender_id);
         queryWrapper.eq("identity", identity2);
+        queryWrapper.eq("identity_sender", identity1);
         messageList = messageMapper.selectList(queryWrapper);
         //组装我接收的全部信息
         for(Integer i = 0; i < messageList.size(); i++) {
