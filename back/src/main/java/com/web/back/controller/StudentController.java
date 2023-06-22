@@ -24,7 +24,7 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-@Controller
+@RestController
 @Api("学生的Api")
 public class StudentController {
     @Resource
@@ -33,6 +33,11 @@ public class StudentController {
     @Resource
     StudentSignInService studentSignInService;
 
+    @Autowired
+    public StudentController(StudentService studentService, StudentSignInService studentSignInService){
+        this.studentService = studentService;
+        this.studentSignInService = studentSignInService;
+    }
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -192,6 +197,7 @@ public class StudentController {
      */
     @RequestMapping(value = "api/webadmin/student/page/list", method = RequestMethod.POST)
     public RestResponse<PageInfo<StuResponseVM>> pageList(@RequestBody StuPageRequestVM model) {
+        System.out.println("学生测试");
         PageInfo<Student> pageInfo = studentService.studentPage(model);
         PageInfo<StuResponseVM> page = PageInfoHelper.copyMap(pageInfo, d -> StuResponseVM.from(d));
         return RestResponse.ok(page);
