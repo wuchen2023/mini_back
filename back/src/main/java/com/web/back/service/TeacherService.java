@@ -54,4 +54,7 @@ public interface TeacherService extends IService<Teacher> {
      * 下面是管理端相关的
      */
     PageInfo<Teacher> teacherPage(UserPageRequestVM requestVM);
+
+    //新增根据id查询数据
+    Teacher selectById(Integer id);
 }

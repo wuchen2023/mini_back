@@ -71,6 +71,9 @@ public class Student implements Serializable {
         this.role = role;
     }
 
+    public void setCreateTime(Date createTime){
+        this.createTime = createTime;
+    }
     public Student(){
 
     }

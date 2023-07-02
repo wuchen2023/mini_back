@@ -1,27 +1,37 @@
 package com.web.back.controller;
 
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.github.pagehelper.PageInfo;
 import com.web.back.domain.*;
+import com.web.back.service.AuthenticationService;
 import com.web.back.service.StudentService;
 import com.web.back.service.StudentSignInService;
 import com.web.back.state.ResposeResult;
 import com.web.back.state.RestResponse;
 import com.web.back.utils.GetOnlyCode;
+import com.web.back.utils.ModelMapperSingle;
 import com.web.back.utils.PageInfoHelper;
+import com.web.back.viewmodel.admin.stu.StuCreateVM;
 import com.web.back.viewmodel.admin.stu.StuPageRequestVM;
 import com.web.back.viewmodel.admin.stu.StuResponseVM;
 import com.web.back.viewmodel.admin.user.UserPageRequestVM;
 import com.web.back.viewmodel.admin.user.UserResponseVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.Model;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -33,6 +43,8 @@ public class StudentController {
     @Resource
     StudentSignInService studentSignInService;
 
+    @Resource
+    AuthenticationService authenticationService;
     @Autowired
     public StudentController(StudentService studentService, StudentSignInService studentSignInService){
         this.studentService = studentService;
@@ -202,4 +214,46 @@ public class StudentController {
         PageInfo<StuResponseVM> page = PageInfoHelper.copyMap(pageInfo, d -> StuResponseVM.from(d));
         return RestResponse.ok(page);
     }
+
+    protected final static ModelMapper modelMapper = ModelMapperSingle.Instance();
+    @RequestMapping(value = "/api/webadmin/student/edit", method = RequestMethod.POST)
+    public RestResponse<Student> edit(@RequestBody @Valid StuCreateVM model){
+        if (model.getId() == null) {  //create
+            System.out.println("老师后台学生edit，传入的id为空");
+            Student existStu = studentService.getStuByStuName(model.getName());
+            if (null != existStu) {
+                return new RestResponse<>(2, "学生已存在");
+            }
+
+            if (StringUtils.isBlank(model.getPassword())) {
+                return new RestResponse<>(3, "密码不能为空");
+            }
+        }
+//        if (StringUtils.isBlank(model.getBirthDay())) {
+//            model.setBirthDay(null);
+//        }
+        Student student = modelMapper.map(model, Student.class);
+
+        if (model.getId() == null) {
+            System.out.println("进入到了这一步");
+            String encodePwd = authenticationService.pwdEncode(model.getPassword());
+            student.setPassword(encodePwd);
+//            student.setUserUuid(UUID.randomUUID().toString());
+            student.setCreateTime(new Date());
+//            student.setLastActiveTime(new Date());
+//            student.setDeleted(false);
+//            下面要进行插入的操作，不要忘记写数据库了
+            studentService.insertByFilter(student);
+        } else {
+            if (!StringUtils.isBlank(model.getPassword())) {
+                String encodePwd = authenticationService.pwdEncode(model.getPassword());
+                student.setPassword(encodePwd);
+            }
+//            student.setModifyTime(new Date());
+            //否则就进行更新
+            studentService.updateByIdFilter(student);
+        }
+        return RestResponse.ok(student);
+    }
+
 }

@@ -46,4 +46,12 @@ public interface StudentService extends IService<Student> {
      * 下面是管理端相关的
      */
     PageInfo<Student> studentPage(StuPageRequestVM requestVM);
+
+
+    Student getStuByStuName(String name);
+
+    int updateByIdFilter(Student record);
+
+    //插入的操作
+    int insertByFilter(Student record);
 }

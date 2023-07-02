@@ -262,6 +262,22 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
                 studentMapper.studentPage(requestVM)
         );
     }
+
+
+    @Override
+    public Student getStuByStuName(String name){
+        return studentMapper.getStuByStuName(name);
+    }
+
+    //重写
+    @Override
+    public int updateByIdFilter(Student record){
+        return studentMapper.updateByPrimaryKeySelective(record);
+    }
+    @Override
+    public int insertByFilter(Student record) {
+        return studentMapper.insertSelective(record);
+    }
 }
 
 

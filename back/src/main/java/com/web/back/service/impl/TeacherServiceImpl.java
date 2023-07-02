@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 @Lazy
 public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
     implements TeacherService {
+    @Resource
+    BaseMapper baseMapper;
 
     @Resource
     TeacherMapper teacherMapper;
@@ -351,6 +353,12 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
         return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
                 teacherMapper.teacherPage(requestVM)
         );
+    }
+
+    //根据id查询
+    @Override
+    public Teacher selectById(Integer id){
+        return (Teacher) baseMapper.selectByPrimaryKey(id);
     }
 }
 

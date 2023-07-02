@@ -22,7 +22,12 @@
     </sql>
 
 
-
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from teacher
+        where id = #{id,jdbcType=INTEGER}
+    </select>
 
     <select id="teacherPage" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.admin.user.UserPageRequestVM">
         SELECT
