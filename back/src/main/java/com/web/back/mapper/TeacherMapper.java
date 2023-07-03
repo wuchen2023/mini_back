@@ -1,5 +1,6 @@
 package com.web.back.mapper;
 
+import com.web.back.domain.Student;
 import com.web.back.domain.Teacher;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.web.back.viewmodel.admin.user.UserPageRequestVM;
@@ -18,6 +19,13 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
 
 
     List<Teacher> teacherPage(UserPageRequestVM requestVM);
+
+    Teacher getTeacherByName(String name);
+
+    int updateByPrimaryKeySelective(Teacher record);
+    int insertSelective(Teacher record);
+
+
 }
 
 

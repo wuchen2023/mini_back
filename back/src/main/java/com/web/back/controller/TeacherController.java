@@ -1,6 +1,7 @@
 package com.web.back.controller;
 
 
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.github.pagehelper.PageInfo;
 import com.web.back.domain.*;
 import com.web.back.service.AuthenticationService;
@@ -9,17 +10,23 @@ import com.web.back.service.TeacherSignInService;
 import com.web.back.state.ResposeResult;
 import com.web.back.state.RestResponse;
 import com.web.back.utils.GetOnlyCode;
+import com.web.back.utils.ModelMapperSingle;
 import com.web.back.utils.PageInfoHelper;
 import com.web.back.viewmodel.TeacherGroupResult;
+import com.web.back.viewmodel.admin.stu.StuCreateVM;
+import com.web.back.viewmodel.admin.user.UserCreateVM;
 import com.web.back.viewmodel.admin.user.UserPageRequestVM;
 import com.web.back.viewmodel.admin.user.UserResponseVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -293,5 +300,57 @@ public class TeacherController {
         PageInfo<UserResponseVM> page = PageInfoHelper.copyMap(pageInfo, d -> UserResponseVM.from(d));
         return RestResponse.ok(page);
     }
+
+
+    @RequestMapping(value = "/api/webadmin/teacher/select/{id}", method = RequestMethod.POST)
+    public RestResponse<UserResponseVM> select(@PathVariable Integer id) {
+        Teacher teacher = teacherService.getById(id);
+        UserResponseVM userVm = UserResponseVM.from(teacher);
+        return RestResponse.ok(userVm);
+    }
+    protected final static ModelMapper modelMapper = ModelMapperSingle.Instance();
+
+    @RequestMapping(value = "/api/webadmin/teacher/edit", method = RequestMethod.POST)
+    public RestResponse<Teacher> edit(@RequestBody @Valid UserCreateVM model){
+        if (model.getId() == null) {  //create
+            System.out.println("老师后台老师edit，传入的id为空");
+            Teacher existStu = teacherService.getTeacherByName(model.getName());
+            if (null != existStu) {
+                return new RestResponse<>(2, "老师已存在");
+            }
+
+            if (StringUtils.isBlank(model.getPassword())) {
+                return new RestResponse<>(3, "密码不能为空");
+            }
+        }
+//        if (StringUtils.isBlank(model.getBirthDay())) {
+//            model.setBirthDay(null);
+//        }
+        Teacher teacher = modelMapper.map(model, Teacher.class);
+
+        if (model.getId() == null) {
+            System.out.println("进入到了这一步");
+            String encodePwd = authenticationService.pwdEncode(model.getPassword());
+            teacher.setPassword(encodePwd);
+//            student.setUserUuid(UUID.randomUUID().toString());
+            teacher.setCreateTime(new Date());
+//            student.setLastActiveTime(new Date());
+//            student.setDeleted(false);
+//            下面要进行插入的操作，不要忘记写数据库了
+            teacherService.insertByFilter(teacher);
+        } else {
+            //如果点击的存在数据进行编辑，传入的id不为空
+            System.out.println("传入的老师id不为空");
+            if (!StringUtils.isBlank(model.getPassword())) {
+                String encodePwd = authenticationService.pwdEncode(model.getPassword());
+                teacher.setPassword(encodePwd);
+            }
+//            student.setModifyTime(new Date());
+            //否则就进行更新
+            teacherService.updateByIdFilter(teacher);
+        }
+        return RestResponse.ok(teacher);
+    }
+
 
 }

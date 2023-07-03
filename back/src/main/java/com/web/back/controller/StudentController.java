@@ -245,6 +245,8 @@ public class StudentController {
 //            下面要进行插入的操作，不要忘记写数据库了
             studentService.insertByFilter(student);
         } else {
+            //如果点击的存在数据进行编辑，传入的id不为空
+            System.out.println("传入的学生id不为空");
             if (!StringUtils.isBlank(model.getPassword())) {
                 String encodePwd = authenticationService.pwdEncode(model.getPassword());
                 student.setPassword(encodePwd);
@@ -255,5 +257,16 @@ public class StudentController {
         }
         return RestResponse.ok(student);
     }
+
+    //查询
+    @RequestMapping(value ="/api/webadmin/student/select/{id}", method = RequestMethod.POST)
+    public RestResponse<StuResponseVM> select(@PathVariable Integer id){
+        System.out.println("对学生进行查询");
+        Student student = studentService.getById(id);
+        StuResponseVM stuResponseVM = StuResponseVM.from(student);
+        return RestResponse.ok(stuResponseVM);
+    }
+
+
 
 }

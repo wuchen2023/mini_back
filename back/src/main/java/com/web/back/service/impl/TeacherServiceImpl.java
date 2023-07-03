@@ -360,6 +360,20 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
     public Teacher selectById(Integer id){
         return (Teacher) baseMapper.selectByPrimaryKey(id);
     }
+
+    @Override
+    public Teacher getTeacherByName(String name){
+        return teacherMapper.getTeacherByName(name);
+    }
+
+    @Override
+    public int updateByIdFilter(Teacher record){
+        return teacherMapper.updateByPrimaryKeySelective(record);
+    }
+    @Override
+    public int insertByFilter(Teacher record) {
+        return teacherMapper.insertSelective(record);
+    }
 }
 
 

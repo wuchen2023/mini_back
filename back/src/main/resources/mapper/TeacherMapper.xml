@@ -43,4 +43,97 @@
 
         </where>
     </select>
+
+
+    <select id="getTeacherByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from teacher
+        where name=#{value} limit 1
+    </select>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.web.back.domain.Teacher">
+        update teacher
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="permission != null">
+                permission = #{permission, jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=INTEGER},
+            </if>
+            <if test="role != null">
+                role = #{role,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <insert id="insertSelective" parameterType="com.web.back.domain.Teacher" useGeneratedKeys="true" keyProperty="id">
+        insert into teacher
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="role != null">
+                role,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="permission != null">
+                permission,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=INTEGER},
+            </if>
+            <if test="role != null">
+                #{role,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="permission != null">
+                #{permission,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
 </mapper>

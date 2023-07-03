@@ -57,4 +57,11 @@ public interface TeacherService extends IService<Teacher> {
 
     //新增根据id查询数据
     Teacher selectById(Integer id);
+
+    Teacher getTeacherByName(String name);
+
+    int updateByIdFilter(Teacher record);
+
+    //插入的操作
+    int insertByFilter(Teacher record);
 }
