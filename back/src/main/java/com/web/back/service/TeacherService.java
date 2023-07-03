@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.web.back.state.ResposeResult;
 import com.web.back.viewmodel.TeacherGroupResult;
 import com.web.back.viewmodel.admin.user.UserPageRequestVM;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 
@@ -64,4 +65,9 @@ public interface TeacherService extends IService<Teacher> {
 
     //插入的操作
     int insertByFilter(Teacher record);
+
+    Teacher getTeacherById(Integer id);
+
+    //定义一个删除的布尔方法
+    boolean deleteById(Integer id);
 }

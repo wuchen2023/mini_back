@@ -54,4 +54,8 @@ public interface StudentService extends IService<Student> {
 
     //插入的操作
     int insertByFilter(Student record);
+
+    //实现删除
+    boolean deleteById(Integer id);
+
 }

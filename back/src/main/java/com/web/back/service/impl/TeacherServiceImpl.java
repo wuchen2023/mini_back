@@ -374,6 +374,18 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
     public int insertByFilter(Teacher record) {
         return teacherMapper.insertSelective(record);
     }
+
+
+    @Override
+    public Teacher getTeacherById(Integer id){
+        return teacherMapper.getTeacherById(id);
+    }
+
+    //实现删除的方法
+    @Override
+    public boolean deleteById(Integer id){
+        return this.removeById(id); //直接使用内置的
+    }
 }
 
 

@@ -136,4 +136,12 @@
             </if>
         </trim>
     </insert>
+
+    <select id="getUserById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from teacher
+        where id=#{value}
+    </select>
+
 </mapper>

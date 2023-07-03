@@ -278,6 +278,11 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     public int insertByFilter(Student record) {
         return studentMapper.insertSelective(record);
     }
+
+    @Override
+    public boolean deleteById(Integer id){
+        return this.removeById(id); //直接使用内置的
+    }
 }
 
 

@@ -267,6 +267,13 @@ public class StudentController {
         return RestResponse.ok(stuResponseVM);
     }
 
-
+    @RequestMapping(value = "/api/webadmin/student/delete/{id}", method = RequestMethod.POST)
+    public RestResponse delete(@PathVariable Integer id) {
+        if(id != null && studentService.deleteById(id)){
+            return RestResponse.ok();
+        }else{
+            return RestResponse.fail(400,"删除失败");
+        }
+    }
 
 }
