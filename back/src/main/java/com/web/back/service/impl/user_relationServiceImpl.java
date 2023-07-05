@@ -27,6 +27,7 @@ public class user_relationServiceImpl extends ServiceImpl<user_relationMapper, u
     @Resource
     user_relationMapper user_relationMapper;
 
+    //TODO 这个方法和表还需要添加一个userid 的身份，不然有问题
     @Override
     public ResposeResult add_friend(Integer userId, Integer friendId, Integer identity) {
         user_relation user_relation = new user_relation(userId, friendId, identity);
