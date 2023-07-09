@@ -9,10 +9,11 @@
             <result property="userId" column="user_id" jdbcType="INTEGER"/>
             <result property="friendId" column="friend_id" jdbcType="INTEGER"/>
             <result property="identity" column="identity" jdbcType="INTEGER"/>
+            <result property="identity_user" column="identity_user" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,user_id,friend_id,
-        identity
+        identity,identity_user
     </sql>
 </mapper>

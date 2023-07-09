@@ -57,33 +57,6 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
     @Resource
     SystemConfig systemConfig;
 
-//    @Resource
-//    AuthenticationService authenticationService;
-
-//    private final TeacherMapper teacherMapper;
-//    private final  TeacherClassMapper teacherClassMapper;
-//
-//    private final TeacherSignInMapper teacherSignInMapper;
-//
-//    private final StudentPointsMapper studentPointsMapper;
-//    private final GroupMapper groupMapper;
-//
-//    private final TeacherGroupMapper teacherGroupMapper;
-//
-//    private final StudentGroupMapper studentGroupMapper;
-//    private final AuthenticationService authenticationService;
-//
-//    @Autowired
-//    public TeacherServiceImpl(TeacherMapper teacherMapper,TeacherClassMapper teacherClassMapper,TeacherSignInMapper teacherSignInMapper,StudentPointsMapper studentPointsMapper,GroupMapper groupMapper,TeacherGroupMapper teacherGroupMapper,StudentGroupMapper studentGroupMapper,AuthenticationService authenticationService){
-//        this.teacherMapper = teacherMapper;
-//        this.teacherClassMapper = teacherClassMapper;
-//        this.teacherSignInMapper = teacherSignInMapper;
-//        this.teacherGroupMapper = teacherGroupMapper;
-//        this.studentGroupMapper = studentGroupMapper;
-//        this.studentPointsMapper = studentPointsMapper;
-//        this.groupMapper = groupMapper;
-//        this.authenticationService = authenticationService;
-//    }
 
     @Override
     public ResposeResult add_teacher(Teacher teacher) {
@@ -115,7 +88,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
             }
 
 
-            if(password.equals(pwdDecode(teacher.getPassword())))
+            if(password.equals(teacher.getPassword()))
             {
                 log.info(teacher.getName() + "登录成功");
                 return new ResposeResult(1 , "登录成功");

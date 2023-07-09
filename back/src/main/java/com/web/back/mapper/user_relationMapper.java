@@ -19,11 +19,11 @@ public interface user_relationMapper extends BaseMapper<user_relation> {
 
 
     //查询根据friend_id和identity查询student和teacher表中的name，如果identity为0就是student表，为1就是teacher表
-    @Select("select s.name, s.id from student s where s.id in (select friend_id from user_relation where user_id = #{userId} and identity = 0)")
-    public List<Student> get_student_friend(Integer userId);
+    @Select("select s.name, s.id from student s where s.id in (select friend_id from user_relation where user_id = #{userId} and identity = 0 and identity_user = #{identity_user})")
+    public List<Student> get_student_friend(Integer userId, Integer identity_user);
 
-    @Select("select t.name, t.id from teacher t where t.id in (select friend_id from user_relation where user_id = #{userId} and identity = 1)")
-    public List<Teacher> get_teacher_friend(Integer userId);
+    @Select("select t.name, t.id from teacher t where t.id in (select friend_id from user_relation where user_id = #{userId} and identity = 1 and identity_user = #{identity_user})")
+    public List<Teacher> get_teacher_friend(Integer userId, Integer identity_user);
 }
 
 

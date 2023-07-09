@@ -35,10 +35,13 @@ public class user_relation implements Serializable {
      */
     private Integer identity;
 
-    public user_relation(Integer userId, Integer friendId, Integer identity) {
+    private Integer identity_user;
+
+    public user_relation(Integer userId, Integer friendId, Integer identity, Integer identity_user) {
         this.userId = userId;
         this.friendId = friendId;
         this.identity = identity;
+        this.identity_user = identity_user;
     }
 
     @TableField(exist = false)

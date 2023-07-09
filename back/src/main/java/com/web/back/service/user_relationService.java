@@ -13,8 +13,8 @@ import java.util.List;
 * @createDate 2023-06-19 00:43:43
 */
 public interface user_relationService extends IService<user_relation> {
-    ResposeResult add_friend(Integer userId, Integer friendId, Integer identity);
-    ResposeResult delete_friend(Integer userId, Integer friendId);
+    ResposeResult add_friend(Integer userId, Integer friendId, Integer identity, Integer identity_user);
+    ResposeResult delete_friend(Integer userId, Integer friendId, Integer identity, Integer identity_user);
 
-    List<Fridend> get_friend(Integer userId);
+    List<Fridend> get_friend(Integer userId, Integer identity_user);
 }

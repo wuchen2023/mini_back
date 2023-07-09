@@ -59,8 +59,8 @@ public class TeacherController {
     @PostMapping("add_teacher")
     public ResposeResult add_teacher(@RequestParam String name, @RequestParam String account, @RequestParam String password, @RequestParam String gender,@RequestParam Integer role)
     {
-        String encodePwd = authenticationService.pwdEncode(password);
-        Teacher teacher = new Teacher(name, "0", account, encodePwd, gender, role);
+//        String encodePwd = authenticationService.pwdEncode(password);
+        Teacher teacher = new Teacher(name, "0", account, password, gender, role);
         return teacherService.add_teacher(teacher);
     }
 

@@ -29,11 +29,13 @@ public class user_relationServiceImpl extends ServiceImpl<user_relationMapper, u
 
     //TODO 这个方法和表还需要添加一个userid 的身份，不然有问题
     @Override
-    public ResposeResult add_friend(Integer userId, Integer friendId, Integer identity) {
-        user_relation user_relation = new user_relation(userId, friendId, identity);
+    public ResposeResult add_friend(Integer userId, Integer friendId, Integer identity, Integer identity_user) {
+        user_relation user_relation = new user_relation(userId, friendId, identity, identity_user);
         QueryWrapper queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("user_id", userId);
         queryWrapper.eq("friend_id", friendId);
         queryWrapper.eq("identity", identity);
+        queryWrapper.eq("identity_user", identity_user);
         if(user_relationMapper.exists(queryWrapper))
         {
             return new ResposeResult(0, "已经添加过该好友");
@@ -43,10 +45,12 @@ public class user_relationServiceImpl extends ServiceImpl<user_relationMapper, u
     }
 
     @Override
-    public ResposeResult delete_friend(Integer userId, Integer friendId) {
+    public ResposeResult delete_friend(Integer userId, Integer friendId, Integer identity, Integer identity_user) {
         QueryWrapper queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id", userId);
         queryWrapper.eq("friend_id", friendId);
+        queryWrapper.eq("identity", identity);
+        queryWrapper.eq("identity_user", identity_user);
         if(!user_relationMapper.exists(queryWrapper))
         {
             return new ResposeResult(0, "不存在该好友");
@@ -56,9 +60,10 @@ public class user_relationServiceImpl extends ServiceImpl<user_relationMapper, u
     }
 
     @Override
-    public List<Fridend> get_friend(Integer userId) {
-        List<Student> student_friend = user_relationMapper.get_student_friend(userId);
-        List<Teacher> teacher_friend = user_relationMapper.get_teacher_friend(userId);
+    public List<Fridend> get_friend(Integer userId, Integer identity_user) {
+
+        List<Student> student_friend = user_relationMapper.get_student_friend(userId, identity_user);
+        List<Teacher> teacher_friend = user_relationMapper.get_teacher_friend(userId, identity_user);
         List<Fridend> fridendList = new java.util.ArrayList<>();
         for(Student student : student_friend)
         {

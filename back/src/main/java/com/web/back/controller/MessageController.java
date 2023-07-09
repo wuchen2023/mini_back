@@ -27,25 +27,25 @@ public class MessageController {
     @ResponseBody
     @PostMapping("add_fridend")
     @ApiOperation("添加好友")
-    public ResposeResult add_friend(@RequestParam Integer userid, @RequestParam Integer friendid, @RequestParam Integer identity)
+    public ResposeResult add_friend(@RequestParam Integer userid, @RequestParam Integer friendid, @RequestParam Integer identity, @RequestParam Integer identity_user)
     {
-        return user_relationService.add_friend(userid, friendid, identity);
+        return user_relationService.add_friend(userid, friendid, identity, identity_user);
     }
 
     @ResponseBody
     @PostMapping("delete_fridend")
     @ApiOperation("删除好友")
-    public ResposeResult delete_friend(@RequestParam Integer userid, @RequestParam Integer friendid)
+    public ResposeResult delete_friend(@RequestParam Integer userid, @RequestParam Integer friendid, @RequestParam Integer identity, @RequestParam Integer identity_user)
     {
-        return user_relationService.delete_friend(userid, friendid);
+        return user_relationService.delete_friend(userid, friendid, identity, identity_user);
     }
 
     @ResponseBody
     @PostMapping("get_fridend")
     @ApiOperation("获取好友列表")
-    public List<Fridend> get_friend(@RequestParam Integer userid)
+    public List<Fridend> get_friend(@RequestParam Integer userid, @RequestParam Integer identity_user)
     {
-        return user_relationService.get_friend(userid);
+        return user_relationService.get_friend(userid, identity_user);
     }
 
     @Resource
