@@ -14,8 +14,8 @@ import java.util.List;
 */
 public interface ConversationService extends IService<Conversation> {
 
-    public ResposeResult add_conversation(Integer userId, Integer chatId, Integer identity);
+    public ResposeResult add_conversation(Integer userId, Integer chatId, Integer identity, Integer identity_user);
 
-    public List<Cov> get_all_conversation(Integer userId);
+    public List<Cov> get_all_conversation(Integer userId, Integer identity_user);
 
 }

@@ -27,15 +27,16 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     @Resource
     ConversationMapper conversationMapper;
     @Override
-    public ResposeResult add_conversation(Integer userId, Integer chatId, Integer identity) {
+    public ResposeResult add_conversation(Integer userId, Integer chatId, Integer identity, Integer identity_user) {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.eq("user_id", userId);
         queryWrapper.eq("chat_id", chatId);
         queryWrapper.eq("identity", identity);
+        queryWrapper.eq("identity_user", identity_user);
         Conversation conversation = conversationMapper.selectOne(queryWrapper);
         if(conversation == null)
         {
-            conversation = new Conversation(userId, chatId, identity);
+            conversation = new Conversation(userId, chatId, identity, identity_user);
             conversationMapper.insert(conversation);
             return new ResposeResult(1, "会话创建成功");
         }
@@ -46,9 +47,9 @@ public class ConversationServiceImpl extends ServiceImpl<ConversationMapper, Con
     }
 
     @Override
-    public List<Cov> get_all_conversation(Integer userId) {
-        List<Student> studentList = conversationMapper.get_student_conversation(userId);
-        List<Teacher> teacherList = conversationMapper.get_teacher_conversation(userId);
+    public List<Cov> get_all_conversation(Integer userId, Integer identity_user) {
+        List<Student> studentList = conversationMapper.get_student_conversation(userId, identity_user);
+        List<Teacher> teacherList = conversationMapper.get_teacher_conversation(userId, identity_user);
         List<Cov> covList = new ArrayList<>();
         for(Student student : studentList)
         {

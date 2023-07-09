@@ -35,10 +35,13 @@ public class Conversation implements Serializable {
      */
     private Integer identity;
 
-    public Conversation(Integer userId, Integer chatId, Integer identity) {
+    private Integer identity_user;
+
+    public Conversation(Integer userId, Integer chatId, Integer identity, Integer identity_user) {
         this.userId = userId;
         this.chatId = chatId;
         this.identity = identity;
+        this.identity_user = identity_user;
     }
 
     @TableField(exist = false)

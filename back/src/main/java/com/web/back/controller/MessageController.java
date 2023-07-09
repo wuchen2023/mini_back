@@ -54,17 +54,17 @@ public class MessageController {
     @ResponseBody
     @PostMapping("add_conversation")
     @ApiOperation("添加会话")
-    public ResposeResult add_conversation(@RequestParam Integer userid, @RequestParam Integer chatid, @RequestParam Integer identity)
+    public ResposeResult add_conversation(@RequestParam Integer userid, @RequestParam Integer chatid, @RequestParam Integer identity, @RequestParam Integer identity_user)
     {
-        return conversationService.add_conversation(userid, chatid, identity);
+        return conversationService.add_conversation(userid, chatid, identity, identity_user);
     }
 
     @ResponseBody
     @PostMapping("get_conversation")
     @ApiOperation("获取会话列表")
-    public List<Cov> get_conversation(@RequestParam Integer userid)
+    public List<Cov> get_conversation(@RequestParam Integer userid, @RequestParam Integer identity_user)
     {
-        return conversationService.get_all_conversation(userid);
+        return conversationService.get_all_conversation(userid, identity_user);
     }
 
     @Resource
