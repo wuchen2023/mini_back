@@ -23,6 +23,7 @@ import com.web.back.utils.JsonUtil;
 import com.web.back.viewmodel.student.exam.ExamPaperSubmitItemVM;
 import com.web.back.viewmodel.student.exam.ExamPaperSubmitVM;
 import com.web.back.viewmodel.student.exampaper.ExamPaperAnswerPageVM;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,14 +67,14 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
 
 
     @Override
-    public ExamPaperAnswerInfo calculateExamPaperAnswer(ExamPaperSubmitVM examPaperSubmitVM, Teacher teacher) {
+    public ExamPaperAnswerInfo calculateExamPaperAnswer(ExamPaperSubmitVM examPaperSubmitVM, Integer uid) {
         ExamPaperAnswerInfo examPaperAnswerInfo = new ExamPaperAnswerInfo();
         Date now = new Date();
         ExamPaper examPaper = examPaperMapper.selectByPrimaryKey(examPaperSubmitVM.getId());
         ExamPaperTypeEnum paperTypeEnum = ExamPaperTypeEnum.fromCode(examPaper.getPaperType());
         //任务试卷只能做一次
         if (paperTypeEnum == ExamPaperTypeEnum.Task) {
-            ExamPaperAnswer examPaperAnswer = examPaperAnswerMapper.getByPidUid(examPaperSubmitVM.getId(), teacher.getId());
+            ExamPaperAnswer examPaperAnswer = examPaperAnswerMapper.getByPidUid(examPaperSubmitVM.getId(), uid);
             if (null != examPaperAnswer)
                 return null;
         }
@@ -90,11 +91,11 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
                                     .filter(tq -> tq.getQuestionId().equals(q.getId()))
                                     .findFirst()
                                     .orElse(null);
-                            return ExamPaperQuestionCustomerAnswerFromVM(question, customerQuestionAnswer, examPaper, q.getItemOrder(), teacher, now);
+                            return ExamPaperQuestionCustomerAnswerFromVM(question, customerQuestionAnswer, examPaper, q.getItemOrder(), uid, now);
                         })
                 ).collect(Collectors.toList());
 
-        ExamPaperAnswer examPaperAnswer = ExamPaperAnswerFromVM(examPaperSubmitVM, examPaper, examPaperQuestionCustomerAnswers, teacher, now);
+        ExamPaperAnswer examPaperAnswer = ExamPaperAnswerFromVM(examPaperSubmitVM, examPaper, examPaperQuestionCustomerAnswers, uid, now);
         examPaperAnswerInfo.setExamPaper(examPaper);
         examPaperAnswerInfo.setExamPaperAnswer(examPaperAnswer);
         examPaperAnswerInfo.setExamPaperQuestionCustomerAnswers(examPaperQuestionCustomerAnswers);
@@ -189,11 +190,11 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
      * @param customerQuestionAnswer customerQuestionAnswer
      * @param examPaper              examPaper
      * @param itemOrder              itemOrder
-     * @param teacher                   user
+     * @param uid                   user
      * @param now                    now
      * @return ExamPaperQuestionCustomerAnswer
      */
-    private ExamPaperQuestionCustomerAnswer ExamPaperQuestionCustomerAnswerFromVM(Question question, ExamPaperSubmitItemVM customerQuestionAnswer, ExamPaper examPaper, Integer itemOrder, Teacher teacher, Date now) {
+    private ExamPaperQuestionCustomerAnswer ExamPaperQuestionCustomerAnswerFromVM(Question question, ExamPaperSubmitItemVM customerQuestionAnswer, ExamPaper examPaper, Integer itemOrder, Integer uid, Date now) {
         ExamPaperQuestionCustomerAnswer examPaperQuestionCustomerAnswer = new ExamPaperQuestionCustomerAnswer();
         examPaperQuestionCustomerAnswer.setQuestionId(question.getId());
         examPaperQuestionCustomerAnswer.setExamPaperId(examPaper.getId());
@@ -201,7 +202,7 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         examPaperQuestionCustomerAnswer.setSubjectId(examPaper.getSubjectId());
         examPaperQuestionCustomerAnswer.setItemOrder(itemOrder);
         examPaperQuestionCustomerAnswer.setCreateTime(now);
-        examPaperQuestionCustomerAnswer.setCreateUser(teacher.getId());
+        examPaperQuestionCustomerAnswer.setCreateUser(uid);
         examPaperQuestionCustomerAnswer.setQuestionType(question.getQuestionType());
         examPaperQuestionCustomerAnswer.setQuestionTextContentId(question.getInfoTextContentId());
         if (null == customerQuestionAnswer) {
@@ -246,14 +247,14 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         }
     }
 
-    private ExamPaperAnswer ExamPaperAnswerFromVM(ExamPaperSubmitVM examPaperSubmitVM, ExamPaper examPaper, List<ExamPaperQuestionCustomerAnswer> examPaperQuestionCustomerAnswers, Teacher teacher, Date now) {
+    private ExamPaperAnswer ExamPaperAnswerFromVM(ExamPaperSubmitVM examPaperSubmitVM, ExamPaper examPaper, List<ExamPaperQuestionCustomerAnswer> examPaperQuestionCustomerAnswers, Integer uid, Date now) {
         Integer systemScore = examPaperQuestionCustomerAnswers.stream().mapToInt(a -> a.getCustomerScore()).sum();
         long questionCorrect = examPaperQuestionCustomerAnswers.stream().filter(a -> a.getCustomerScore().equals(a.getQuestionScore())).count();
         ExamPaperAnswer examPaperAnswer = new ExamPaperAnswer();
         examPaperAnswer.setPaperName(examPaper.getName());
         examPaperAnswer.setDoTime(examPaperSubmitVM.getDoTime());
         examPaperAnswer.setExamPaperId(examPaper.getId());
-        examPaperAnswer.setCreateUser(teacher.getId());
+        examPaperAnswer.setCreateUser(uid);
         examPaperAnswer.setCreateTime(now);
         examPaperAnswer.setSubjectId(examPaper.getSubjectId());
         examPaperAnswer.setQuestionCount(examPaper.getQuestionCount());

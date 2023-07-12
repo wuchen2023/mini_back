@@ -40,8 +40,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (null == encodePwd || encodePwd.length() == 0) {
             return false;
         }
-        String pwd = pwdDecode(encodePwd);
-        return pwd.equals(password);
+//        String pwd = pwdDecode(encodePwd);
+//        return pwd.equals(password);
+        return encodePwd.equals(password);
     }
 
 

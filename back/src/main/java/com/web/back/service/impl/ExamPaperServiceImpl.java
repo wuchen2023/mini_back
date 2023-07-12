@@ -26,6 +26,7 @@ import com.web.back.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import com.web.back.viewmodel.admin.exam.ExamPaperPageRequestVM;
 import com.web.back.viewmodel.admin.exam.ExamPaperTitleItemVM;
 import com.web.back.viewmodel.admin.question.QuestionEditRequestVM;
+import com.web.back.viewmodel.student.exam.ExamPaperPageVM;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -110,10 +111,10 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
 
     @Override
     public ExamPaperEditRequestVM examPaperToVM(Integer id) {
-        ExamPaper examPaper = examPaperMapper.selectByPrimaryKey(id);
-        ExamPaperEditRequestVM vm = modelMapper.map(examPaper, ExamPaperEditRequestVM.class);
-        vm.setLevel(examPaper.getGradeLevel());
-        TextContent frameTextContent = textContentService.selectById(examPaper.getFrameTextContentId());
+        ExamPaper examPaper = examPaperMapper.selectByPrimaryKey(id); //根据id进行查询
+        ExamPaperEditRequestVM vm = modelMapper.map(examPaper, ExamPaperEditRequestVM.class); //创建一个vm
+        vm.setLevel(examPaper.getGradeLevel()); // 将这个vm设置成查到试卷的level
+        TextContent frameTextContent = textContentService.selectById(examPaper.getFrameTextContentId()); //依据contentid获取到相关联的对象
         List<ExamPaperTitleItemObject> examPaperTitleItemObjects = JsonUtil.toJsonListObject(frameTextContent.getContent(), ExamPaperTitleItemObject.class);
         List<Integer> questionIds = examPaperTitleItemObjects.stream()
                 .flatMap(t -> t.getQuestionItems().stream()
@@ -137,7 +138,7 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             List<String> limitDateTime = Arrays.asList(DateTimeUtil.dateFormat(examPaper.getLimitStartTime()), DateTimeUtil.dateFormat(examPaper.getLimitEndTime()));
             vm.setLimitDateTime(limitDateTime);
         }
-        return vm;
+        return vm; //返回填充好的vm对象
     }
 
 
@@ -176,6 +177,11 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
         }
     }
 
+    @Override
+    public PageInfo<ExamPaper> examPage(ExamPaperPageVM requestVM){
+        return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
+                examPaperMapper.examPage(requestVM));
+    }
     private List<ExamPaperTitleItemObject> frameTextContentFromVM(List<ExamPaperTitleItemVM> titleItems) {
         AtomicInteger index = new AtomicInteger(1);
         return titleItems.stream().map(t -> {
@@ -191,4 +197,7 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             return titleItem;
         }).collect(Collectors.toList());
     }
+
+
+
 }

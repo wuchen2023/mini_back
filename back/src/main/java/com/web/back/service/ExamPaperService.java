@@ -5,6 +5,7 @@ import com.web.back.domain.ExamPaper;
 import com.web.back.domain.Teacher;
 import com.web.back.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import com.web.back.viewmodel.admin.exam.ExamPaperPageRequestVM;
+import com.web.back.viewmodel.student.exam.ExamPaperPageVM;
 
 import java.util.List;
 
@@ -20,10 +21,14 @@ public interface ExamPaperService extends BaseService<ExamPaper> {
     PageInfo<ExamPaper> taskExamPage(ExamPaperPageRequestVM requestVM);
     ExamPaper savePaperFromVM(ExamPaperEditRequestVM examPaperEditRequestVM,Teacher teacher);
 
-    ExamPaperEditRequestVM examPaperToVM(Integer id);
+    ExamPaperEditRequestVM examPaperToVM(Integer id); //按id进行查询的操作
 
 
     Integer selectAllCount();
 
     List<Integer> selectMothCount();
+
+    PageInfo<ExamPaper> examPage(ExamPaperPageVM requestVM); //这里的ExamPaperPageVM包含了试卷类型，学科id，课程名id
+
+
 }

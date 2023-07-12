@@ -19,6 +19,7 @@ public class ExamPaperSubmitVM {
 
     private String score;
 
+    private Integer createUser;//新增的
     @NotNull
     @Valid
     private List<ExamPaperSubmitItemVM> answerItems;
@@ -54,4 +55,14 @@ public class ExamPaperSubmitVM {
     public void setAnswerItems(List<ExamPaperSubmitItemVM> answerItems) {
         this.answerItems = answerItems;
     }
+
+    public Integer getCreateUser(){
+        return createUser;
+    }
+
+    public void setCreateUser(Integer createUser){
+        this.createUser = createUser;
+    }
+
+
 }

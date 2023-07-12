@@ -7,6 +7,7 @@
     <result column="subject_id" jdbcType="INTEGER" property="subjectId" />
     <result column="paper_type" jdbcType="INTEGER" property="paperType" />
     <result column="grade_level" jdbcType="INTEGER" property="gradeLevel" />
+    <result column="info_class_content_id" jdbcType="INTEGER" property="infoClassContentID" />
     <result column="score" jdbcType="INTEGER" property="score" />
     <result column="question_count" jdbcType="INTEGER" property="questionCount" />
     <result column="suggest_time" jdbcType="INTEGER" property="suggestTime" />
@@ -21,7 +22,7 @@
   <sql id="Base_Column_List">
     id, name, subject_id, paper_type, grade_level, score, question_count, suggest_time,
     limit_start_time, limit_end_time, frame_text_content_id, create_user, create_time,
-    deleted, task_exam_id
+    deleted, task_exam_id, info_class_content_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
@@ -295,5 +296,22 @@
       #{id}
     </foreach>
   </update>
+
+  <select id="examPage" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.student.exam.ExamPaperPageVM">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM exam_paper
+    <where>
+      and deleted=0
+      <if test="subjectId != null ">
+        and subject_id=#{subjectId}
+      </if>
+      <if test="infoClassContentID != null ">
+        and info_class_content_id=#{infoClassContentID}
+      </if>
+      and paper_type=#{paperType}
+    </where>
+  </select>
+
 
 </mapper>

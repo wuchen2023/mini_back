@@ -17,6 +17,13 @@ public class ExamPaperEditRequestVM {
     private Integer subjectId;
     @NotNull
     private Integer paperType;
+
+    /**
+     * 新增课程关联的id
+     */
+    @NotBlank
+    private Integer infoClassContentID;
+
     @NotBlank
     private String name;
     @NotNull
@@ -100,5 +107,14 @@ public class ExamPaperEditRequestVM {
 
     public void setScore(String score) {
         this.score = score;
+    }
+
+
+    public Integer getInfoClassContentID(){
+        return infoClassContentID;
+    }
+
+    public void setInfoClassContentID(Integer infoClassContentID){
+        this.infoClassContentID = infoClassContentID;
     }
 }

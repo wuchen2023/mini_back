@@ -3,6 +3,7 @@ package com.web.back.mapper;
 import com.web.back.domain.ExamPaper;
 import com.web.back.domain.other.KeyValue;
 import com.web.back.viewmodel.admin.exam.ExamPaperPageRequestVM;
+import com.web.back.viewmodel.student.exam.ExamPaperPageVM;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,4 +32,6 @@ public interface ExamPaperMapper extends BaseMapper<ExamPaper>{
     int updateTaskPaper(@Param("taskId") Integer taskId,@Param("paperIds") List<Integer> paperIds);
 
     int clearTaskPaper(@Param("paperIds") List<Integer> paperIds);
+
+    List<ExamPaper> examPage(ExamPaperPageVM requestVM);
 }

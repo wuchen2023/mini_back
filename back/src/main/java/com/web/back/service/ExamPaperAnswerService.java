@@ -28,10 +28,10 @@ public interface ExamPaperAnswerService extends BaseService<ExamPaperAnswer> {
      * 计算试卷提交结果(不入库)
      *
      * @param examPaperSubmitVM
-     * @param teacher
+     * @param uid 创建试卷的名称
      * @return
      */
-    ExamPaperAnswerInfo calculateExamPaperAnswer(ExamPaperSubmitVM examPaperSubmitVM, Teacher teacher);
+    ExamPaperAnswerInfo calculateExamPaperAnswer(ExamPaperSubmitVM examPaperSubmitVM, Integer uid); //传入的是答题人的id
 
 
     /**

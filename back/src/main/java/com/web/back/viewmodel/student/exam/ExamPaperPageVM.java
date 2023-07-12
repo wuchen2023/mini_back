@@ -1,6 +1,7 @@
 package com.web.back.viewmodel.student.exam;
 
 import com.web.back.base.BasePage;
+import io.swagger.models.auth.In;
 
 import javax.validation.constraints.NotNull;
 
@@ -15,7 +16,8 @@ public class ExamPaperPageVM extends BasePage {
 
     private Integer subjectId;
 
-    private Integer levelId;
+//    private Integer levelId;
+    private Integer infoClassContentID;
 
     public Integer getPaperType(){
         return paperType;
@@ -33,11 +35,19 @@ public class ExamPaperPageVM extends BasePage {
         this.subjectId = subjectId;
     }
 
-    public Integer getLevelId() {
-        return levelId;
+    public Integer getInfoClassContentID(){
+        return infoClassContentID;
     }
 
-    public void setLevelId(Integer levelId) {
-        this.levelId = levelId;
+    public void setInfoClassContentID(Integer infoClassContentID){
+        this.infoClassContentID = infoClassContentID;
     }
+
+//    public Integer getLevelId() {
+//        return levelId;
+//    }
+
+//    public void setLevelId(Integer levelId) {
+//        this.levelId = levelId;
+//    }
 }

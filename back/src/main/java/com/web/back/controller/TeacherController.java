@@ -70,6 +70,7 @@ public class TeacherController {
     @ApiOperation("老师登录，获取唯一的标识码")
     public ResposeResult teacher_login(@RequestParam String account, @RequestParam String password)
     {
+        System.out.println("老师登录");
         ResposeResult re = teacherService.teacher_login(account, password);
         if (re.getCode() == 0)
         {

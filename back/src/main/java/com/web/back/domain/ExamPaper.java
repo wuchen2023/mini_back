@@ -27,7 +27,11 @@ public class ExamPaper implements Serializable {
      * 试卷类型( 1固定试卷 4.时段试卷 6.任务试卷)
      */
     private Integer paperType;
-
+    /**
+     * 试卷对应班级编号
+     * 一套试卷肯能存在多个班级中
+     */
+    private Integer infoClassContentID;
     /**
      * 年级
      */
@@ -190,4 +194,13 @@ public class ExamPaper implements Serializable {
     public void setTaskExamId(Integer taskExamId) {
         this.taskExamId = taskExamId;
     }
+
+    public Integer getInfoClassContentID(){
+        return infoClassContentID;
+    }
+
+    public void setInfoClassContentID(Integer infoClassContentID){
+        this.infoClassContentID = infoClassContentID;
+    }
+
 }
