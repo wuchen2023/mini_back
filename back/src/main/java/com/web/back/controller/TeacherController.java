@@ -4,6 +4,7 @@ package com.web.back.controller;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.github.pagehelper.PageInfo;
 import com.web.back.domain.*;
+import com.web.back.domain.result.TeacherGroupRes;
 import com.web.back.service.AuthenticationService;
 import com.web.back.service.TeacherService;
 import com.web.back.service.TeacherSignInService;
@@ -265,10 +266,12 @@ public class TeacherController {
         }
     }
 
+
+    //TODO 修改
     @ResponseBody
     @ApiOperation("获取老师所有的分组任务")
     @PostMapping("get_all_group_task")
-    public List<TeacherGroup> get_all_teacher_group_task(@RequestParam Integer teacher_id)
+    public List<TeacherGroupRes> get_all_teacher_group_task(@RequestParam Integer teacher_id)
     {
         return teacherService.get_all_teacher_group_task(teacher_id);
     }
