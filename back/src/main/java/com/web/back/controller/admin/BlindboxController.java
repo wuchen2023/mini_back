@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -107,8 +108,11 @@ public class BlindboxController {
         if (code.equals(redis_get(teacher_account))) {
             System.out.println("查询的结果是：" + questionService.selectAllCount());
             if (questionService.selectAllCount() > 0) {
-                int idd = getRandomId(10);
-                QuestionEditRequestVM newVM = questionService.getQuestionEditRequestVM(idd);
+                List<Integer> questionNumbers = questionService.findAllQuestionIds();
+                System.out.println("题库中已有的题目号为："+questionNumbers);
+                Integer randomQuestionNumber = getRandomQuestionNumber(questionNumbers);
+                System.out.println("随机选中的题号是：" + randomQuestionNumber);
+                QuestionEditRequestVM newVM = questionService.getQuestionEditRequestVM(randomQuestionNumber);
                 return RestResponse.ok(newVM);
             } else {
                 return RestResponse.fail(400, "题目数量为0!!!");
@@ -120,12 +124,18 @@ public class BlindboxController {
     }
 
     //按照传入的题目列表大小随机在这写数中选择一个id
-    public static int getRandomId(int id) {
+//    public static int getRandomId(int id) {
+//        Random random = new Random();
+//        int MAX = id, MIN = 4;
+//        int number = random.nextInt(MAX - MIN + 1) + MIN;
+//        System.out.println("随机生成的数字是：" + number);
+//        return number;
+//    }
+
+    public static Integer getRandomQuestionNumber(List<Integer> questionNumbers) {
         Random random = new Random();
-        int MAX = id, MIN = 4;
-        int number = random.nextInt(MAX - MIN + 1) + MIN;
-        System.out.println("随机生成的数字是：" + number);
-        return number;
+        int randomIndex = random.nextInt(questionNumbers.size()); // 生成随机索引
+        return questionNumbers.get(randomIndex); // 返回随机选中的题号
     }
 
     public void redis_save(String key, String value) {

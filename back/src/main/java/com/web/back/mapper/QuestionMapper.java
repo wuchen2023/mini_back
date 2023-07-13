@@ -28,5 +28,7 @@ public interface QuestionMapper extends BaseMapper<Question> {
     Integer selectAllCount();
 
     List<KeyValue> selectCountByDate(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
+    List<Integer> findAllQuestionIds(); //查询所有的问题id
 }
 

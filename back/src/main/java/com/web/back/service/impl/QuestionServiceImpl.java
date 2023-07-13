@@ -222,4 +222,8 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public  List<Integer> findAllQuestionIds(){
+        return questionMapper.findAllQuestionIds();
+    }
 }

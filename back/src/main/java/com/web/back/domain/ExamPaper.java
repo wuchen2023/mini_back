@@ -32,6 +32,13 @@ public class ExamPaper implements Serializable {
      * 一套试卷肯能存在多个班级中
      */
     private Integer infoClassContentID;
+
+    /**
+     * 学生账号
+     * 用于盲盒查询当前学生账号下的试卷
+     * 同时满足满级和账号两个条件
+     */
+    private String stuAccount;
     /**
      * 年级
      */
@@ -201,6 +208,14 @@ public class ExamPaper implements Serializable {
 
     public void setInfoClassContentID(Integer infoClassContentID){
         this.infoClassContentID = infoClassContentID;
+    }
+
+    public String getStuAccount(){
+        return stuAccount;
+    }
+
+    public void setStuAccount(String stuAccount){
+        this.stuAccount = stuAccount;
     }
 
 }

@@ -225,4 +225,7 @@
 		GROUP BY create_time
 	</select>
 
+  <select id="findAllQuestionIds" resultType="java.lang.Integer">
+    SELECT id FROM question
+  </select>
 </mapper>

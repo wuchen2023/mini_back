@@ -23,7 +23,8 @@ public class ExamPaperEditRequestVM {
      */
     @NotNull
     private Integer infoClassContentID;
-
+    @NotBlank
+    private String stuAccount;
     @NotBlank
     private String name;
     @NotNull
@@ -116,5 +117,13 @@ public class ExamPaperEditRequestVM {
 
     public void setInfoClassContentID(Integer infoClassContentID){
         this.infoClassContentID = infoClassContentID;
+    }
+
+    public String getStuAccount(){
+        return stuAccount;
+    }
+
+    public void setStuAccount(String stuAccount){
+        this.stuAccount = stuAccount;
     }
 }
