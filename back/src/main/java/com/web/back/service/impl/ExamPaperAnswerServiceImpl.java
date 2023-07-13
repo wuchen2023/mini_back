@@ -10,10 +10,7 @@ import com.web.back.domain.exam.ExamPaperTitleItemObject;
 import com.web.back.domain.other.ExamPaperAnswerUpdate;
 import com.web.back.domain.other.KeyValue;
 import com.web.back.domain.task.TaskItemAnswerObject;
-import com.web.back.mapper.ExamPaperAnswerMapper;
-import com.web.back.mapper.ExamPaperMapper;
-import com.web.back.mapper.QuestionMapper;
-import com.web.back.mapper.TaskExamCustomerAnswerMapper;
+import com.web.back.mapper.*;
 import com.web.back.service.ExamPaperAnswerService;
 import com.web.back.service.ExamPaperQuestionCustomerAnswerService;
 import com.web.back.service.TextContentService;
@@ -48,8 +45,9 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
     private final ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService;
     private final TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper;
 
+    private final ExamPaperQuestionCustomerAnswerMapper examPaperQuestionCustomerAnswerMapper;
     @Autowired
-    public ExamPaperAnswerServiceImpl(ExamPaperAnswerMapper examPaperAnswerMapper, ExamPaperMapper examPaperMapper, TextContentService textContentService, QuestionMapper questionMapper, ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService, TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper) {
+    public ExamPaperAnswerServiceImpl(ExamPaperAnswerMapper examPaperAnswerMapper, ExamPaperMapper examPaperMapper, TextContentService textContentService, QuestionMapper questionMapper, ExamPaperQuestionCustomerAnswerService examPaperQuestionCustomerAnswerService, TaskExamCustomerAnswerMapper taskExamCustomerAnswerMapper, ExamPaperQuestionCustomerAnswerMapper examPaperQuestionCustomerAnswerMapper) {
         super(examPaperAnswerMapper);
         this.examPaperAnswerMapper = examPaperAnswerMapper;
         this.examPaperMapper = examPaperMapper;
@@ -57,6 +55,7 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         this.questionMapper = questionMapper;
         this.examPaperQuestionCustomerAnswerService = examPaperQuestionCustomerAnswerService;
         this.taskExamCustomerAnswerMapper = taskExamCustomerAnswerMapper;
+        this.examPaperQuestionCustomerAnswerMapper = examPaperQuestionCustomerAnswerMapper;
     }
 
     @Override
@@ -210,6 +209,9 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         } else {
             setSpecialFromVM(examPaperQuestionCustomerAnswer, question, customerQuestionAnswer);
         }
+        //插入数据
+//        examPaperQuestionCustomerAnswerService.insert(examPaperQuestionCustomerAnswer);
+        examPaperQuestionCustomerAnswerMapper.insert(examPaperQuestionCustomerAnswer);
         return examPaperQuestionCustomerAnswer;
     }
 

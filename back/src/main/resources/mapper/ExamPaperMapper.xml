@@ -39,13 +39,13 @@
       paper_type, grade_level, score,
       question_count, suggest_time, limit_start_time,
       limit_end_time, frame_text_content_id, create_user,
-      create_time, deleted, task_exam_id
+      create_time, deleted, task_exam_id, info_class_content_id
       )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{subjectId,jdbcType=INTEGER},
       #{paperType,jdbcType=INTEGER}, #{gradeLevel,jdbcType=INTEGER}, #{score,jdbcType=INTEGER},
       #{questionCount,jdbcType=INTEGER}, #{suggestTime,jdbcType=INTEGER}, #{limitStartTime,jdbcType=TIMESTAMP},
       #{limitEndTime,jdbcType=TIMESTAMP}, #{frameTextContentId,jdbcType=INTEGER}, #{createUser,jdbcType=INTEGER},
-      #{createTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, #{taskExamId,jdbcType=INTEGER}
+      #{createTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, #{taskExamId,jdbcType=INTEGER},#{infoClassContentID, jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.web.back.domain.ExamPaper" useGeneratedKeys="true" keyProperty="id">
@@ -65,6 +65,9 @@
       </if>
       <if test="gradeLevel != null">
         grade_level,
+      </if>
+      <if test="infoClassContentID != null">
+        info_class_content_id,
       </if>
       <if test="score != null">
         score,
@@ -113,6 +116,9 @@
       <if test="gradeLevel != null">
         #{gradeLevel,jdbcType=INTEGER},
       </if>
+      <if test="infoClassContentID != null">
+        #{infoClassContentID,jdbcType=INTEGER},
+      </if>
       <if test="score != null">
         #{score,jdbcType=INTEGER},
       </if>
@@ -159,6 +165,9 @@
       </if>
       <if test="gradeLevel != null">
         grade_level = #{gradeLevel,jdbcType=INTEGER},
+      </if>
+      <if test="infoClassContentID != null">
+        info_class_content_id = #{infoClassContentID,jdbcType=INTEGER},
       </if>
       <if test="score != null">
         score = #{score,jdbcType=INTEGER},

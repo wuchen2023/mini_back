@@ -1,22 +1,31 @@
 package com.web.back.controller.admin;
 
+import com.github.pagehelper.PageInfo;
 import com.web.back.domain.*;
 import com.web.back.domain.enums.QuestionTypeEnum;
+import com.web.back.event.CalculateExamPaperAnswerCompleteEvent;
 import com.web.back.service.*;
 import com.web.back.state.RestResponse;
+import com.web.back.utils.DateTimeUtil;
 import com.web.back.utils.ExamUtil;
+import com.web.back.utils.ModelMapperSingle;
+import com.web.back.utils.PageInfoHelper;
+import com.web.back.viewmodel.admin.exam.ExamPaperEditRequestVM;
+import com.web.back.viewmodel.student.exam.ExamPaperReadVM;
 import com.web.back.viewmodel.student.exam.ExamPaperSubmitItemVM;
 import com.web.back.viewmodel.student.exam.ExamPaperSubmitVM;
+import com.web.back.viewmodel.student.exampaper.ExamPaperAnswerPageResponseVM;
+import com.web.back.viewmodel.student.exampaper.ExamPaperAnswerPageVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -56,6 +65,14 @@ public class ExamPaperAnswerController {
     /**
      * 试卷提交的接口
      */
+    private static int uid;
+
+    /**
+     * 前端使用query形式传入必要的参数
+     * 例如：http://localhost:8080/api/admin/student/exampaper/answer/answerSubmit?account=admin1&people=老师&1_14_1=A&id=9&doTime=12
+     * @param request
+     * @return
+     */
     @PostMapping("/answerSubmit")
     @ApiOperation("小程序端-试卷答题提交")
     public RestResponse answerSubmit(HttpServletRequest request) {
@@ -64,7 +81,7 @@ public class ExamPaperAnswerController {
         // 前端request中还要新增storage中的当前登录用户的account，然后一句account获取到用户信息
         String people = request.getParameter("people");
         String account = request.getParameter("account");
-        Integer uid = 0;
+//        Integer uid = 0;
         if(people.equals("老师")){
             //是老师，就调用查询老师的方法
             Teacher teacher = teacherService.get_detail_by_account(account);
@@ -82,6 +99,7 @@ public class ExamPaperAnswerController {
         }
         ExamPaperAnswer examPaperAnswer = examPaperAnswerInfo.getExamPaperAnswer();
         Integer userScore = examPaperAnswer.getUserScore();
+        System.out.println("userScore:"+userScore);
         String scoreVm = ExamUtil.scoreToVM(userScore);
 //        UserEventLog userEventLog = new UserEventLog(user.getId(), user.getUserName(), user.getRealName(), new Date());
 //        String content = user.getUserName() + " 提交试卷：" + examPaperAnswerInfo.getExamPaper().getName()
@@ -90,7 +108,39 @@ public class ExamPaperAnswerController {
 //        userEventLog.setContent(content);
 //        eventPublisher.publishEvent(new CalculateExamPaperAnswerCompleteEvent(examPaperAnswerInfo));
 //        eventPublisher.publishEvent(new UserEvent(userEventLog));
+        examPaperAnswerService.insert(examPaperAnswer); //将做题记录写入库
         return RestResponse.ok(scoreVm);
+    }
+
+
+    protected final static ModelMapper modelMapper = ModelMapperSingle.Instance();
+
+    /**
+     * 前端除了请求中携带pageindex,paigesize,还要携带account，用以查询当前用户已答试卷，查询出所有的已答试卷，
+     * 例如 http://localhost:8003/api/admin/student/exampaper/answer/pageList?pageIndex=1&pageSize=20&createUser=1
+     * @param model
+     * @return
+     */
+    @PostMapping("/pageList")
+    @ApiOperation("小程序端-获取试卷答题记录列表")
+    public RestResponse<PageInfo<ExamPaperAnswerPageResponseVM>> pageList(@Valid ExamPaperAnswerPageVM model) {
+
+//        model.setCreateUser(getCurrentUser().getId());
+        Integer uid = model.getCreateUser();
+        System.out.println("传入的uid:"+uid);
+        PageInfo<ExamPaperAnswer> pageInfo = examPaperAnswerService.studentPage(model);
+        PageInfo<ExamPaperAnswerPageResponseVM> page = PageInfoHelper.copyMap(pageInfo, e -> {
+            ExamPaperAnswerPageResponseVM vm = modelMapper.map(e, ExamPaperAnswerPageResponseVM.class);
+            Subject subject = subjectService.selectById(vm.getSubjectId());
+            vm.setDoTime(ExamUtil.secondToVM(e.getDoTime()));
+            vm.setSystemScore(ExamUtil.scoreToVM(e.getSystemScore()));
+            vm.setUserScore(ExamUtil.scoreToVM(e.getUserScore()));
+            vm.setPaperScore(ExamUtil.scoreToVM(e.getPaperScore()));
+            vm.setSubjectName(subject.getName());
+            vm.setCreateTime(DateTimeUtil.dateFormat(e.getCreateTime()));
+            return vm;
+        });
+        return RestResponse.ok(page);
     }
 
 
@@ -132,6 +182,19 @@ public class ExamPaperAnswerController {
         });
         examPaperSubmitVM.setAnswerItems(answerItems); //将answerItems列表设置为examPaperSubmitVM对象的答案项
         return examPaperSubmitVM;
+    }
+
+
+    @PostMapping("/read/{id}")
+    @ApiOperation("小程序端-获取某一份答卷的具体内容")
+    public RestResponse<ExamPaperReadVM> read(@PathVariable Integer id) {
+        ExamPaperReadVM vm = new ExamPaperReadVM();
+        ExamPaperAnswer examPaperAnswer = examPaperAnswerService.selectById(id);
+        ExamPaperEditRequestVM paper = examPaperService.examPaperToVM(examPaperAnswer.getExamPaperId());
+        ExamPaperSubmitVM answer = examPaperAnswerService.examPaperAnswerToVM(examPaperAnswer.getId());
+        vm.setPaper(paper);
+        vm.setAnswer(answer);
+        return RestResponse.ok(vm);
     }
 
 }

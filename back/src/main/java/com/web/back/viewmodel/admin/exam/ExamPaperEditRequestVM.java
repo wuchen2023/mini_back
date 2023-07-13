@@ -21,7 +21,7 @@ public class ExamPaperEditRequestVM {
     /**
      * 新增课程关联的id
      */
-    @NotBlank
+    @NotNull
     private Integer infoClassContentID;
 
     @NotBlank
