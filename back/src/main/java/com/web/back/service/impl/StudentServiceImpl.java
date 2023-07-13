@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.web.back.domain.*;
+import com.web.back.domain.result.StudentClassRes;
 import com.web.back.mapper.*;
 import com.web.back.service.StudentService;
 import com.web.back.state.ResposeResult;
@@ -246,10 +247,8 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     }
 
     @Override
-    public List<StudentClass> get_all_class_by_student_id(Integer student_id) {
-        QueryWrapper queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("student_id", student_id);
-        return studentClassMapper.selectList(queryWrapper);
+    public List<StudentClassRes> get_all_class_by_student_id(Integer student_id) {
+        return studentClassMapper.get_all_class(student_id);
     }
 
     /**

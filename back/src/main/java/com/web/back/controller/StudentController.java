@@ -4,6 +4,7 @@ package com.web.back.controller;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.github.pagehelper.PageInfo;
 import com.web.back.domain.*;
+import com.web.back.domain.result.StudentClassRes;
 import com.web.back.service.AuthenticationService;
 import com.web.back.service.StudentService;
 import com.web.back.service.StudentSignInService;
@@ -187,10 +188,12 @@ public class StudentController {
         }
     }
 
+
+    //TODO
     @ResponseBody
     @ApiOperation("根据student_id查询学生加入的班级")
     @PostMapping("get_all_class_by_student_id")
-    public List<StudentClass> get_all_class_by_s_id(@RequestParam Integer student_id)
+    public List<StudentClassRes> get_all_class_by_s_id(@RequestParam Integer student_id)
     {
         return studentService.get_all_class_by_student_id(student_id);
     }
