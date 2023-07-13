@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.web.back.config.property.SystemConfig;
 import com.web.back.domain.*;
+import com.web.back.domain.result.TeacherGroupRes;
 import com.web.back.mapper.*;
 import com.web.back.service.AuthenticationService;
 import com.web.back.service.TeacherService;
@@ -300,10 +301,8 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
     }
 
     @Override
-    public List<TeacherGroup> get_all_teacher_group_task(Integer teacher_id) {
-        QueryWrapper queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("teacher_id", teacher_id);
-        return teacherGroupMapper.selectList(queryWrapper);
+    public List<TeacherGroupRes> get_all_teacher_group_task(Integer teacher_id) {
+        return teacherGroupMapper.getListWithGroupType(teacher_id);
     }
 
     @Override

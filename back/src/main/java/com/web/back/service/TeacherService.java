@@ -3,6 +3,7 @@ package com.web.back.service;
 import com.github.pagehelper.PageInfo;
 import com.web.back.domain.*;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.web.back.domain.result.TeacherGroupRes;
 import com.web.back.state.ResposeResult;
 import com.web.back.viewmodel.TeacherGroupResult;
 import com.web.back.viewmodel.admin.user.UserPageRequestVM;
@@ -46,7 +47,7 @@ public interface TeacherService extends IService<Teacher> {
 
     public List<StudentGroup> get_all_student_group_by_teacher_group_id(Integer teacher_group_id);
 
-    public List<TeacherGroup> get_all_teacher_group_task(Integer teacher_id);
+    public List<TeacherGroupRes> get_all_teacher_group_task(Integer teacher_id);
 
     public Group get_group_by_group_id(Integer group_id);
 
