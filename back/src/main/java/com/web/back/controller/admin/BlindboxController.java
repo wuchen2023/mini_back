@@ -3,6 +3,7 @@ package com.web.back.controller.admin;
 import com.alibaba.druid.support.logging.Log;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import com.web.back.domain.ExamPaper;
 import com.web.back.domain.Student;
 import com.web.back.domain.StudentClass;
 import com.web.back.service.QuestionService;
@@ -12,6 +13,7 @@ import com.web.back.service.TextContentService;
 import com.web.back.state.RestResponse;
 import com.web.back.utils.ModelMapperSingle;
 import com.web.back.utils.PageInfoHelper;
+import com.web.back.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import com.web.back.viewmodel.admin.question.QuestionEditRequestVM;
 import com.web.back.viewmodel.admin.studentclass.StudentClassPageRequestVM;
 import com.web.back.viewmodel.admin.studentclass.StudentClassResponseVM;
@@ -85,7 +87,7 @@ public class BlindboxController {
          */
         StudentClass studentClass = studentClassService.get_student(className);
         Integer student_id = studentClass.getStudentId();
-        String name =studentService.student_id_get_name(student_id);
+        String name = studentService.student_id_get_name(student_id);
         StudentClassResponseVM studentClassResponseVM = new StudentClassResponseVM();
         studentClassResponseVM.setName(name);
         studentClassResponseVM.setClass_name(className);
@@ -104,21 +106,25 @@ public class BlindboxController {
     @ResponseBody
     @ApiOperation("随机抽一道题")
     @PostMapping("blindbox")
-    public RestResponse<QuestionEditRequestVM> blindbox(@RequestParam String code, @RequestParam String teacher_account) {
-        if (code.equals(redis_get(teacher_account))) {
-            System.out.println("查询的结果是：" + questionService.selectAllCount());
-            if (questionService.selectAllCount() > 0) {
-                List<Integer> questionNumbers = questionService.findAllQuestionIds();
-                System.out.println("题库中已有的题目号为："+questionNumbers);
-                Integer randomQuestionNumber = getRandomQuestionNumber(questionNumbers);
-                System.out.println("随机选中的题号是：" + randomQuestionNumber);
-                QuestionEditRequestVM newVM = questionService.getQuestionEditRequestVM(randomQuestionNumber);
-                return RestResponse.ok(newVM);
-            } else {
-                return RestResponse.fail(400, "题目数量为0!!!");
-            }
+    public RestResponse<QuestionEditRequestVM> blindbox() {
+        System.out.println("查询的结果是：" + questionService.selectAllCount());
+        if (questionService.selectAllCount() > 0) {
+            List<Integer> questionNumbers = questionService.findAllQuestionIds();
+            System.out.println("题库中已有的题目号为：" + questionNumbers);
+            Integer randomQuestionNumber = getRandomQuestionNumber(questionNumbers);
+            System.out.println("随机选中的题号是：" + randomQuestionNumber);
+            QuestionEditRequestVM newVM = questionService.getQuestionEditRequestVM(randomQuestionNumber);
+            //下面把抽到的一道题目设置为一套试卷
+//            ExamPaperEditRequestVM examPaperEditRequestVM = new ExamPaperEditRequestVM();
+//            examPaperEditRequestVM.setPaperType(1);
+//            examPaperEditRequestVM.setInfoClassContentID(infoclasscontentid);
+//            ExamPaper examPaper = new ExamPaper();
+
+//                ExamPaper examPaper = examPaperService.savePaperFromVM(model, getCurrentTeacher());
+//                ExamPaperEditRequestVM newVM = examPaperService.examPaperToVM(examPaper.getId());
+            return RestResponse.ok(newVM);
         } else {
-            return RestResponse.fail(400, "未登录，请登录！");
+            return RestResponse.fail(400, "题目数量为0!!!");
         }
 
     }
