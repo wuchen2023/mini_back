@@ -32,4 +32,9 @@ public class PkWiner implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public PkWiner(Integer studentId, Integer activityId) {
+        this.studentId = studentId;
+        this.activityId = activityId;
+    }
 }

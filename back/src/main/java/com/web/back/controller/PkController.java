@@ -3,7 +3,9 @@ package com.web.back.controller;
 
 import com.web.back.domain.Pk;
 import com.web.back.domain.result.PkRes;
+import com.web.back.domain.result.PkWinnerRes;
 import com.web.back.service.PkService;
+import com.web.back.service.PkWinerService;
 import com.web.back.state.ResposeResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,6 +47,25 @@ public class PkController {
     public List<PkRes> get_all_pk(@RequestParam String course_name)
     {
         return pkService.get_all_pk(course_name);
+    }
+
+    @Resource
+    PkWinerService pkWinerService;
+
+    @ResponseBody
+    @ApiOperation("添加pk胜者")
+    @PostMapping("add_pk_winner")
+    public ResposeResult add_pk_winner(@RequestParam Integer student_id, @RequestParam Integer activity_id)
+    {
+        return pkWinerService.add_pk_winner(student_id, activity_id);
+    }
+
+    @ResponseBody
+    @ApiOperation("获取胜者信息")
+    @PostMapping("get_winner")
+    public PkWinnerRes get_winner(@RequestParam Integer activity_id)
+    {
+        return pkWinerService.get_winner(activity_id);
     }
 
 

@@ -10,7 +10,18 @@
             <result property="activityId" column="activity_id" jdbcType="INTEGER"/>
     </resultMap>
 
+    <resultMap id = "map1" type="com.web.back.domain.result.PkWinnerRes">
+        <result property="winner_name" column="winner_name" jdbcType="VARCHAR"/>
+        <result property="activity_type" column="activity_type" jdbcType="VARCHAR"/>
+        <result property="activity_id" column="activity_id" jdbcType="INTEGER"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
         id,student_id,activity_id
     </sql>
+
+    <select id="get_winner" resultMap="map1">
+        select s.name as winner_name, pk_winer.activity_id as activity_id, activity.activity_type as activity_type From pk_winer, student as s, activity where pk_winer.activity_id = #{activity_id} and s.id = pk_winer.student_id and activity.id = #{activity_id};
+    </select>
+
 </mapper>
