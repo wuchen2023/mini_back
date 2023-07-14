@@ -88,6 +88,30 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk>
     public List<PkRes> get_all_pk(String course_name) {
         return pkMapper.get_all(course_name);
     }
+
+    @Override
+    public ResposeResult get_pk_state(Integer activity_id, String course_name) {
+        try{
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("activity_id", activity_id);
+            queryWrapper.eq("course_name", course_name);
+            Pk pk = pkMapper.selectOne(queryWrapper);
+            if(pk == null)
+            {
+                throw new Exception();
+            }
+            if(pk.getIsFinished() == 1)
+            {
+                return new ResposeResult(1, "pk已经结束");
+            }else
+            {
+                return new ResposeResult(1, "pk还在进行中");
+            }
+        }catch (Exception e)
+        {
+            return new ResposeResult(0, "查询失败");
+        }
+    }
 }
 
 

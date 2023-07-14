@@ -20,4 +20,6 @@ public interface PkService extends IService<Pk> {
 
     public List<PkRes> get_all_pk(String course_name);
 
+    public ResposeResult get_pk_state(Integer activity_id, String course_name);
+
 }

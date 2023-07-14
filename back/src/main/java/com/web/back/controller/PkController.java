@@ -42,6 +42,14 @@ public class PkController {
     }
 
     @ResponseBody
+    @ApiOperation("获取一个pk的结束状态")
+    @PostMapping("get_pk_state")
+    public ResposeResult get_pk_state(@RequestParam Integer activity_id, @RequestParam String course_name)
+    {
+        return pkService.get_pk_state(activity_id, course_name);
+    }
+
+    @ResponseBody
     @ApiOperation("获取当前班级的所有pk")
     @PostMapping("get_all_pk")
     public List<PkRes> get_all_pk(@RequestParam String course_name)
