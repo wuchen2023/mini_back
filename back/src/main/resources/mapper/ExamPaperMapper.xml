@@ -7,7 +7,7 @@
     <result column="subject_id" jdbcType="INTEGER" property="subjectId" />
     <result column="paper_type" jdbcType="INTEGER" property="paperType" />
     <result column="grade_level" jdbcType="INTEGER" property="gradeLevel" />
-    <result column="info_class_content_id" jdbcType="INTEGER" property="infoClassContentID" />
+    <result column="course_name" jdbcType="VARCHAR" property="courseName" />
     <result column="stu_account" jdbcType="VARCHAR" property="stuAccount" />
     <result column="score" jdbcType="INTEGER" property="score" />
     <result column="question_count" jdbcType="INTEGER" property="questionCount" />
@@ -23,7 +23,7 @@
   <sql id="Base_Column_List">
     id, name, subject_id, paper_type, grade_level, score, question_count, suggest_time,
     limit_start_time, limit_end_time, frame_text_content_id, create_user, create_time,
-    deleted, task_exam_id, info_class_content_id, stu_account
+    deleted, task_exam_id, course_name, stu_account
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
@@ -40,13 +40,13 @@
       paper_type, grade_level, score,
       question_count, suggest_time, limit_start_time,
       limit_end_time, frame_text_content_id, create_user,
-      create_time, deleted, task_exam_id, info_class_content_id,stu_account
+      create_time, deleted, task_exam_id, course_name,stu_account
       )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{subjectId,jdbcType=INTEGER},
       #{paperType,jdbcType=INTEGER}, #{gradeLevel,jdbcType=INTEGER}, #{score,jdbcType=INTEGER},
       #{questionCount,jdbcType=INTEGER}, #{suggestTime,jdbcType=INTEGER}, #{limitStartTime,jdbcType=TIMESTAMP},
       #{limitEndTime,jdbcType=TIMESTAMP}, #{frameTextContentId,jdbcType=INTEGER}, #{createUser,jdbcType=INTEGER},
-      #{createTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, #{taskExamId,jdbcType=INTEGER},#{infoClassContentID, jdbcType=INTEGER}, #{stuAccount, jdbcType=VARCHAR}
+      #{createTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, #{taskExamId,jdbcType=INTEGER},#{courseName, jdbcType=VARCHAR}, #{stuAccount, jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.web.back.domain.ExamPaper" useGeneratedKeys="true" keyProperty="id">
@@ -67,8 +67,8 @@
       <if test="gradeLevel != null">
         grade_level,
       </if>
-      <if test="infoClassContentID != null">
-        info_class_content_id,
+      <if test="courseName != null">
+        course_name,
       </if>
       <if test="stuAccount != null">
         stu_account,
@@ -120,8 +120,8 @@
       <if test="gradeLevel != null">
         #{gradeLevel,jdbcType=INTEGER},
       </if>
-      <if test="infoClassContentID != null">
-        #{infoClassContentID,jdbcType=INTEGER},
+      <if test="courseName != null">
+        #{courseName,jdbcType=VARCHAR},
       </if>
       <if test="stuAccount != null">
         #{stuAccount,jdbcType=VARCHAR},
@@ -173,8 +173,8 @@
       <if test="gradeLevel != null">
         grade_level = #{gradeLevel,jdbcType=INTEGER},
       </if>
-      <if test="infoClassContentID != null">
-        info_class_content_id = #{infoClassContentID,jdbcType=INTEGER},
+      <if test="courseName != null">
+        course_name = #{courseName,jdbcType=VARCHAR},
       </if>
       <if test="stuAccount != null">
         stu_account = #{stuAccount,jdbcType=VARCHAR},
@@ -325,8 +325,8 @@
       <if test="subjectId != null ">
         and subject_id=#{subjectId}
       </if>
-      <if test="infoClassContentID != null ">
-        and info_class_content_id=#{infoClassContentID}
+      <if test="courseName != null ">
+        and course_name=#{courseName}
       </if>
       <if test="stuAccount != null and stuAccount != '' ">
         and stu_account=#{stuAccount}

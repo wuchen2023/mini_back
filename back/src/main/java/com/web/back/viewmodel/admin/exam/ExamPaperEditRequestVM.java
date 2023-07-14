@@ -1,7 +1,6 @@
 package com.web.back.viewmodel.admin.exam;
 
 
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,18 +10,15 @@ import java.util.List;
 
 public class ExamPaperEditRequestVM {
     private Integer id;
-//    @NotNull
+    //    @NotNull
     private Integer level;
     @NotNull
     private Integer subjectId;
     @NotNull
     private Integer paperType;
 
-    /**
-     * 新增课程关联的id
-     */
-    @NotNull
-    private Integer infoClassContentID;
+    @NotBlank
+    private String courseName;
     @NotBlank
     private String stuAccount;
     @NotBlank
@@ -32,7 +28,7 @@ public class ExamPaperEditRequestVM {
 
     private List<String> limitDateTime;
 
-    @Size(min = 1,message = "请添加试卷标题")
+    @Size(min = 1, message = "请添加试卷标题")
     @Valid
     private List<ExamPaperTitleItemVM> titleItems;
 
@@ -111,19 +107,19 @@ public class ExamPaperEditRequestVM {
     }
 
 
-    public Integer getInfoClassContentID(){
-        return infoClassContentID;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setInfoClassContentID(Integer infoClassContentID){
-        this.infoClassContentID = infoClassContentID;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
-    public String getStuAccount(){
+    public String getStuAccount() {
         return stuAccount;
     }
 
-    public void setStuAccount(String stuAccount){
+    public void setStuAccount(String stuAccount) {
         this.stuAccount = stuAccount;
     }
 }

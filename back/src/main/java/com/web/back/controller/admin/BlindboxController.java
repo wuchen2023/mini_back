@@ -106,7 +106,7 @@ public class BlindboxController {
     @ResponseBody
     @ApiOperation("随机抽一道题")
     @PostMapping("blindbox")
-    public RestResponse<ExamPaperEditRequestVM> blindbox(@RequestParam Integer infoclasscontentid, @RequestParam String stuaccount) {
+    public RestResponse<ExamPaperEditRequestVM> blindbox(@RequestParam String coursename, @RequestParam String stuaccount) {
         System.out.println("查询的结果是：" + questionService.selectAllCount());
         if (questionService.selectAllCount() > 0) {
             List<Integer> questionNumbers = questionService.findAllQuestionIds();
@@ -118,9 +118,9 @@ public class BlindboxController {
             ExamPaperEditRequestVM examPaperEditRequestVM = new ExamPaperEditRequestVM();
             examPaperEditRequestVM.setSubjectId(1); //这里学科该怎么设置成不同的呢？或者是对应的学科
             examPaperEditRequestVM.setPaperType(1);
-            examPaperEditRequestVM.setInfoClassContentID(infoclasscontentid);
+            examPaperEditRequestVM.setCourseName(coursename);
             examPaperEditRequestVM.setStuAccount(stuaccount);
-            examPaperEditRequestVM.setName(createNewName(infoclasscontentid, stuaccount));
+            examPaperEditRequestVM.setName(createNewName(coursename, stuaccount));
             examPaperEditRequestVM.setSuggestTime(2);
             List<ExamPaperTitleItemVM> titleItems = new ArrayList<>();
             ExamPaperTitleItemVM item1 = new ExamPaperTitleItemVM();
@@ -137,15 +137,15 @@ public class BlindboxController {
         }
         return null;
     }
-    public  String createNewName(Integer infoclasscontentid, String stuaccount) {
+    public  String createNewName(String coursename, String stuaccount) {
         // 生成随机三位数
         Random random = new Random();
         int randomNumber = random.nextInt(900) + 100;
         //新增一个根据课程id，查询到课程名字
-        String courseName = teacherService.get_courseName_by_id(infoclasscontentid);
+//        String courseName = teacherService.get_courseName_by_id(infoclasscontentid);
 
         // 合并字符串
-        String mergedString = "班级" + courseName + "_" + "学生" + stuaccount + "_" + randomNumber;
+        String mergedString = "班级" + coursename + "_" + "学生" + stuaccount + "_" + randomNumber;
 
         System.out.println("合并后的字符串：" + mergedString);
         return mergedString;

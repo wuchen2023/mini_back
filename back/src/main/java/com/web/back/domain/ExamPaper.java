@@ -31,8 +31,7 @@ public class ExamPaper implements Serializable {
      * 试卷对应班级编号
      * 一套试卷肯能存在多个班级中
      */
-    private Integer infoClassContentID;
-
+    private String courseName;
     /**
      * 学生账号
      * 用于盲盒查询当前学生账号下的试卷
@@ -202,12 +201,12 @@ public class ExamPaper implements Serializable {
         this.taskExamId = taskExamId;
     }
 
-    public Integer getInfoClassContentID(){
-        return infoClassContentID;
+    public String getCourseName(){
+        return courseName;
     }
 
-    public void setInfoClassContentID(Integer infoClassContentID){
-        this.infoClassContentID = infoClassContentID;
+    public void setCourseName(String courseName){
+        this.courseName = courseName;
     }
 
     public String getStuAccount(){
