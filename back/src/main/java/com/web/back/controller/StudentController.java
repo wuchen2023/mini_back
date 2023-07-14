@@ -154,12 +154,27 @@ public class StudentController {
     @ResponseBody
     @ApiOperation("加入老师的分组")
     @PostMapping("student_add_group")
-    public ResposeResult add_group(@RequestParam String student_account, @RequestParam String code, @RequestParam Integer student_id, @RequestParam Integer student_group_id, @RequestParam Integer group_number)
+    public ResposeResult add_group(@RequestParam String student_account, @RequestParam String code, @RequestParam Integer student_id, @RequestParam Integer student_group_id, @RequestParam Integer group_number, @RequestParam Integer group_id)
     {
         if(code.equals(redis_get(student_account)))
         {
             Grouping grouping = new Grouping(student_id, student_group_id);
-            return studentService.add_group(grouping, group_number);
+            return studentService.add_group(grouping, group_number, group_id);
+        }
+        else
+        {
+            return new ResposeResult(0, "为登录，请登录！");
+        }
+    }
+
+    @ResponseBody
+    @ApiOperation("退出老师的分组")
+    @PostMapping("student_exit_group")
+    public ResposeResult exit_group(@RequestParam String student_account, @RequestParam String code, @RequestParam Integer student_id, @RequestParam Integer student_group_id, @RequestParam Integer group_id)
+    {
+        if(code.equals(redis_get(student_account)))
+        {
+            return studentService.exit_group(student_id, student_group_id, group_id);
         }
         else
         {

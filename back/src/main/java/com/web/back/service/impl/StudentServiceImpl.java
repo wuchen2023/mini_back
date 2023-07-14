@@ -198,9 +198,22 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         }
     }
 
+
+    @Resource
+    GroupStateMapper groupStateMapper;
+
     @Override
-    public ResposeResult add_group(Grouping grouping, Integer group_number) {
+    public ResposeResult add_group(Grouping grouping, Integer group_number, Integer group_id) {
         try{
+            //进行加入组关联，对于一个学生，关联一个任务
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("student_id", grouping.getStudentId());
+            queryWrapper.eq("group_id", group_id);
+            GroupState groupState = groupStateMapper.selectOne(queryWrapper);
+            if(groupState != null)
+            {
+                throw new Exception();
+            }
             Grouping grouping1 = groupingMapper.get_one(grouping.getStudentId(), grouping.getStudentGroupId());
             List<Grouping> groupingList = groupingMapper.get_all(grouping.getStudentGroupId());
             //判断小组人数是否已经满了
@@ -212,13 +225,43 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
             {
                 throw new Exception();
             }
+            //分组更新
             groupingMapper.insert_one(grouping.getStudentId(), grouping.getStudentGroupId());
+            //状态更新
+            groupStateMapper.insert(new GroupState(grouping.getStudentId(), group_id));
             return new ResposeResult(1, "加入成功!");
         }catch (Exception e)
         {
             return new ResposeResult(0, "加入失败!");
         }
     }
+
+    @Override
+    public ResposeResult exit_group(Integer student_id, Integer student_group_id, Integer group_id) {
+        try{
+            //查询状态
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("student_id", student_id);
+            queryWrapper.eq("group_id", group_id);
+            GroupState groupState = groupStateMapper.selectOne(queryWrapper);
+            if(groupState == null)
+            {
+                throw new Exception();
+            }
+            Grouping grouping = groupingMapper.get_one(student_id, student_group_id);
+            if(grouping == null)
+            {
+                throw new Exception();
+            }
+            groupingMapper.delete_one(student_id, student_group_id);
+            groupStateMapper.delete(queryWrapper);
+            return new ResposeResult(1, "退出成功");
+        }catch (Exception e)
+        {
+            return new ResposeResult(0, "退出失败");
+        }
+    }
+
 
     @Override
     public ResposeResult get_qiandao_state(Integer student_id, Integer teacher_sign_in_id) {
