@@ -41,4 +41,9 @@ public class Activity implements Serializable {
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
+
+    public Activity(String activityType, Integer teacherId) {
+        this.activityType = activityType;
+        this.teacherId = teacherId;
+    }
 }
