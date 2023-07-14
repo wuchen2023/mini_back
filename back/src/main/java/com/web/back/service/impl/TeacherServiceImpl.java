@@ -13,6 +13,7 @@ import com.web.back.service.TeacherService;
 import com.web.back.utils.RsaUtil;
 import com.web.back.viewmodel.TeacherGroupResult;
 import com.web.back.viewmodel.admin.user.UserPageRequestVM;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -189,6 +190,24 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
                 throw new Exception();
             }
             return teacherClass.getClassInviteCode();
+
+        }catch (Exception e)
+        {
+            return "未查询到";
+        }
+    }
+
+    @Override
+    public String get_courseName_by_id(Integer id) {
+        try {
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("id", id);
+            TeacherClass teacherClass = teacherClassMapper.selectOne(queryWrapper);
+            if(teacherClass == null)
+            {
+                throw new Exception();
+            }
+            return teacherClass.getCourseName(); //返回查询结果中的课程名
 
         }catch (Exception e)
         {

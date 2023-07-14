@@ -6,14 +6,13 @@ import com.github.pagehelper.PageInfo;
 import com.web.back.domain.ExamPaper;
 import com.web.back.domain.Student;
 import com.web.back.domain.StudentClass;
-import com.web.back.service.QuestionService;
-import com.web.back.service.StudentClassService;
-import com.web.back.service.StudentService;
-import com.web.back.service.TextContentService;
+import com.web.back.domain.TeacherClass;
+import com.web.back.service.*;
 import com.web.back.state.RestResponse;
 import com.web.back.utils.ModelMapperSingle;
 import com.web.back.utils.PageInfoHelper;
 import com.web.back.viewmodel.admin.exam.ExamPaperEditRequestVM;
+import com.web.back.viewmodel.admin.exam.ExamPaperTitleItemVM;
 import com.web.back.viewmodel.admin.question.QuestionEditRequestVM;
 import com.web.back.viewmodel.admin.studentclass.StudentClassPageRequestVM;
 import com.web.back.viewmodel.admin.studentclass.StudentClassResponseVM;
@@ -24,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -46,14 +46,18 @@ public class BlindboxController {
 
     private StudentService studentService;
 
+    private TeacherService teacherService;
     private final StudentClassService studentClassService;
 
+    private final ExamPaperService examPaperService;
     @Autowired
-    public BlindboxController(QuestionService questionService, TextContentService textContentService, StudentService studentService, StudentClassService studentClassService) {
+    public BlindboxController(QuestionService questionService, TextContentService textContentService, StudentService studentService, StudentClassService studentClassService, ExamPaperService examPaperService, TeacherService teacherService) {
         this.questionService = questionService;
         this.textContentService = textContentService;
         this.studentService = studentService;
         this.studentClassService = studentClassService;
+        this.examPaperService = examPaperService;
+        this.teacherService = teacherService;
     }
 
     @Autowired
@@ -98,37 +102,54 @@ public class BlindboxController {
 
     /**
      * 传入老师标识码和账户验证老师登录，然后调用盲盒接口开始抽题，
-     *
-     * @param code
-     * @param teacher_account
-     * @return
      */
     @ResponseBody
     @ApiOperation("随机抽一道题")
     @PostMapping("blindbox")
-    public RestResponse<QuestionEditRequestVM> blindbox() {
+    public RestResponse<ExamPaperEditRequestVM> blindbox(@RequestParam Integer infoclasscontentid, @RequestParam String stuaccount) {
         System.out.println("查询的结果是：" + questionService.selectAllCount());
         if (questionService.selectAllCount() > 0) {
             List<Integer> questionNumbers = questionService.findAllQuestionIds();
             System.out.println("题库中已有的题目号为：" + questionNumbers);
             Integer randomQuestionNumber = getRandomQuestionNumber(questionNumbers);
             System.out.println("随机选中的题号是：" + randomQuestionNumber);
-            QuestionEditRequestVM newVM = questionService.getQuestionEditRequestVM(randomQuestionNumber);
+            QuestionEditRequestVM questionVM = questionService.getQuestionEditRequestVM(randomQuestionNumber);
             //下面把抽到的一道题目设置为一套试卷
-//            ExamPaperEditRequestVM examPaperEditRequestVM = new ExamPaperEditRequestVM();
-//            examPaperEditRequestVM.setPaperType(1);
-//            examPaperEditRequestVM.setInfoClassContentID(infoclasscontentid);
-//            ExamPaper examPaper = new ExamPaper();
-
-//                ExamPaper examPaper = examPaperService.savePaperFromVM(model, getCurrentTeacher());
-//                ExamPaperEditRequestVM newVM = examPaperService.examPaperToVM(examPaper.getId());
+            ExamPaperEditRequestVM examPaperEditRequestVM = new ExamPaperEditRequestVM();
+            examPaperEditRequestVM.setSubjectId(1); //这里学科该怎么设置成不同的呢？或者是对应的学科
+            examPaperEditRequestVM.setPaperType(1);
+            examPaperEditRequestVM.setInfoClassContentID(infoclasscontentid);
+            examPaperEditRequestVM.setStuAccount(stuaccount);
+            examPaperEditRequestVM.setName(createNewName(infoclasscontentid, stuaccount));
+            examPaperEditRequestVM.setSuggestTime(2);
+            List<ExamPaperTitleItemVM> titleItems = new ArrayList<>();
+            ExamPaperTitleItemVM item1 = new ExamPaperTitleItemVM();
+            item1.setName("题目");
+            List<QuestionEditRequestVM> questionList = new ArrayList<>();
+            questionList.add(questionVM);
+            item1.setQuestionItems(questionList);
+            titleItems.add(item1);
+            examPaperEditRequestVM.setTitleItems(titleItems);
+            Student student = studentService.get_detail_by_account(stuaccount);
+            ExamPaper examPaper = examPaperService.savePaperFromVM_stu(examPaperEditRequestVM, student);
+            ExamPaperEditRequestVM newVM = examPaperService.examPaperToVM(examPaper.getId());
             return RestResponse.ok(newVM);
-        } else {
-            return RestResponse.fail(400, "题目数量为0!!!");
         }
-
+        return null;
     }
+    public  String createNewName(Integer infoclasscontentid, String stuaccount) {
+        // 生成随机三位数
+        Random random = new Random();
+        int randomNumber = random.nextInt(900) + 100;
+        //新增一个根据课程id，查询到课程名字
+        String courseName = teacherService.get_courseName_by_id(infoclasscontentid);
 
+        // 合并字符串
+        String mergedString = "班级" + courseName + "_" + "学生" + stuaccount + "_" + randomNumber;
+
+        System.out.println("合并后的字符串：" + mergedString);
+        return mergedString;
+    }
     //按照传入的题目列表大小随机在这写数中选择一个id
 //    public static int getRandomId(int id) {
 //        Random random = new Random();

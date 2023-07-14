@@ -13,7 +13,7 @@ public class ExamPaperEditRequestVM {
     private Integer id;
 //    @NotNull
     private Integer level;
-//    @NotNull
+    @NotNull
     private Integer subjectId;
     @NotNull
     private Integer paperType;

@@ -19,6 +19,9 @@ public class ExamPaperPageVM extends BasePage {
 //    private Integer levelId;
     private Integer infoClassContentID;
 
+    //新增stuaccount
+    private String stuAccount;
+
     public Integer getPaperType(){
         return paperType;
     }
@@ -41,6 +44,14 @@ public class ExamPaperPageVM extends BasePage {
 
     public void setInfoClassContentID(Integer infoClassContentID){
         this.infoClassContentID = infoClassContentID;
+    }
+
+    public String getStuAccount(){
+        return stuAccount;
+    }
+
+    public void setStuAccount(String stuAccount){
+        this.stuAccount = stuAccount;
     }
 
 //    public Integer getLevelId() {

@@ -2,6 +2,7 @@ package com.web.back.service;
 
 import com.github.pagehelper.PageInfo;
 import com.web.back.domain.ExamPaper;
+import com.web.back.domain.Student;
 import com.web.back.domain.Teacher;
 import com.web.back.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import com.web.back.viewmodel.admin.exam.ExamPaperPageRequestVM;
@@ -20,6 +21,7 @@ public interface ExamPaperService extends BaseService<ExamPaper> {
 
     PageInfo<ExamPaper> taskExamPage(ExamPaperPageRequestVM requestVM);
     ExamPaper savePaperFromVM(ExamPaperEditRequestVM examPaperEditRequestVM,Teacher teacher);
+    ExamPaper savePaperFromVM_stu(ExamPaperEditRequestVM examPaperEditRequestVM, Student student);
 
     ExamPaperEditRequestVM examPaperToVM(Integer id); //按id进行查询的操作
 

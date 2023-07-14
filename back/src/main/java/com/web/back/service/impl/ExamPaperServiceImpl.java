@@ -2,11 +2,8 @@ package com.web.back.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.web.back.domain.ExamPaper;
-import com.web.back.domain.Question;
+import com.web.back.domain.*;
 //import com.web.back.domain.Teacher;
-import com.web.back.domain.Teacher;
-import com.web.back.domain.TextContent;
 import com.web.back.domain.enums.ExamPaperTypeEnum;
 import com.web.back.domain.exam.ExamPaperQuestionItemObject;
 import com.web.back.domain.exam.ExamPaperTitleItemObject;
@@ -94,6 +91,38 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             examPaper.setFrameTextContentId(frameTextContent.getId());
             examPaper.setCreateTime(now);
             examPaper.setCreateUser(teacher.getId());
+            examPaper.setDeleted(false);
+            examPaperFromVM(examPaperEditRequestVM, examPaper, titleItemsVM);
+            examPaperMapper.insertSelective(examPaper);
+        } else {
+            examPaper = examPaperMapper.selectByPrimaryKey(examPaperEditRequestVM.getId());
+            TextContent frameTextContent = textContentService.selectById(examPaper.getFrameTextContentId());
+            frameTextContent.setContent(frameTextContentStr);
+            textContentService.updateByIdFilter(frameTextContent);
+            modelMapper.map(examPaperEditRequestVM, examPaper);
+            examPaperFromVM(examPaperEditRequestVM, examPaper, titleItemsVM);
+            examPaperMapper.updateByPrimaryKeySelective(examPaper);
+        }
+        return examPaper;
+    }
+
+    @Override
+    @Transactional
+    public ExamPaper savePaperFromVM_stu(ExamPaperEditRequestVM examPaperEditRequestVM, Student student) {
+        ActionEnum actionEnum = (examPaperEditRequestVM.getId() == null) ? ActionEnum.ADD : ActionEnum.UPDATE;
+        Date now = new Date();
+        List<ExamPaperTitleItemVM> titleItemsVM = examPaperEditRequestVM.getTitleItems();
+        List<ExamPaperTitleItemObject> frameTextContentList = frameTextContentFromVM(titleItemsVM);
+        String frameTextContentStr = JsonUtil.toJsonStr(frameTextContentList);
+
+        ExamPaper examPaper;
+        if (actionEnum == ActionEnum.ADD) {
+            examPaper = modelMapper.map(examPaperEditRequestVM, ExamPaper.class);
+            TextContent frameTextContent = new TextContent(frameTextContentStr, now);
+            textContentService.insertByFilter(frameTextContent);
+            examPaper.setFrameTextContentId(frameTextContent.getId());
+            examPaper.setCreateTime(now);
+            examPaper.setCreateUser(student.getId());
             examPaper.setDeleted(false);
             examPaperFromVM(examPaperEditRequestVM, examPaper, titleItemsVM);
             examPaperMapper.insertSelective(examPaper);

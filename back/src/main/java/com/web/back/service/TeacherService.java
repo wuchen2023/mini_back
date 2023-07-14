@@ -71,4 +71,6 @@ public interface TeacherService extends IService<Teacher> {
 
     //定义一个删除的布尔方法
     boolean deleteById(Integer id);
+
+    public String get_courseName_by_id(Integer id);
 }

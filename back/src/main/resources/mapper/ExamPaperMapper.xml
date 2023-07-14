@@ -328,6 +328,9 @@
       <if test="infoClassContentID != null ">
         and info_class_content_id=#{infoClassContentID}
       </if>
+      <if test="stuAccount != null and stuAccount != '' ">
+        and stu_account=#{stuAccount}
+      </if>
       and paper_type=#{paperType}
     </where>
   </select>
