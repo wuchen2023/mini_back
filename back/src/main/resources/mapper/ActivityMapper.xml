@@ -9,10 +9,11 @@
             <result property="activityType" column="activity_type" jdbcType="VARCHAR"/>
             <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="course_name" column="course_name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,activity_type,teacher_id,
-        create_time
+        create_time,course_name
     </sql>
 </mapper>

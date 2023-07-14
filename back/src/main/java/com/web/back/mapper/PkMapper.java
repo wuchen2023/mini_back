@@ -2,6 +2,10 @@ package com.web.back.mapper;
 
 import com.web.back.domain.Pk;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.web.back.domain.result.PkRes;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 /**
 * @author Dell
@@ -10,6 +14,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity generator.domain.Pk
 */
 public interface PkMapper extends BaseMapper<Pk> {
+
+    List<PkRes> get_all(String course_name);
 
 }
 

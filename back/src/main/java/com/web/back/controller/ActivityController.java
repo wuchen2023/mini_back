@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-@Api("Pk的Api")
+@Api("Activity的Api")
 public class ActivityController {
 
     @Resource
@@ -25,17 +25,17 @@ public class ActivityController {
     @ResponseBody
     @ApiOperation("老师创建pk活动")
     @PostMapping("add_activity")
-    public ResposeResult add_activity(@RequestParam String activity_type, @RequestParam Integer teacher_id)
+    public ResposeResult add_activity(@RequestParam String activity_type, @RequestParam Integer teacher_id, @RequestParam String course_name)
     {
-        return activityService.add_activity(activity_type, teacher_id);
+        return activityService.add_activity(activity_type, teacher_id, course_name);
     }
 
     @ResponseBody
     @ApiOperation("根据teacher_id获取所有pk的活动")
     @PostMapping("get_all_activity")
-    public List<ActicityRes> get_all_activity(@RequestParam Integer teacher_id)
+    public List<ActicityRes> get_all_activity(@RequestParam Integer teacher_id, @RequestParam String course_name)
     {
-        return activityService.get_all_activity_by_teacher_id(teacher_id);
+        return activityService.get_all_activity_by_teacher_id(teacher_id, course_name);
     }
 
 }

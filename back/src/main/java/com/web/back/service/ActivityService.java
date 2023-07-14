@@ -14,8 +14,8 @@ import java.util.List;
 */
 public interface ActivityService extends IService<Activity> {
 
-    public ResposeResult add_activity(String activity_type, Integer teacher_id);
+    public ResposeResult add_activity(String activity_type, Integer teacher_id, String course_name);
 
-    public List<ActicityRes> get_all_activity_by_teacher_id(Integer teacher_id);
+    public List<ActicityRes> get_all_activity_by_teacher_id(Integer teacher_id, String course_name);
 
 }

@@ -2,6 +2,10 @@ package com.web.back.service;
 
 import com.web.back.domain.Pk;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.web.back.domain.result.PkRes;
+import com.web.back.state.ResposeResult;
+
+import java.util.List;
 
 /**
 * @author Dell
@@ -9,5 +13,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-05-07 13:10:00
 */
 public interface PkService extends IService<Pk> {
+
+    public ResposeResult add_pk(Integer activity_id, String course_name);
+
+    public ResposeResult close_pk(Integer activity_id, String course_name);
+
+    public List<PkRes> get_all_pk(String course_name);
 
 }

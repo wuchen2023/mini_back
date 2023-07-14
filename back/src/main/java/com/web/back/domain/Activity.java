@@ -39,11 +39,14 @@ public class Activity implements Serializable {
      */
     private Date createTime;
 
+    private String course_name;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    public Activity(String activityType, Integer teacherId) {
+    public Activity(String activityType, Integer teacherId, String course_name) {
         this.activityType = activityType;
         this.teacherId = teacherId;
+        this.course_name = course_name;
     }
 }

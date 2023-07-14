@@ -25,11 +25,12 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity>
     ActivityMapper activityMapper;
 
     @Override
-    public ResposeResult add_activity(String activity_type, Integer teacher_id) {
+    public ResposeResult add_activity(String activity_type, Integer teacher_id, String course_name) {
         try{
             QueryWrapper queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("activity_type", activity_type);
             queryWrapper.eq("teacher_id", teacher_id);
+            queryWrapper.eq("course_name", course_name);
 
             Activity activity = activityMapper.selectOne(queryWrapper);
             if(activity != null)
@@ -37,7 +38,7 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity>
                 throw new Exception();
             }
 
-            Activity activity1 = new Activity(activity_type, teacher_id);
+            Activity activity1 = new Activity(activity_type, teacher_id, course_name);
             activityMapper.insert(activity1);
             return new ResposeResult(1, "创建pk任务成功");
         }catch (Exception e)
@@ -47,8 +48,8 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity>
     }
 
     @Override
-    public List<ActicityRes> get_all_activity_by_teacher_id(Integer teacher_id) {
-        return activityMapper.get_all_activity(teacher_id);
+    public List<ActicityRes> get_all_activity_by_teacher_id(Integer teacher_id, String course_name) {
+        return activityMapper.get_all_activity(teacher_id, course_name);
     }
 }
 
