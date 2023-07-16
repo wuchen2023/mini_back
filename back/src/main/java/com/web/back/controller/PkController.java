@@ -1,12 +1,17 @@
 package com.web.back.controller;
 
 
+import com.web.back.domain.ExamPaper;
 import com.web.back.domain.Pk;
 import com.web.back.domain.result.PkRes;
 import com.web.back.domain.result.PkWinnerRes;
+import com.web.back.service.ExamPaperService;
 import com.web.back.service.PkService;
 import com.web.back.service.PkWinerService;
+import com.web.back.service.QuestionService;
 import com.web.back.state.ResposeResult;
+import com.web.back.state.RestResponse;
+import com.web.back.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.core.parameters.P;
@@ -25,12 +30,29 @@ public class PkController {
     @Resource
     PkService pkService;
 
+    @Resource
+    ExamPaperService examPaperService;
+//
+//    @ResponseBody
+//    @ApiOperation("创建相关activity的pk")
+//    @PostMapping("add_pk")
+//    public ResposeResult add_pk(@RequestParam Integer activity_id, @RequestParam String course_name)
+//    {
+//        return pkService.add_pk(activity_id, course_name);
+//
+//    }
+
     @ResponseBody
     @ApiOperation("创建相关activity的pk")
     @PostMapping("add_pk")
-    public ResposeResult add_pk(@RequestParam Integer activity_id, @RequestParam String course_name)
+    public RestResponse<ExamPaperEditRequestVM> add_pk(@RequestParam Integer activity_id, @RequestParam String course_name)
     {
-        return pkService.add_pk(activity_id, course_name);
+//        return pkService.add_pk(activity_id, course_name);
+        ExamPaper examPaper = pkService.add_pk(activity_id, course_name);
+        ExamPaperEditRequestVM newVM = examPaperService.examPaperToVM(examPaper.getId());
+        return RestResponse.ok(newVM);
+
+
     }
 
     @ResponseBody

@@ -120,8 +120,10 @@ public class BlindboxController {
             examPaperEditRequestVM.setPaperType(1);
             examPaperEditRequestVM.setCourseName(coursename);
             examPaperEditRequestVM.setStuAccount(stuaccount);
+            //还没有校验学生在不在班级，班级有没有存在
             examPaperEditRequestVM.setName(createNewName(coursename, stuaccount));
             examPaperEditRequestVM.setSuggestTime(2);
+
             List<ExamPaperTitleItemVM> titleItems = new ArrayList<>();
             ExamPaperTitleItemVM item1 = new ExamPaperTitleItemVM();
             item1.setName("题目");
