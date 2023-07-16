@@ -55,16 +55,32 @@ public class PkController {
 
     }
 
+//    @ResponseBody
+//    @ApiOperation("关闭一个activity的pk")
+//    @PostMapping("close_pk")
+//    public ResposeResult close_pk(@RequestParam Integer activity_id, @RequestParam String course_name, @RequestParam Integer exam_paper_id)
+//    {
+//        ExamPaper examPaper = examPaperService.selectById(exam_paper_id);
+//        examPaper.setDeleted(true);
+//        examPaperService.updateByIdFilter(examPaper);
+//        return pkService.close_pk(activity_id, course_name);
+//    }
+
     @ResponseBody
     @ApiOperation("关闭一个activity的pk")
     @PostMapping("close_pk")
-    public ResposeResult close_pk(@RequestParam Integer activity_id, @RequestParam String course_name, @RequestParam Integer exam_paper_id)
+    public ResposeResult close_pk(@RequestParam Integer activity_id, @RequestParam String course_name, @RequestParam("items") List<String> items)
     {
-        ExamPaper examPaper = examPaperService.selectById(exam_paper_id);
-        examPaper.setDeleted(true);
-        examPaperService.updateByIdFilter(examPaper);
+        System.out.println("传入的试卷id为："+items);
+        ExamPaper examPaper1 = examPaperService.selectById(Integer.valueOf(items.get(0)));
+        examPaper1.setDeleted(true);
+        examPaperService.updateByIdFilter(examPaper1);
+        ExamPaper examPaper2 = examPaperService.selectById(Integer.valueOf(items.get(1)));
+        examPaper2.setDeleted(true);
+        examPaperService.updateByIdFilter(examPaper2);
         return pkService.close_pk(activity_id, course_name);
     }
+
 
     @ResponseBody
     @ApiOperation("获取一个pk的结束状态")
