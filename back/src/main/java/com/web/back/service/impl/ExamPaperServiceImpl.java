@@ -124,6 +124,41 @@ public class ExamPaperServiceImpl extends BaseServiceImpl<ExamPaper> implements 
             examPaper.setCreateTime(now);
             examPaper.setCreateUser(student.getId());
             examPaper.setDeleted(false);
+            examPaper.setIs_blindbox(1); //盲盒调用该接口的话就设置盲盒为1
+            examPaperFromVM(examPaperEditRequestVM, examPaper, titleItemsVM);
+            examPaperMapper.insertSelective(examPaper);
+        } else {
+            examPaper = examPaperMapper.selectByPrimaryKey(examPaperEditRequestVM.getId());
+            TextContent frameTextContent = textContentService.selectById(examPaper.getFrameTextContentId());
+            frameTextContent.setContent(frameTextContentStr);
+            textContentService.updateByIdFilter(frameTextContent);
+            modelMapper.map(examPaperEditRequestVM, examPaper);
+            examPaperFromVM(examPaperEditRequestVM, examPaper, titleItemsVM);
+            examPaperMapper.updateByPrimaryKeySelective(examPaper);
+        }
+        return examPaper;
+    }
+
+
+    @Override
+    @Transactional
+    public ExamPaper savePaperFromVM_pk(ExamPaperEditRequestVM examPaperEditRequestVM, Student student) {
+        ActionEnum actionEnum = (examPaperEditRequestVM.getId() == null) ? ActionEnum.ADD : ActionEnum.UPDATE;
+        Date now = new Date();
+        List<ExamPaperTitleItemVM> titleItemsVM = examPaperEditRequestVM.getTitleItems();
+        List<ExamPaperTitleItemObject> frameTextContentList = frameTextContentFromVM(titleItemsVM);
+        String frameTextContentStr = JsonUtil.toJsonStr(frameTextContentList);
+
+        ExamPaper examPaper;
+        if (actionEnum == ActionEnum.ADD) {
+            examPaper = modelMapper.map(examPaperEditRequestVM, ExamPaper.class);
+            TextContent frameTextContent = new TextContent(frameTextContentStr, now);
+            textContentService.insertByFilter(frameTextContent);
+            examPaper.setFrameTextContentId(frameTextContent.getId());
+            examPaper.setCreateTime(now);
+            examPaper.setCreateUser(student.getId());
+            examPaper.setDeleted(false);
+            examPaper.setIs_pk(1);//pk调用接口设置为pk为1
             examPaperFromVM(examPaperEditRequestVM, examPaper, titleItemsVM);
             examPaperMapper.insertSelective(examPaper);
         } else {

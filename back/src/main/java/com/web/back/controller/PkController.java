@@ -45,21 +45,24 @@ public class PkController {
     @ResponseBody
     @ApiOperation("创建相关activity的pk")
     @PostMapping("add_pk")
-    public RestResponse<ExamPaperEditRequestVM> add_pk(@RequestParam Integer activity_id, @RequestParam String course_name)
+    public ResposeResult add_pk(@RequestParam Integer activity_id, @RequestParam String course_name)
     {
 //        return pkService.add_pk(activity_id, course_name);
-        ExamPaper examPaper = pkService.add_pk(activity_id, course_name);
-        ExamPaperEditRequestVM newVM = examPaperService.examPaperToVM(examPaper.getId());
-        return RestResponse.ok(newVM);
-
+//        ExamPaper examPaper = pkService.add_pk(activity_id, course_name);
+//        ExamPaperEditRequestVM newVM = examPaperService.examPaperToVM(examPaper.getId());
+//        return RestResponse.ok(newVM);
+        return pkService.add_pk(activity_id, course_name);
 
     }
 
     @ResponseBody
     @ApiOperation("关闭一个activity的pk")
     @PostMapping("close_pk")
-    public ResposeResult close_pk(@RequestParam Integer activity_id, @RequestParam String course_name)
+    public ResposeResult close_pk(@RequestParam Integer activity_id, @RequestParam String course_name, @RequestParam Integer exam_paper_id)
     {
+        ExamPaper examPaper = examPaperService.selectById(exam_paper_id);
+        examPaper.setDeleted(true);
+        examPaperService.updateByIdFilter(examPaper);
         return pkService.close_pk(activity_id, course_name);
     }
 

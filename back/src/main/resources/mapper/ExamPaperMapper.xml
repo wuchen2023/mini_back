@@ -9,6 +9,8 @@
     <result column="grade_level" jdbcType="INTEGER" property="gradeLevel" />
     <result column="course_name" jdbcType="VARCHAR" property="courseName" />
     <result column="stu_account" jdbcType="VARCHAR" property="stuAccount" />
+    <result column="is_blindbox" jdbcType="INTEGER" property="is_blindbox" />
+    <result column="is_pk" jdbcType="INTEGER" property="is_pk" />
     <result column="score" jdbcType="INTEGER" property="score" />
     <result column="question_count" jdbcType="INTEGER" property="questionCount" />
     <result column="suggest_time" jdbcType="INTEGER" property="suggestTime" />
@@ -23,7 +25,7 @@
   <sql id="Base_Column_List">
     id, name, subject_id, paper_type, grade_level, score, question_count, suggest_time,
     limit_start_time, limit_end_time, frame_text_content_id, create_user, create_time,
-    deleted, task_exam_id, course_name, stu_account
+    deleted, task_exam_id, course_name, stu_account, is_blindbox, is_pk
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
@@ -40,13 +42,13 @@
       paper_type, grade_level, score,
       question_count, suggest_time, limit_start_time,
       limit_end_time, frame_text_content_id, create_user,
-      create_time, deleted, task_exam_id, course_name,stu_account
+      create_time, deleted, task_exam_id
       )
     values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{subjectId,jdbcType=INTEGER},
       #{paperType,jdbcType=INTEGER}, #{gradeLevel,jdbcType=INTEGER}, #{score,jdbcType=INTEGER},
       #{questionCount,jdbcType=INTEGER}, #{suggestTime,jdbcType=INTEGER}, #{limitStartTime,jdbcType=TIMESTAMP},
       #{limitEndTime,jdbcType=TIMESTAMP}, #{frameTextContentId,jdbcType=INTEGER}, #{createUser,jdbcType=INTEGER},
-      #{createTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, #{taskExamId,jdbcType=INTEGER},#{courseName, jdbcType=VARCHAR}, #{stuAccount, jdbcType=VARCHAR}
+      #{createTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}, #{taskExamId,jdbcType=INTEGER}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.web.back.domain.ExamPaper" useGeneratedKeys="true" keyProperty="id">
@@ -72,6 +74,12 @@
       </if>
       <if test="stuAccount != null">
         stu_account,
+      </if>
+      <if test="is_blindbox !=null">
+        is_blindbox,
+      </if>
+      <if test="is_pk !=null">
+        is_pk,
       </if>
       <if test="score != null">
         score,
@@ -126,6 +134,12 @@
       <if test="stuAccount != null">
         #{stuAccount,jdbcType=VARCHAR},
       </if>
+      <if test="is_blindbox != null">
+        #{is_blindbox, jdbcType=INTEGER},
+      </if>
+      <if test="is_pk != null">
+        #{is_pk, jdbcType=INTEGER},
+      </if>
       <if test="score != null">
         #{score,jdbcType=INTEGER},
       </if>
@@ -178,6 +192,12 @@
       </if>
       <if test="stuAccount != null">
         stu_account = #{stuAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="is_blindbox != null">
+        is_blindbox = #{is_blindbox, jdbcType=INTEGER},
+      </if>
+      <if test="is_pk != null">
+       is_pk = #{is_pk, jdbcType=INTEGER},
       </if>
       <if test="score != null">
         score = #{score,jdbcType=INTEGER},
@@ -331,6 +351,12 @@
       <if test="stuAccount != null and stuAccount != '' ">
         and stu_account=#{stuAccount}
       </if>
+    <if test="is_blindbox !=null">
+      and is_blindbox=#{is_blindbox}
+    </if>
+    <if test="is_pk !=null">
+      and is_pk=#{is_pk}
+    </if>
       and paper_type=#{paperType}
     </where>
   </select>

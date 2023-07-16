@@ -32,6 +32,10 @@ public class ExamPaper implements Serializable {
      * 一套试卷肯能存在多个班级中
      */
     private String courseName;
+
+    private Integer is_blindbox;
+
+    private Integer is_pk;
     /**
      * 学生账号
      * 用于盲盒查询当前学生账号下的试卷
@@ -215,6 +219,22 @@ public class ExamPaper implements Serializable {
 
     public void setStuAccount(String stuAccount){
         this.stuAccount = stuAccount;
+    }
+
+    public Integer getIs_blindbox(){
+        return is_blindbox;
+    }
+
+    public void setIs_blindbox(Integer is_blindbox){
+        this.is_blindbox = is_blindbox;
+    }
+
+    public Integer getIs_pk(){
+        return  is_pk;
+    }
+
+    public void setIs_pk(Integer is_pk){
+        this.is_pk = is_pk;
     }
 
 }

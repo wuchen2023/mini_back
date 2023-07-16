@@ -55,7 +55,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk>
     @Resource
     ExamPaperService examPaperService;
     @Override
-    public ExamPaper add_pk(Integer activity_id, String course_name) {
+    public ResposeResult add_pk(Integer activity_id, String course_name) {
         try{
             QueryWrapper queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("activity_id", activity_id);
@@ -135,10 +135,14 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk>
                 examPaperEditRequestVM2.setTitleItems(titleItems);
                 Student student1 = studentService.get_detail_by_account(stu1_account);
                 Student student2 = studentService.get_detail_by_account(stu2_account);
-                ExamPaper examPaper1 = examPaperService.savePaperFromVM_stu(examPaperEditRequestVM1, student1);
-                ExamPaper examPaper2 = examPaperService.savePaperFromVM_stu(examPaperEditRequestVM2, student2);
+                ExamPaper examPaper1 = examPaperService.savePaperFromVM_pk(examPaperEditRequestVM1, student1);
+                ExamPaper examPaper2 = examPaperService.savePaperFromVM_pk(examPaperEditRequestVM2, student2);
                 System.out.println("创建examPaper1成功,"+examPaper1.getStuAccount());
-                return examPaper1;
+                System.out.println("创建examPaper2成功,"+examPaper2.getStuAccount());
+                List<Integer> numbers = new ArrayList<>();
+                numbers.add(examPaper1.getId());
+                numbers.add(examPaper2.getId());
+                return new ResposeResult(1, "创建成功，试卷id分别为"+numbers);
 
 
             }
@@ -147,8 +151,8 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk>
 //            return new ResposeResult(1, "创建Pk成功");
         }catch (Exception e)
         {
-//            return new ResposeResult(0, "创建Pk失败");
-            return null;
+            return new ResposeResult(0, "创建Pk失败");
+//            return null;
         }
     }
 

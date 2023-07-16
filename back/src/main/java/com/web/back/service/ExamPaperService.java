@@ -23,6 +23,7 @@ public interface ExamPaperService extends BaseService<ExamPaper> {
     ExamPaper savePaperFromVM(ExamPaperEditRequestVM examPaperEditRequestVM,Teacher teacher);
     ExamPaper savePaperFromVM_stu(ExamPaperEditRequestVM examPaperEditRequestVM, Student student);
 
+    ExamPaper savePaperFromVM_pk(ExamPaperEditRequestVM examPaperEditRequestVM, Student student);
     ExamPaperEditRequestVM examPaperToVM(Integer id); //按id进行查询的操作
 
 

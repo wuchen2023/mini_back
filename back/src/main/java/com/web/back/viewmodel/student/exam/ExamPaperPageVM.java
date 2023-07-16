@@ -17,10 +17,13 @@ public class ExamPaperPageVM extends BasePage {
     private Integer subjectId;
 
 //    private Integer levelId;
-    private Integer infoClassContentID;
-
+//    private Integer infoClassContentID;
+    private String courseName;
     //新增stuaccount
     private String stuAccount;
+
+    private Integer is_blindbox;
+    private Integer is_pk;
 
     public Integer getPaperType(){
         return paperType;
@@ -38,12 +41,13 @@ public class ExamPaperPageVM extends BasePage {
         this.subjectId = subjectId;
     }
 
-    public Integer getInfoClassContentID(){
-        return infoClassContentID;
+
+    public String getCourseName(){
+        return courseName;
     }
 
-    public void setInfoClassContentID(Integer infoClassContentID){
-        this.infoClassContentID = infoClassContentID;
+    public void setCourseName(String courseName){
+        this.courseName = courseName;
     }
 
     public String getStuAccount(){
@@ -54,11 +58,20 @@ public class ExamPaperPageVM extends BasePage {
         this.stuAccount = stuAccount;
     }
 
-//    public Integer getLevelId() {
-//        return levelId;
-//    }
+    public Integer getIs_blindbox(){
+        return is_blindbox;
+    }
 
-//    public void setLevelId(Integer levelId) {
-//        this.levelId = levelId;
-//    }
+    public void setIs_blindbox(Integer is_blindbox){
+        this.is_blindbox = is_blindbox;
+    }
+
+    public Integer getIs_pk(){
+        return  is_pk;
+    }
+
+    public void setIs_pk(Integer is_pk){
+        this.is_pk = is_pk;
+    }
+
 }
