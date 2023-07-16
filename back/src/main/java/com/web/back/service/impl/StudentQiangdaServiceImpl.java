@@ -49,6 +49,10 @@ public class StudentQiangdaServiceImpl extends ServiceImpl<StudentQiangdaMapper,
             {
                 throw new Exception();
             }
+            //关闭抢答
+            qiangda.setIsFinished(1);
+            qiangdaMapper.update(qiangda, queryWrapper);
+            //更新抢答
             studentQiangdaMapper.insert(studentQiangda);
             return new ResposeResult(1, "抢答成功");
         }catch (Exception e)
