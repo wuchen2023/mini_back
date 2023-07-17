@@ -15,7 +15,7 @@ import java.util.List;
 */
 public interface PkService extends IService<Pk> {
 
-    public ResposeResult add_pk(Integer activity_id, String course_name);
+    public List<Integer> add_pk(Integer activity_id, String course_name);
 //    public ExamPaper add_pk(Integer activity_id, String course_name);
 
     public ResposeResult close_pk(Integer activity_id, String course_name);

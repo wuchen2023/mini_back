@@ -55,7 +55,7 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk>
     @Resource
     ExamPaperService examPaperService;
     @Override
-    public ResposeResult add_pk(Integer activity_id, String course_name) {
+    public List<Integer> add_pk(Integer activity_id, String course_name) {
         try{
             QueryWrapper queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("activity_id", activity_id);
@@ -142,7 +142,8 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk>
                 List<Integer> numbers = new ArrayList<>();
                 numbers.add(examPaper1.getId());
                 numbers.add(examPaper2.getId());
-                return new ResposeResult(1, "创建成功，试卷id分别为"+numbers);
+                return numbers;
+//                return new ResposeResult(1, "创建成功，试卷id分别为"+numbers);
 
 
             }
@@ -151,7 +152,8 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk>
 //            return new ResposeResult(1, "创建Pk成功");
         }catch (Exception e)
         {
-            return new ResposeResult(0, "创建Pk失败");
+            return null;
+//            return new ResposeResult(0, "创建Pk失败");
 //            return null;
         }
     }

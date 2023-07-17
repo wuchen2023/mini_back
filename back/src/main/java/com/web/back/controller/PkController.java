@@ -45,7 +45,7 @@ public class PkController {
     @ResponseBody
     @ApiOperation("创建相关activity的pk")
     @PostMapping("add_pk")
-    public ResposeResult add_pk(@RequestParam Integer activity_id, @RequestParam String course_name)
+    public List<Integer> add_pk(@RequestParam Integer activity_id, @RequestParam String course_name)
     {
 //        return pkService.add_pk(activity_id, course_name);
 //        ExamPaper examPaper = pkService.add_pk(activity_id, course_name);
