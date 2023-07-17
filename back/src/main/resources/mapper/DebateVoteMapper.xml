@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.back.mapper.DebateVoteMapper">
+
+    <resultMap id="BaseResultMap" type="com.web.back.domain.DebateVote">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="debate_id" column="debate_id" jdbcType="INTEGER"/>
+            <result property="stu_group_id" column="stu_group_id" jdbcType="INTEGER"/>
+            <result property="tickets" column="tickets" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,debate_id,stu_group_id,tickets
+    </sql>
+
+    <select id="findInfo" resultMap="BaseResultMap">
+      SELECT * FROM debate_vote WHERE debate_id = #{debate_id, jdbcType=INTEGER}
+    </select>
+
+</mapper>

@@ -13,4 +13,8 @@
     <sql id="Base_Column_List">
         id,group_name,teacher_group_id
     </sql>
+
+     <select id="findAllStuGroupIds" resultType="java.lang.Integer">
+    SELECT id FROM student_group WHERE teacher_group_id=#{teacherGroupId,jdbcType=INTEGER}
+  </select>
 </mapper>

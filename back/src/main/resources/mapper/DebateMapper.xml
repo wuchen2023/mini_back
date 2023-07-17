@@ -8,12 +8,22 @@
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="activityId" column="activity_id" jdbcType="INTEGER"/>
             <result property="debateTopic" column="debate_topic" jdbcType="VARCHAR"/>
-            <result property="debateSize" column="debate_size" jdbcType="INTEGER"/>
             <result property="isFinished" column="is_finished" jdbcType="TINYINT"/>
+            <result property="positive_side_student_group_id" column="positive_side_student_group_id" jdbcType="INTEGER"/>
+            <result property="negative_side_student_group_id" column="negative_side_student_group_id" jdbcType="INTEGER"/>
+            <result property="course_name" column="course_name" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,activity_id,debate_topic,
-        debate_size,is_finished
+        is_finished,positive_side_student_group_id,negative_side_student_group_id,course_name
     </sql>
+
+    <select id="select_by_coursename" resultMap="BaseResultMap">
+        SELECT * FROM debate WHERE course_name=#{course_name,jdbcType=VARCHAR}
+    </select>
+
+
+
+
 </mapper>

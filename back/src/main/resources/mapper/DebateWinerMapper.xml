@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.back.mapper.DebateWinerMapper">
+
+    <resultMap id="BaseResultMap" type="com.web.back.domain.DebateWiner">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="student_group_id" column="student_group_id" jdbcType="INTEGER"/>
+            <result property="activityId" column="activity_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id = "map1" type="com.web.back.domain.result.DebateWinnerRes">
+        <result property="group_name" column="group_name" jdbcType="VARCHAR"/>
+        <result property="activity_type" column="activity_type" jdbcType="VARCHAR"/>
+        <result property="activity_id" column="activity_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,student_group_id,activity_id
+    </sql>
+
+
+       <select id="get_winner" resultMap="map1">
+        select sg.group_name as group_name, debate_winer.activity_id as activity_id, activity.activity_type as activity_type From debate_winer, student_group as sg, activity where debate_winer.activity_id = #{activity_id} and sg.id = #{winner_stu_group_id} and activity.id = #{activity_id};
+    </select>
+</mapper>

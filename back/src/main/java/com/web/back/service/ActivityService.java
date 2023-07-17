@@ -4,6 +4,8 @@ import com.web.back.domain.Activity;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.web.back.domain.result.ActicityRes;
 import com.web.back.state.ResposeResult;
+import com.web.back.state.RestResponse;
+import com.web.back.viewmodel.admin.activity.ActivityRespVM;
 
 import java.util.List;
 
@@ -14,8 +16,9 @@ import java.util.List;
 */
 public interface ActivityService extends IService<Activity> {
 
-    public ResposeResult add_activity(String activity_type, Integer teacher_id, String course_name);
-
+    public ResposeResult add_activity_pk(String activity_type, Integer teacher_id, String course_name);
+//    public RestResponse add_activity_debate(Integer teacher_id, String course_name);
+    ActivityRespVM add_activity_debate(Integer teacher_id, String course_name);
     public List<ActicityRes> get_all_activity_by_teacher_id(Integer teacher_id, String course_name);
 
 }

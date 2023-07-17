@@ -2,7 +2,10 @@ package com.web.back.mapper;
 
 import com.web.back.domain.StudentGroup;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
 * @author Dell
@@ -13,6 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface StudentGroupMapper extends BaseMapper<StudentGroup> {
 
+    List<Integer> findAllStuGroupIds(Integer teacherGroupId);
 }
 
 

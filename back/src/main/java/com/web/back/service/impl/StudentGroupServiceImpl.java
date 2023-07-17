@@ -6,6 +6,9 @@ import com.web.back.domain.StudentGroup;
 import com.web.back.mapper.StudentGroupMapper;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.util.List;
+
 /**
 * @author Dell
 * @description 针对表【student_group】的数据库操作Service实现
@@ -14,7 +17,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentGroupServiceImpl extends ServiceImpl<StudentGroupMapper, StudentGroup>
     implements StudentGroupService {
+    @Resource
+    StudentGroupMapper studentGroupMapper;
+    @Override
+    public List<Integer> findAllStuGroupIds(Integer teacherGroupId){
+        return studentGroupMapper.findAllStuGroupIds(teacherGroupId);
 
+    }
 }
 
 

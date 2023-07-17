@@ -3,6 +3,8 @@ package com.web.back.service;
 import com.web.back.domain.StudentGroup;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
 * @author Dell
 * @description 针对表【student_group】的数据库操作Service
@@ -10,4 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface StudentGroupService extends IService<StudentGroup> {
 
+    public List<Integer> findAllStuGroupIds(Integer teacherGroupId);
 }
