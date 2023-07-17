@@ -47,9 +47,34 @@ public class QuestionController {
     private RedisTemplate<String, Object> redisTemplate;
 
     protected final static ModelMapper modelMapper = ModelMapperSingle.Instance();
+//    @ApiOperation("可传入questionType分别查询单选、多选等题目")
+//    @RequestMapping(value = "/page1", method = RequestMethod.POST)
+//    public RestResponse<PageInfo<QuestionResponseVM>> pageList1(@RequestBody QuestionPageRequestVM model) {
+//        PageInfo<Question> pageInfo = questionService.page(model);
+//        PageInfo<QuestionResponseVM> page = PageInfoHelper.copyMap(pageInfo, q -> {
+//            QuestionResponseVM vm = modelMapper.map(q, QuestionResponseVM.class);
+//            vm.setCreateTime(DateTimeUtil.dateFormat(q.getCreateTime()));
+//            vm.setScore(ExamUtil.scoreToVM(q.getScore()));
+//            TextContent textContent = textContentService.selectById(q.getInfoTextContentId());
+//            QuestionObject questionObject = JsonUtil.toJsonObject(textContent.getContent(), QuestionObject.class);
+//            String clearHtml = HtmlUtil.clear(questionObject.getTitleContent());
+//            vm.setShortTitle(clearHtml);
+//            return vm;
+//        });
+//        return RestResponse.ok(page);
+//    }
+
     @ApiOperation("可传入questionType分别查询单选、多选等题目")
     @RequestMapping(value = "/page", method = RequestMethod.POST)
-    public RestResponse<PageInfo<QuestionResponseVM>> pageList(@RequestBody QuestionPageRequestVM model) {
+    public RestResponse<PageInfo<QuestionResponseVM>> pageList(@RequestParam(required = false) Integer id, @RequestParam(required = false) Integer level, @RequestParam(required = false) Integer subjectId, @RequestParam(required = false) Integer questionType, @RequestParam Integer pageIndex, @RequestParam Integer pageSize) {
+        QuestionPageRequestVM model = new QuestionPageRequestVM();
+        model.setId(id);
+        model.setLevel(level);
+        model.setSubjectId(subjectId);
+        model.setQuestionType(questionType);
+        model.setPageIndex(pageIndex);
+        model.setPageSize(pageSize);
+
         PageInfo<Question> pageInfo = questionService.page(model);
         PageInfo<QuestionResponseVM> page = PageInfoHelper.copyMap(pageInfo, q -> {
             QuestionResponseVM vm = modelMapper.map(q, QuestionResponseVM.class);
@@ -63,7 +88,6 @@ public class QuestionController {
         });
         return RestResponse.ok(page);
     }
-
     /**
      * 获取学生的名字
      * @return
@@ -78,22 +102,22 @@ public class QuestionController {
     public String redis_get(String key) {
         return (String) redisTemplate.opsForValue().get(key);
     }
-    @ApiOperation("增加问题")
-    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-    public RestResponse edit(@RequestBody @Valid QuestionEditRequestVM model) {
-        RestResponse validQuestionEditRequestResult = validQuestionEditRequestVM(model);
-        if (validQuestionEditRequestResult.getCode() != SystemCode.OK.getCode()) {
-            return validQuestionEditRequestResult;
-        }
-
-        if (null == model.getId()) {
-            questionService.insertFullQuestion(model, getName().getId());
-        } else {
-            questionService.updateFullQuestion(model);
-        }
-
-        return RestResponse.ok();
-    }
+//    @ApiOperation("后端平台使用接口-增加问题")
+//    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+//    public RestResponse edit(@RequestBody @Valid QuestionEditRequestVM model) {
+//        RestResponse validQuestionEditRequestResult = validQuestionEditRequestVM(model);
+//        if (validQuestionEditRequestResult.getCode() != SystemCode.OK.getCode()) {
+//            return validQuestionEditRequestResult;
+//        }
+//
+//        if (null == model.getId()) {
+//            questionService.insertFullQuestion(model, getName().getId());
+//        } else {
+//            questionService.updateFullQuestion(model);
+//        }
+//
+//        return RestResponse.ok();
+//    }
 
     @ApiOperation("查询问题")
     @RequestMapping(value = "/select/{id}", method = RequestMethod.POST)
