@@ -5,6 +5,7 @@ import com.web.back.domain.*;
 import com.web.back.domain.enums.QuestionTypeEnum;
 import com.web.back.event.CalculateExamPaperAnswerCompleteEvent;
 import com.web.back.service.*;
+import com.web.back.state.ResposeResult;
 import com.web.back.state.RestResponse;
 import com.web.back.utils.DateTimeUtil;
 import com.web.back.utils.ExamUtil;
@@ -52,14 +53,17 @@ public class ExamPaperAnswerController {
     private final TeacherService teacherService;
 
     private final StudentService studentService;
+
+    private final BlindBoxService blindBoxService;
     @Autowired
-    public ExamPaperAnswerController(ExamPaperAnswerService examPaperAnswerService, SubjectService subjectService, ApplicationEventPublisher eventPublisher, ExamPaperService examPaperService, TeacherService teacherService, StudentService studentService) {
+    public ExamPaperAnswerController(ExamPaperAnswerService examPaperAnswerService, SubjectService subjectService, ApplicationEventPublisher eventPublisher, ExamPaperService examPaperService, TeacherService teacherService, StudentService studentService, BlindBoxService blindBoxService) {
         this.examPaperAnswerService = examPaperAnswerService;
         this.subjectService = subjectService;
         this.eventPublisher = eventPublisher;
         this.examPaperService = examPaperService;
         this.teacherService = teacherService;
         this.studentService = studentService;
+        this.blindBoxService = blindBoxService;
     }
 
     /**
@@ -195,6 +199,20 @@ public class ExamPaperAnswerController {
         vm.setPaper(paper);
         vm.setAnswer(answer);
         return RestResponse.ok(vm);
+    }
+
+
+    @PostMapping("/blindbox_answerSubmit")
+    @ApiOperation("盲盒-学生答题提交")
+    public ResposeResult blindbox_answerSubmit(@RequestParam String stu_account,@RequestParam Integer exam_paper_id, @RequestParam Integer is_right, @RequestParam String true_answer){
+        return blindBoxService.blindbox_answerSubmit(stu_account,exam_paper_id,is_right,true_answer);
+    }
+
+    @PostMapping("/blindbox_view")
+    @ApiOperation("盲盒-老师查看此次盲盒答题状态")
+    public List<BlindBox>  blindbox_view(@RequestParam String stu_account, @RequestParam Integer exam_paper_id){
+
+        return blindBoxService.blindbox_view(stu_account, exam_paper_id);
     }
 
 }

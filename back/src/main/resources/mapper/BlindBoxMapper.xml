@@ -6,13 +6,18 @@
 
     <resultMap id="BaseResultMap" type="com.web.back.domain.BlindBox">
             <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="topicType" column="topic_type" jdbcType="VARCHAR"/>
-            <result property="quantity" column="quantity" jdbcType="INTEGER"/>
-            <result property="extractTime" column="extract_time" jdbcType="TIMESTAMP"/>
+            <result property="stu_account" column="stu_account" jdbcType="VARCHAR"/>
+            <result property="exam_paper_id" column="exam_paper_id" jdbcType="INTEGER"/>
+            <result property="is_right" column="is_right" jdbcType="INTEGER"/>
+            <result property="true_answer" column="true_answer" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,topic_type,quantity,
-        extract_time
+        id,stu_account,exam_paper_id,is_right,
+        true_answer
     </sql>
+
+    <select id="findInfo" resultMap="BaseResultMap">
+        SELECT * FROM blind_box WHERE stu_account = #{stu_account, jdbcType=VARCHAR} and exam_paper_id = #{exam_paper_id, jdbcType=INTEGER}
+    </select>
 </mapper>

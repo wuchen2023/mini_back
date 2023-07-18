@@ -2,6 +2,10 @@ package com.web.back.service;
 
 import com.web.back.domain.BlindBox;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.web.back.state.ResposeResult;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
 * @author Dell
@@ -10,4 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface BlindBoxService extends IService<BlindBox> {
 
+    public ResposeResult blindbox_answerSubmit(String stu_account, Integer exam_paper_id,  Integer is_right,  String true_answer);
+
+    public List<BlindBox> blindbox_view(String stu_account, Integer exam_paper_id);
 }
