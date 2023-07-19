@@ -215,15 +215,27 @@
 
 
 
+<!--  <select id="studentPage" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.student.exampaper.ExamPaperAnswerPageVM">-->
+<!--    SELECT-->
+<!--    <include refid="Base_Column_List"/>-->
+<!--    FROM exam_paper_answer-->
+<!--    <where>-->
+<!--        and create_user = #{createUser}-->
+<!--     <if test="subjectId != null">-->
+<!--         and subject_id = #{subjectId}-->
+<!--     </if>-->
+<!--    </where>-->
+<!--  </select>-->
+
   <select id="studentPage" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.student.exampaper.ExamPaperAnswerPageVM">
     SELECT
     <include refid="Base_Column_List"/>
     FROM exam_paper_answer
     <where>
-        and create_user = #{createUser}
-     <if test="subjectId != null">
-         and subject_id = #{subjectId}
-     </if>
+      and create_user = #{createUser}
+      <if test="examPaperId != null">
+        and exam_paper_id = #{examPaperId}
+      </if>
     </where>
   </select>
 

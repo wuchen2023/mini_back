@@ -21,6 +21,9 @@
         <result property="course_name" column="course_name" jdbcType="VARCHAR"/>
         <result property="student_1_name" column="student_1_name" jdbcType="VARCHAR"/>
         <result property="student_2_name" column="student_2_name" jdbcType="VARCHAR"/>
+        <result property="stu_item1" column="stu_item1" jdbcType="INTEGER"/>
+        <result property="stu_item2" column="stu_item2" jdbcType="INTEGER"/>
+
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -29,6 +32,6 @@
     </sql>
 
     <select id = "get_all" resultMap="BaseResultMap1">
-        SELECT pk.activity_id as activity_id, s1.id as student_id_1, s2.id as student_id_2, pk.is_finished as is_finished, s1.name as student_1_name, s2.name as student_2_name, pk.course_name as course_name FROM pk JOIN student s1 ON s1.id = pk.student_id1 JOIN student s2 ON s2.id = pk.student_id2 WHERE pk.course_name  = #{course_name};
+        SELECT pk.activity_id as activity_id, s1.id as student_id_1, s2.id as student_id_2, pk.is_finished as is_finished, s1.name as student_1_name, s2.name as student_2_name, pk.course_name as course_name, ai.stu_item1 as stu_item1, ai.stu_item2 as stu_item2 FROM pk JOIN student s1 ON s1.id = pk.student_id1 JOIN student s2 ON s2.id = pk.student_id2 JOIN activity_item ai ON ai.activity_id = pk.activity_id WHERE pk.course_name  = #{course_name};
     </select>
 </mapper>

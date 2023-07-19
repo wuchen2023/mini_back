@@ -17,7 +17,10 @@ public class PkRes {
 
     String course_name;
 
-    public PkRes(Integer activity_id, Integer student_id_1, String student_1_name, Integer student_id_2, String student_2_name, Integer is_finished, String course_name) {
+    Integer stu_item1;
+    Integer stu_item2;
+
+    public PkRes(Integer activity_id, Integer student_id_1, String student_1_name, Integer student_id_2, String student_2_name, Integer is_finished, String course_name, Integer stu_item1, Integer stu_item2) {
         this.activity_id = activity_id;
         this.student_id_1 = student_id_1;
         this.student_1_name = student_1_name;
@@ -25,6 +28,8 @@ public class PkRes {
         this.student_2_name = student_2_name;
         this.is_finished = is_finished;
         this.course_name = course_name;
+        this.stu_item1 = stu_item1;
+        this.stu_item2 = stu_item2;
     }
 
     public Integer getActivity_id() {
@@ -81,5 +86,21 @@ public class PkRes {
 
     public void setCourse_name(String course_name) {
         this.course_name = course_name;
+    }
+
+    public Integer getStu_item1(){
+        return stu_item1;
+    }
+
+    public void setStu_item1(Integer stu_item1){
+        this.stu_item1 = stu_item1;
+    }
+
+    public Integer getStu_item2(){
+        return stu_item2;
+    }
+
+    public  void setStu_item2(Integer stu_item2){
+        this.stu_item2 = stu_item2;
     }
 }

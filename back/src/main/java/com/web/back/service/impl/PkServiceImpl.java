@@ -2,11 +2,9 @@ package com.web.back.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.web.back.domain.ExamPaper;
-import com.web.back.domain.Pk;
-import com.web.back.domain.Student;
-import com.web.back.domain.StudentClass;
+import com.web.back.domain.*;
 import com.web.back.domain.result.PkRes;
+import com.web.back.mapper.ActivityItemMapper;
 import com.web.back.mapper.StudentClassMapper;
 import com.web.back.mapper.StudentMapper;
 import com.web.back.service.ExamPaperService;
@@ -54,6 +52,9 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk>
 
     @Resource
     ExamPaperService examPaperService;
+
+    @Resource
+    ActivityItemMapper activityItemMapper;
     @Override
     public List<Integer> add_pk(Integer activity_id, String course_name) {
         try{
@@ -117,17 +118,21 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk>
                 item1.setName("题目");
                 //下面选择题目
                 List<QuestionEditRequestVM> questionList = new ArrayList<>();
+                Collections.shuffle(questionNumbers);
 
                 for(int i=0;i<10;i++){
-                    Integer randomQuestionNumber = getRandomQuestionNumber(questionNumbers);
+                    Integer randomQuestionNumber = questionNumbers.get(i);
+//                            getRandomQuestionNumber(questionNumbers);
                     System.out.println("随机选中的题号是："+randomQuestionNumber);
-                    questionNumbers.remove(randomQuestionNumber);
+//                    questionNumbers.remove(randomQuestionNumber);
                     QuestionEditRequestVM questionVM = questionService.getQuestionEditRequestVM(randomQuestionNumber);
                     //设置试卷
 
                     questionList.add(questionVM);
 
                 }
+
+
                 item1.setQuestionItems(questionList);
 
                 titleItems.add(item1);
@@ -142,19 +147,17 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk>
                 List<Integer> numbers = new ArrayList<>();
                 numbers.add(examPaper1.getId());
                 numbers.add(examPaper2.getId());
+                ActivityItem activityItem = new ActivityItem(activity_id,examPaper1.getId(), examPaper2.getId());
+                activityItemMapper.insert(activityItem);
+
                 return numbers;
-//                return new ResposeResult(1, "创建成功，试卷id分别为"+numbers);
 
 
             }
-//            Pk pk1 = new Pk(activity_id, student_id_1, student_id_2, 0, course_name);
-//            pkMapper.insert(pk1);
-//            return new ResposeResult(1, "创建Pk成功");
+
         }catch (Exception e)
         {
             return null;
-//            return new ResposeResult(0, "创建Pk失败");
-//            return null;
         }
     }
 

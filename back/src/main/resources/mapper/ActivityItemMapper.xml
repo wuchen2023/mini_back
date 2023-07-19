@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.back.mapper.ActivityItemMapper">
+
+    <resultMap id="BaseResultMap" type="com.web.back.domain.ActivityItem">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="activity_id" column="activity_id" jdbcType="INTEGER"/>
+            <result property="stu_item1" column="stu_item1" jdbcType="INTEGER"/>
+            <result property="stu_item2" column="stu_item2" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,activity_id,stu_item1,
+        stu_item2
+    </sql>
+</mapper>

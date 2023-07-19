@@ -126,7 +126,7 @@ public class ExamPaperAnswerController {
      * @return
      */
     @PostMapping("/pageList")
-    @ApiOperation("小程序端-获取试卷答题记录列表")
+    @ApiOperation("小程序端-获取试卷答题记录列表(createuser即该试卷对应的学生的id")
     public RestResponse<PageInfo<ExamPaperAnswerPageResponseVM>> pageList(@Valid ExamPaperAnswerPageVM model) {
 
 //        model.setCreateUser(getCurrentUser().getId());
