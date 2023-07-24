@@ -48,7 +48,14 @@ public class QiangdaServiceImpl extends ServiceImpl<QiangdaMapper, Qiangda>
         QueryWrapper queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("teacher_id", teacher_id);
         queryWrapper.eq("course_name", course_name);
+//        List<Qiangda> list = qiangdaMapper.selectList(queryWrapper);
+//        System.out.println(list);
         return qiangdaMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public List<Qiangda> get_all_qiangda1(Integer teacher_id, String course_name) {
+        return qiangdaMapper.find_info(course_name, teacher_id);
     }
 
     @Override
@@ -93,6 +100,26 @@ public class QiangdaServiceImpl extends ServiceImpl<QiangdaMapper, Qiangda>
             return new ResposeResult(0, "关闭失败");
         }
     }
+
+    @Override
+    public ResposeResult qiangda_is_right(Integer qiangda_id, String is_right){
+        try {
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("id", qiangda_id);
+            Qiangda qiangda = qiangdaMapper.selectOne(queryWrapper);
+            if(qiangda ==null){
+                throw new Exception();
+            }
+            Qiangda qiangda1 = new Qiangda(qiangda_id, is_right);
+            qiangdaMapper.update(qiangda1,queryWrapper);
+            return new ResposeResult(1, "提交成功");
+
+
+        }catch (Exception e){
+            return new ResposeResult(0, "提交失败");
+        }
+    }
+
 }
 
 

@@ -23,21 +23,22 @@ public class BlindBoxServiceImpl extends ServiceImpl<BlindBoxMapper, BlindBox>
     @Resource
     BlindBoxMapper blindBoxMapper;
     @Override
-    public ResposeResult blindbox_answerSubmit(String stu_account, Integer exam_paper_id, Integer is_right, String true_answer, String teacher_account, String class_name){
+    public ResposeResult blindbox_answerSubmit(Integer exam_paper_id, Integer is_right, String true_answer){
         try{
             QueryWrapper queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("stu_account",stu_account);
+//            queryWrapper.eq("stu_account",stu_account);
             queryWrapper.eq("exam_paper_id",exam_paper_id);
-            queryWrapper.eq("is_right",is_right);
-            queryWrapper.eq("true_answer",true_answer);
-            queryWrapper.eq("stu_account",stu_account);
-            queryWrapper.eq("teacher_account",teacher_account);
+//            queryWrapper.eq("is_right",is_right);
+//            queryWrapper.eq("true_answer",true_answer);
+//            queryWrapper.eq("stu_account",stu_account);
+//            queryWrapper.eq("teacher_account",teacher_account);
             BlindBox blindBox = blindBoxMapper.selectOne(queryWrapper);
-            if(blindBox != null){
+            if(blindBox == null){
                 throw new Exception();
             }
-            BlindBox blindBox1 = new BlindBox(stu_account, exam_paper_id, is_right, true_answer, teacher_account, class_name);
-            blindBoxMapper.insert(blindBox1);
+            BlindBox blindBox1 = new BlindBox(blindBox.getStu_account(), exam_paper_id, is_right, true_answer, blindBox.getTeacher_account(), blindBox.getClass_name());
+//            blindBoxMapper.insert(blindBox1);
+            blindBoxMapper.update(blindBox1, queryWrapper);
             return new ResposeResult(1, "提交答案成功");
         }catch (Exception e){
             return new ResposeResult(0, "提交答案失败");

@@ -9,6 +9,7 @@ import com.web.back.mapper.QiangdaMapper;
 import com.web.back.service.StudentQiangdaService;
 import com.web.back.mapper.StudentQiangdaMapper;
 import com.web.back.state.ResposeResult;
+import com.web.back.viewmodel.admin.qiangda.StuAddQiangDaVM;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,7 +30,7 @@ public class StudentQiangdaServiceImpl extends ServiceImpl<StudentQiangdaMapper,
     StudentQiangdaMapper studentQiangdaMapper;
 
     @Override
-    public ResposeResult add_student_qiangda(StudentQiangda studentQiangda) {
+    public StuAddQiangDaVM add_student_qiangda(StudentQiangda studentQiangda) {
         try{
             //检验抢答是否关闭
             Integer qiangda_id = studentQiangda.getQiangdaId();
@@ -54,17 +55,42 @@ public class StudentQiangdaServiceImpl extends ServiceImpl<StudentQiangdaMapper,
             qiangdaMapper.update(qiangda, queryWrapper);
             //更新抢答
             studentQiangdaMapper.insert(studentQiangda);
-            return new ResposeResult(1, "抢答成功");
+            StuAddQiangDaVM stuAddQiangDaVM =new StuAddQiangDaVM();
+            stuAddQiangDaVM.setId(studentQiangda.getStudentId());
+            stuAddQiangDaVM.setQiangda_type(qiangda.getQiangdaType());
+            stuAddQiangDaVM.setQuestion(qiangda.getQuestion());
+            return stuAddQiangDaVM;
+//            return new ResposeResult(1, "抢答成功");
         }catch (Exception e)
         {
-            return new ResposeResult(0, "抢答失败");
+            return null;
+//            return new ResposeResult(0, "抢答失败");
         }
+//        return null;
     }
 
     @Override
     public StudentQiangDaRes get_qiangda_res(Integer qiangda_id, String course_name) {
         return studentQiangdaMapper.get_qiangda_res(qiangda_id, course_name);
     }
+    @Override
+    public ResposeResult qiangda_submit(Integer qiangda_id,String stu_answer){
+        try{
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("id",qiangda_id);
+            Qiangda qiangda = qiangdaMapper.selectOne(queryWrapper);
+            if(qiangda ==null){
+                throw new Exception();
+            }
+            Qiangda qiangda1 = new Qiangda(stu_answer);
+            qiangdaMapper.update(qiangda1, queryWrapper);
+            return new ResposeResult(1, "提交抢答成功");
+
+        }catch (Exception e){
+            return new ResposeResult(0, "提交抢答失败");
+        }
+    }
+
 }
 
 

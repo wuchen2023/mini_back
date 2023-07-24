@@ -54,6 +54,13 @@ public class BlindBox implements Serializable {
         this.class_name = class_name;
     }
 
+    public BlindBox(String coursename, String stuaccount, Integer examPaper_id, String teacher_account){
+        this.class_name =coursename;
+        this.stu_account = stuaccount;
+        this.exam_paper_id = examPaper_id;
+        this.teacher_account = teacher_account;
+    }
+
     public Integer getId(){
         return id;
     }

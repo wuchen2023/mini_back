@@ -102,22 +102,22 @@ public class QuestionController {
     public String redis_get(String key) {
         return (String) redisTemplate.opsForValue().get(key);
     }
-//    @ApiOperation("后端平台使用接口-增加问题")
-//    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-//    public RestResponse edit(@RequestBody @Valid QuestionEditRequestVM model) {
-//        RestResponse validQuestionEditRequestResult = validQuestionEditRequestVM(model);
-//        if (validQuestionEditRequestResult.getCode() != SystemCode.OK.getCode()) {
-//            return validQuestionEditRequestResult;
-//        }
-//
-//        if (null == model.getId()) {
-//            questionService.insertFullQuestion(model, getName().getId());
-//        } else {
-//            questionService.updateFullQuestion(model);
-//        }
-//
-//        return RestResponse.ok();
-//    }
+    @ApiOperation("增加问题")
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public RestResponse edit(@RequestBody @Valid QuestionEditRequestVM model) {
+        RestResponse validQuestionEditRequestResult = validQuestionEditRequestVM(model);
+        if (validQuestionEditRequestResult.getCode() != SystemCode.OK.getCode()) {
+            return validQuestionEditRequestResult;
+        }
+
+        if (null == model.getId()) {
+            questionService.insertFullQuestion(model, getName().getId());
+        } else {
+            questionService.updateFullQuestion(model);
+        }
+
+        return RestResponse.ok();
+    }
 
     @ApiOperation("查询问题")
     @RequestMapping(value = "/select/{id}", method = RequestMethod.POST)

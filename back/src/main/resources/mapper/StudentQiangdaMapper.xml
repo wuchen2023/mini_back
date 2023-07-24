@@ -15,6 +15,10 @@
         <result property="qiangda_id" column="qiangda_id" jdbcType="INTEGER"/>
         <result property="student_name" column="student_name" jdbcType="VARCHAR"/>
         <result property="qiangda_type" column="qiangda_type" jdbcType="VARCHAR"/>
+        <result property="question" column="question" jdbcType="VARCHAR"/>
+        <result property="reference_answer" column="reference_answer" jdbcType="VARCHAR"/>
+        <result property="stu_answer" column="stu_answer" jdbcType="VARCHAR"/>
+        <result property="is_right" column="is_right" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -23,6 +27,6 @@
     </sql>
 
     <select id="get_qiangda_res" resultMap="res">
-        select  sq.qiangda_id as qiangda_id, s.name as student_name, q.qiangda_type as qiangda_type from qiangda as q, student as s, student_qiangda as sq where sq.qiangda_id = #{qiangda_id} and sq.course_name = #{course_name} and q.id = sq.qiangda_id and s.id = sq.student_id;
+        select  sq.qiangda_id as qiangda_id, s.name as student_name, q.qiangda_type as qiangda_type, q.question as question, q.reference_answer as reference_answer, q.stu_answer as stu_answer, q.is_right as is_right from qiangda as q, student as s, student_qiangda as sq where sq.qiangda_id = #{qiangda_id} and sq.course_name = #{course_name} and q.id = sq.qiangda_id and s.id = sq.student_id;
     </select>
 </mapper>

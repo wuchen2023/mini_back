@@ -4,7 +4,9 @@ import com.alibaba.druid.support.logging.Log;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.web.back.domain.*;
+import com.web.back.mapper.BlindBoxMapper;
 import com.web.back.service.*;
+import com.web.back.state.ResposeResult;
 import com.web.back.state.RestResponse;
 import com.web.back.utils.ModelMapperSingle;
 import com.web.back.utils.PageInfoHelper;
@@ -50,8 +52,10 @@ public class BlindboxController {
     private final ExamPaperService examPaperService;
 
     private final BlindBoxService blindBoxService;
+
+    private final BlindBoxMapper blindBoxMapper;
     @Autowired
-    public BlindboxController(QuestionService questionService, TextContentService textContentService, StudentService studentService, StudentClassService studentClassService, ExamPaperService examPaperService, TeacherService teacherService, BlindBoxService blindBoxService) {
+    public BlindboxController(QuestionService questionService, TextContentService textContentService, StudentService studentService, StudentClassService studentClassService, ExamPaperService examPaperService, TeacherService teacherService, BlindBoxService blindBoxService, BlindBoxMapper blindBoxMapper) {
         this.questionService = questionService;
         this.textContentService = textContentService;
         this.studentService = studentService;
@@ -59,6 +63,7 @@ public class BlindboxController {
         this.examPaperService = examPaperService;
         this.teacherService = teacherService;
         this.blindBoxService = blindBoxService;
+        this.blindBoxMapper = blindBoxMapper;
     }
 
     @Autowired
@@ -107,7 +112,7 @@ public class BlindboxController {
     @ResponseBody
     @ApiOperation("随机抽一道题")
     @PostMapping("blindbox")
-    public RestResponse<ExamPaperEditRequestVM> blindbox(@RequestParam String coursename, @RequestParam String stuaccount) {
+    public RestResponse<ExamPaperEditRequestVM> blindbox(@RequestParam String coursename, @RequestParam String stuaccount, @RequestParam String teacher_account) {
         System.out.println("查询的结果是：" + questionService.selectAllCount());
         if (questionService.selectAllCount() > 0) {
             List<Integer> questionNumbers = questionService.findAllQuestionIds();
@@ -136,6 +141,9 @@ public class BlindboxController {
             Student student = studentService.get_detail_by_account(stuaccount);
             ExamPaper examPaper = examPaperService.savePaperFromVM_stu(examPaperEditRequestVM, student);
             ExamPaperEditRequestVM newVM = examPaperService.examPaperToVM(examPaper.getId());
+            // 在blind_box中插入相关数据
+            BlindBox blindBox = new BlindBox(coursename,stuaccount, examPaper.getId(), teacher_account);
+            blindBoxMapper.insert(blindBox);
             return RestResponse.ok(newVM);
         }
         return null;
@@ -153,14 +161,7 @@ public class BlindboxController {
         System.out.println("合并后的字符串：" + mergedString);
         return mergedString;
     }
-    //按照传入的题目列表大小随机在这写数中选择一个id
-//    public static int getRandomId(int id) {
-//        Random random = new Random();
-//        int MAX = id, MIN = 4;
-//        int number = random.nextInt(MAX - MIN + 1) + MIN;
-//        System.out.println("随机生成的数字是：" + number);
-//        return number;
-//    }
+
 
     public static Integer getRandomQuestionNumber(List<Integer> questionNumbers) {
         Random random = new Random();
@@ -189,6 +190,21 @@ public class BlindboxController {
     public List<BlindBox>  blindbox_view_history(@RequestParam(required = true) String class_name, @RequestParam(required = false) String stu_account, @RequestParam(required = false) String teacher_account){
             return blindBoxService.blindbox_view_history(class_name, stu_account, teacher_account);
     }
+
+
+    @ResponseBody
+    @ApiOperation("盲盒某一条记录删除，点击某一条记录，输入该条记录的id")
+    @PostMapping("blindbox_delete")
+    public ResposeResult blindbox_delete(@RequestParam Integer id){
+
+        try{
+            blindBoxMapper.deleteById(id);
+            return new ResposeResult(1, "删除成功");
+        }catch (Exception e){
+            return new ResposeResult(0, "删除失败");
+        }
+    }
+
 
 
 }

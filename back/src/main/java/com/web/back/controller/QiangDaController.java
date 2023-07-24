@@ -26,9 +26,9 @@ public class QiangDaController {
     @ResponseBody
     @ApiOperation("添加抢答")
     @PostMapping("add_qiangda")
-    public ResposeResult add_qiangda(@RequestParam Integer teacher_id, @RequestParam String qiangda_type, @RequestParam String course_name)
+    public ResposeResult add_qiangda(@RequestParam Integer teacher_id, @RequestParam String qiangda_type, @RequestParam String course_name, @RequestParam String question, @RequestParam String reference_answer)
     {
-        Qiangda qiangda = new Qiangda(teacher_id, qiangda_type, course_name, 0);
+        Qiangda qiangda = new Qiangda(teacher_id, qiangda_type, course_name, 0, question, reference_answer);
         return qiangdaService.add_qiangda(qiangda);
     }
 
@@ -37,7 +37,8 @@ public class QiangDaController {
     @PostMapping("get_all_qiangda")
     public List<Qiangda> get_all_qiangda(@RequestParam Integer teacher_id, @RequestParam String course_name)
     {
-        return qiangdaService.get_all_qiangda(teacher_id, course_name);
+//        return qiangdaService.get_all_qiangda(teacher_id, course_name);
+        return qiangdaService.get_all_qiangda1(teacher_id, course_name);
     }
 
     @ResponseBody
@@ -55,4 +56,13 @@ public class QiangDaController {
     {
         return qiangdaService.close_qiangda(qiangda_id);
     }
+
+
+    @ResponseBody
+    @ApiOperation("老师判断抢答是否正确")
+    @PostMapping("qiangda_is_right")
+    public ResposeResult qiangda_is_right(@RequestParam Integer qiangda_id, @RequestParam  String is_right){
+        return qiangdaService.qiangda_is_right(qiangda_id, is_right);
+    }
+
 }
