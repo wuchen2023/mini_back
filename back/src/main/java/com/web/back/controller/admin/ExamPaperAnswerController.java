@@ -204,8 +204,8 @@ public class ExamPaperAnswerController {
 
     @PostMapping("/blindbox_answerSubmit")
     @ApiOperation("盲盒-学生答题提交")
-    public ResposeResult blindbox_answerSubmit(@RequestParam String stu_account,@RequestParam Integer exam_paper_id, @RequestParam Integer is_right, @RequestParam String true_answer){
-        return blindBoxService.blindbox_answerSubmit(stu_account,exam_paper_id,is_right,true_answer);
+    public ResposeResult blindbox_answerSubmit(@RequestParam String stu_account,@RequestParam Integer exam_paper_id, @RequestParam Integer is_right, @RequestParam String true_answer,@RequestParam String teacher_account, @RequestParam String class_name){
+        return blindBoxService.blindbox_answerSubmit(stu_account,exam_paper_id,is_right,true_answer, teacher_account, class_name);
     }
 
     @PostMapping("/blindbox_view")

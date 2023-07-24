@@ -17,6 +17,7 @@ import java.util.List;
 public interface BlindBoxMapper extends BaseMapper<BlindBox> {
 
     List<BlindBox> findInfo(String stu_account,Integer exam_paper_id);
+    List<BlindBox> findInfo_condition(String class_name,String stu_account,String teacher_account);
 
 }
 

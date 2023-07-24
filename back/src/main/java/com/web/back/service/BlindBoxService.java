@@ -14,7 +14,9 @@ import java.util.List;
 */
 public interface BlindBoxService extends IService<BlindBox> {
 
-    public ResposeResult blindbox_answerSubmit(String stu_account, Integer exam_paper_id,  Integer is_right,  String true_answer);
+    public ResposeResult blindbox_answerSubmit(String stu_account, Integer exam_paper_id,  Integer is_right,  String true_answer, String teacher_account, String class_name);
 
     public List<BlindBox> blindbox_view(String stu_account, Integer exam_paper_id);
+
+    public List<BlindBox> blindbox_view_history(String class_name, String stu_account, String teacher_account);
 }

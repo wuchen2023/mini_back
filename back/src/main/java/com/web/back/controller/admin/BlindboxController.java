@@ -3,10 +3,7 @@ package com.web.back.controller.admin;
 import com.alibaba.druid.support.logging.Log;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
-import com.web.back.domain.ExamPaper;
-import com.web.back.domain.Student;
-import com.web.back.domain.StudentClass;
-import com.web.back.domain.TeacherClass;
+import com.web.back.domain.*;
 import com.web.back.service.*;
 import com.web.back.state.RestResponse;
 import com.web.back.utils.ModelMapperSingle;
@@ -23,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -50,14 +48,17 @@ public class BlindboxController {
     private final StudentClassService studentClassService;
 
     private final ExamPaperService examPaperService;
+
+    private final BlindBoxService blindBoxService;
     @Autowired
-    public BlindboxController(QuestionService questionService, TextContentService textContentService, StudentService studentService, StudentClassService studentClassService, ExamPaperService examPaperService, TeacherService teacherService) {
+    public BlindboxController(QuestionService questionService, TextContentService textContentService, StudentService studentService, StudentClassService studentClassService, ExamPaperService examPaperService, TeacherService teacherService, BlindBoxService blindBoxService) {
         this.questionService = questionService;
         this.textContentService = textContentService;
         this.studentService = studentService;
         this.studentClassService = studentClassService;
         this.examPaperService = examPaperService;
         this.teacherService = teacherService;
+        this.blindBoxService = blindBoxService;
     }
 
     @Autowired
@@ -181,5 +182,13 @@ public class BlindboxController {
     /**
      * 我应该怎么考虑将做题的记录存放进数据库中
      */
+
+    @ResponseBody
+    @ApiOperation("盲盒老师或者学生查看盲盒记录，只能返回抽到过哪些学生以及回答正确的情况，老师端就只需要输入课程名和老师账户，学生就输入课程名和学生账户")
+    @PostMapping("blindbox_view_history")
+    public List<BlindBox>  blindbox_view_history(@RequestParam(required = true) String class_name, @RequestParam(required = false) String stu_account, @RequestParam(required = false) String teacher_account){
+            return blindBoxService.blindbox_view_history(class_name, stu_account, teacher_account);
+    }
+
 
 }
