@@ -106,13 +106,24 @@
     limit 10
   </select>
 
+<!--  <select id="page" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.admin.user.UserEventPageRequestVM">-->
+<!--    select-->
+<!--    <include refid="Base_Column_List"/>-->
+<!--    from user_event_log-->
+<!--    <where>-->
+<!--      <if test="userId != null">-->
+<!--         and user_id= #{userId}-->
+<!--      </if>-->
+<!--      <if test="userName != null">-->
+<!--        and user_name= #{userName}-->
+<!--      </if>-->
+<!--    </where>-->
+<!--  </select>-->
   <select id="page" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.admin.user.UserEventPageRequestVM">
-    select
-    <include refid="Base_Column_List"/>
-    from user_event_log
+    select * from user_event_log
     <where>
       <if test="userId != null">
-         and user_id= #{userId}
+        and user_id= #{userId}
       </if>
       <if test="userName != null">
         and user_name= #{userName}
@@ -120,11 +131,10 @@
     </where>
   </select>
 
-
   <select id="selectCountByDate"  resultType="com.web.back.domain.other.KeyValue">
 		SELECT create_time as name,COUNT(create_time) as value from
 		        (
-				  SELECT DATE_FORMAT(create_time,'%Y-%m-%d') as create_time from t_user_event_log
+				  SELECT DATE_FORMAT(create_time,'%Y-%m-%d') as create_time from user_event_log
 					WHERE  create_time  between  #{startTime}  and  #{endTime}
 				) a
 		GROUP BY create_time

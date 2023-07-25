@@ -13,12 +13,14 @@
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="gender" column="gender" jdbcType="VARCHAR"/>
             <result property="role" column="role" jdbcType="INTEGER"/>
+            <result column="deleted" jdbcType="BIT" property="deleted" />
+
     </resultMap>
 
     <sql id="Base_Column_List">
         id,name,permission,
         account,password,create_time,
-        gender
+        gender, deleted
     </sql>
 
     <select id="studentPage" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.admin.stu.StuPageRequestVM">
@@ -26,6 +28,7 @@
         <include refid="Base_Column_List"/>
         FROM student
         <where>
+            and deleted=0
             <if test="account != null and account != ''">
                 and account like concat('%',#{account},'%')
             </if>
@@ -67,6 +70,9 @@
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="deleted != null">
+                deleted = #{deleted,jdbcType=BIT},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -98,6 +104,9 @@
             <if test="permission != null">
                 permission,
             </if>
+            <if test="deleted != null">
+                deleted,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -123,6 +132,9 @@
             </if>
             <if test="permission != null">
                 #{permission,jdbcType=VARCHAR},
+            </if>
+            <if test="deleted != null">
+                #{deleted,jdbcType=BIT},
             </if>
         </trim>
     </insert>

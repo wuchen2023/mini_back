@@ -349,7 +349,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
     //根据id查询
     @Override
     public Teacher selectById(Integer id){
-        return (Teacher) baseMapper.selectByPrimaryKey(id);
+        return teacherMapper.selectByPrimaryKey(id);
     }
 
     @Override

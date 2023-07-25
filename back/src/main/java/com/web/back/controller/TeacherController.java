@@ -334,8 +334,8 @@ public class TeacherController {
 
         if (model.getId() == null) {
             System.out.println("进入到了这一步");
-            String encodePwd = authenticationService.pwdEncode(model.getPassword());
-            teacher.setPassword(encodePwd);
+//            String encodePwd = authenticationService.pwdEncode(model.getPassword());
+            teacher.setPassword(model.getPassword());
 //            student.setUserUuid(UUID.randomUUID().toString());
             teacher.setCreateTime(new Date());
 //            student.setLastActiveTime(new Date());

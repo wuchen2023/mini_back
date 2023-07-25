@@ -254,10 +254,11 @@ public class StudentController {
 
         if (model.getId() == null) {
             System.out.println("进入到了这一步");
-            String encodePwd = authenticationService.pwdEncode(model.getPassword());
-            student.setPassword(encodePwd);
+//            String encodePwd = authenticationService.pwdEncode(model.getPassword());
+            student.setPassword(model.getPassword());
 //            student.setUserUuid(UUID.randomUUID().toString());
             student.setCreateTime(new Date());
+            student.setDeleted(false);
 //            student.setLastActiveTime(new Date());
 //            student.setDeleted(false);
 //            下面要进行插入的操作，不要忘记写数据库了
@@ -287,11 +288,10 @@ public class StudentController {
 
     @RequestMapping(value = "/api/webadmin/student/delete/{id}", method = RequestMethod.POST)
     public RestResponse delete(@PathVariable Integer id) {
-        if(id != null && studentService.deleteById(id)){
-            return RestResponse.ok();
-        }else{
-            return RestResponse.fail(400,"删除失败");
-        }
+       Student student = studentService.getById(id);
+       student.setDeleted(true);
+       studentService.updateByIdFilter(student);
+       return RestResponse.ok();
     }
 
 }

@@ -26,6 +26,8 @@ public interface TeacherMapper extends BaseMapper<Teacher> {
     int insertSelective(Teacher record);
 
     Teacher getTeacherById(Integer id);
+
+    Teacher selectByPrimaryKey(Integer id);
 }
 
 

@@ -11,6 +11,10 @@ import java.util.Date;
 public class UserEventLog implements Serializable {
     private static final long serialVersionUID = 5351759672842341094L;
 
+    public UserEventLog(){
+
+    }
+
     public UserEventLog(Integer userId, String userName, Date createTime) {
         this.userId = userId;
         this.userName = userName;

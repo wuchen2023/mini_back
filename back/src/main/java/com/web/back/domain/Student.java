@@ -59,6 +59,10 @@ public class Student implements Serializable {
      */
     private Integer role;
 
+
+    private Boolean deleted;
+
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -76,5 +80,12 @@ public class Student implements Serializable {
     }
     public Student(){
 
+    }
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }
