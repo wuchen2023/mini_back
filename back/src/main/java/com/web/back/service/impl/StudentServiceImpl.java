@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -292,6 +293,27 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     @Override
     public List<StudentClassRes> get_all_class_by_student_id(Integer student_id) {
         return studentClassMapper.get_all_class(student_id);
+    }
+
+    @Override
+    public List<List<Student>> get_qiandao_detail(String course_name, Integer teacher_sign_in_id) {
+        //当前班级的全部学生
+        List<Student> student_class_list = studentClassMapper.get_all_student_in_class(course_name);
+        //获取已经签到的学生
+        List<Student> sign_in_student_list = studentSignInMapper.get_all_student_has_sign_in(teacher_sign_in_id);
+
+        List<Student> no_sign_list = new ArrayList<>(student_class_list); // 创建一个新的列表
+        no_sign_list.removeAll (sign_in_student_list); // 从新的列表中移除已经签到的学生
+
+        //密码不可见
+        sign_in_student_list.stream().map(student -> {return get_safe_teacher(student);}).collect(Collectors.toList());
+        no_sign_list.stream().map(student -> {return get_safe_teacher(student);}).collect(Collectors.toList());
+
+        List<List<Student>> result = new ArrayList<>();
+        result.add(sign_in_student_list);
+        result.add(no_sign_list);
+        return result;
+
     }
 
     /**

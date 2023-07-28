@@ -1,6 +1,7 @@
 package com.web.back.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.web.back.domain.Student;
 import com.web.back.domain.StudentClass;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.web.back.domain.result.StudentClassRes;
@@ -26,6 +27,9 @@ public interface StudentClassMapper extends BaseMapper<StudentClass> {
     List<StudentClass> page(StudentClassPageRequestVM requestVM);
 
     StudentClass get_student(String className);
+
+    @Select("select student.* from student, student_class where student.id = student_class.student_id and student_class.class_name = #{course_name}")
+    List<Student> get_all_student_in_class(String course_name);
 }
 
 

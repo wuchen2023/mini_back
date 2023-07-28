@@ -45,6 +45,8 @@ public interface StudentService extends IService<Student> {
 
     public List<StudentClassRes> get_all_class_by_student_id(Integer student_id);
 
+    public List<List<Student>> get_qiandao_detail(String course_name, Integer teacher_sign_in_id);
+
     /**
      * 下面是管理端相关的
      */
