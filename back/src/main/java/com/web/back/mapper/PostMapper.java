@@ -26,4 +26,10 @@ public interface PostMapper extends BaseMapper<Post> {
 
     List<Post> page(PostPageRequestVM requestVM);
 
+    Post getPostWithReplies(Integer postId);
+
+    List<Post> select_post();
+
+    Integer update_post_reply_count(Integer postId);
+
 }

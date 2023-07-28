@@ -12,9 +12,7 @@ import lombok.Data;
 //import javax.persistence.JoinTable;
 //import javax.persistence.ManyToMany;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author by hongdou
@@ -34,14 +32,6 @@ public class Post implements Serializable {
     private String content;
 
     private Boolean deleted;
-    public Post(String title, String content,String account,String className) {
-        this.title = title;
-        this.content = content;
-        this.createUser = account;
-        this.className = className;
-        this.createTime = new Date();
-
-    }
 
     private String createUser; //由于学生和老师都可以创建，因此存储的不是对应id而是直接存储用户名
 
@@ -50,13 +40,63 @@ public class Post implements Serializable {
     private String className;
 
     private Integer replyCount;
+    public Post(String title, String content,String account,String className) {
+        this.title = title;
+        this.content = content;
+        this.createUser = account;
+        this.className = className;
+        this.createTime = new Date();
 
+    }
     public Post(Integer id, String title,String content) {
         this.id = id;
         this.title = title;
         this.content = content;
 
     }
+    private List<PostReply> replies;
+    public Post(Integer replyCount){
+        this.replyCount = replyCount;
+    }
+    public Post(Integer postId, String postTitle, String postContent, String postCreateUser, Date postCreateTime, String postClassName, Integer postReplyCount, Integer replyId, String replyContent, String replyName) {
+        this.id = postId;
+        this.title = postTitle;
+        this.content = postContent;
+        this.createUser = postCreateUser;
+        this.createTime = postCreateTime;
+        this.className = postClassName;
+        this.replyCount = postReplyCount;
+
+        // Create a new PostReply object and set its properties
+//        PostReply reply = new PostReply();
+//        reply.setId(replyId);
+//        reply.setReplyContent(replyContent);
+//        reply.setReplyName(replyName);
+
+        // Add the reply object to the replies collection
+        this.replies = new ArrayList<>();
+//        this.replies.add(reply);
+//        addReply(replyId, replyContent, replyName); // 调用方法添加回复
+    }
+    public void addReply(Integer replyId, String replyContent, String replyName) {
+        PostReply reply = new PostReply();
+        reply.setId(replyId);
+        reply.setReplyContent(replyContent);
+        reply.setReplyName(replyName);
+        this.replies.add(reply);
+    }
+    public Post(Integer id,String title, String content,Boolean deleted,String account,Date createTime, String className,Integer replyCount) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.deleted = deleted;
+        this.createUser = account;
+        this.createTime = createTime;
+        this.className = className;
+        this.replyCount = replyCount;
+    }
+
+
 
 //    @ManyToMany
 //    @JoinTable(

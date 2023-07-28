@@ -3,6 +3,7 @@ package com.web.back.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.github.pagehelper.PageInfo;
 import com.web.back.domain.Post;
+import com.web.back.domain.result.ActicityRes;
 import com.web.back.state.ResposeResult;
 import com.web.back.viewmodel.admin.post.PostPageRequestVM;
 
@@ -26,5 +27,7 @@ public interface PostService extends IService<Post> {
 
 
     PageInfo<Post> page(PostPageRequestVM requestVM);
+
+
 
 }

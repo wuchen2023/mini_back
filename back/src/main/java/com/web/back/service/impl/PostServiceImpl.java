@@ -6,8 +6,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.web.back.domain.Post;
+import com.web.back.domain.PostReply;
 import com.web.back.domain.Subject;
 import com.web.back.mapper.PostMapper;
+import com.web.back.mapper.PostReplyMapper;
+import com.web.back.service.PostReplyService;
 import com.web.back.service.PostService;
 import com.web.back.state.ResposeResult;
 import com.web.back.utils.ModelMapperSingle;
@@ -36,12 +39,17 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
 
     @Resource
     PostMapper postMapper;
+
+    @Resource
+    PostReplyService postReplyService;
     @Override
     public List<Post> get_all_posts(){
-        QueryWrapper queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("deleted",0);
-        List<Post>postList = postMapper.selectList((Wrapper<Post>) queryWrapper);
-        return postList.stream().map(post -> {return List_to_Post(post);}).collect(Collectors.toList());
+
+//        QueryWrapper queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("deleted",0);
+//        List<Post>postList = postMapper.selectList((Wrapper<Post>) queryWrapper);
+//        return postList.stream().map(post -> {return List_to_Post(post);}).collect(Collectors.toList());
+        return postMapper.select_post();
     }
 
     public Post List_to_Post(Post post){
@@ -76,6 +84,7 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     public ResposeResult delete_post(Integer id){
         //这里的功能是直接删除数据库中的帖子，并没有使用deleted字段
         try{
+            postReplyService.delete_post_reply_by_post_id(id);
             Post post = postMapper.delete_post(id);
             if (post ==null){
                 throw new Exception();

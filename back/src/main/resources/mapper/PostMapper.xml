@@ -5,28 +5,51 @@
 <mapper namespace="com.web.back.mapper.PostMapper">
 
     <resultMap id="BaseResultMap" type="com.web.back.domain.Post">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="title" column="title" jdbcType="VARCHAR"/>
-            <result property="content" column="content" jdbcType="VARCHAR"/>
-            <result property="deleted" column="deleted" jdbcType="BIT"/>
-            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="className" column="class_name" jdbcType="VARCHAR"/>
-            <result property="replyCount" column="reply_count" jdbcType="INTEGER"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="deleted" column="deleted" jdbcType="BIT"/>
+        <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="className" column="class_name" jdbcType="VARCHAR"/>
+        <result property="replyCount" column="reply_count" jdbcType="INTEGER"/>
 
     </resultMap>
 
+    <resultMap id="PostWithRepliesResultMap" type="com.web.back.domain.Post">
+        <id property="id" column="post_id"/>
+        <result property="title" column="post_title"/>
+        <result property="content" column="post_content"/>
+        <result property="createUser" column="post_create_user"/>
+        <result property="createTime" column="post_create_time"/>
+        <result property="className" column="post_class_name"/>
+        <result property="replyCount" column="post_reply_count"/>
+        <collection property="replies" javaType="java.util.List" ofType="com.web.back.domain.PostReply">
+            <id property="id" column="reply_id"/>
+            <result property="replyContent" column="reply_content"/>
+            <result property="replyName" column="reply_name"/>
+        </collection>
+    </resultMap>
+
     <sql id="Base_Column_List">
-        id,title,content,deleted,create_user,create_time,class_name,reply_count
+        id
+        ,title,content,deleted,create_user,create_time,class_name,reply_count
     </sql>
     <select id="selectList_by_deleted" resultMap="BaseResultMap">
-        SELECT * FROM post where deleted = 0
+        SELECT *
+        FROM post
+        where deleted = 0
     </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select * from post where id = #{id,jdbcType=INTEGER} and deleted = 0
+        select *
+        from post
+        where id = #{id,jdbcType=INTEGER}
+          and deleted = 0
     </select>
-    <delete id="delete_post"  parameterType="java.lang.Integer">
-        delete FROM post where id = #{id}
+    <delete id="delete_post" parameterType="java.lang.Integer">
+        delete
+        FROM post
+        where id = #{id}
     </delete>
     <select id="page" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.admin.post.PostPageRequestVM">
         SELECT
@@ -47,6 +70,31 @@
             </if>
         </where>
     </select>
-
-
+    <select id="getPostWithReplies" resultMap="PostWithRepliesResultMap" parameterType="java.lang.Integer">
+        SELECT p.id          AS post_id,
+               p.title       AS post_title,
+               p.content     AS post_content,
+               p.create_user As post_create_user,
+               p.create_time As post_create_time,
+               p.class_name  As post_class_name,
+               p.reply_count As post_reply_count,
+               pr.id         AS reply_id,
+               pr.reply_content,
+               pr.reply_name
+        FROM post p
+                 LEFT JOIN post_reply pr ON p.id = pr.post_id
+        WHERE p.id = #{id}
+    </select>
+    <select id="select_post" resultMap="BaseResultMap">
+        select * FROM post WHERE deleted = 0
+    </select>
+    <update id="update_post_reply_count" parameterType="java.lang.Integer">
+        UPDATE Post
+        SET reply_count = (
+            SELECT COUNT(*)
+            FROM post_reply
+            WHERE post_reply.post_id = Post.id
+        )
+        WHERE id = #{id}
+    </update>
 </mapper>

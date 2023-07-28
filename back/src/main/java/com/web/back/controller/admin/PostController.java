@@ -2,6 +2,7 @@ package com.web.back.controller.admin;
 
 import com.github.pagehelper.PageInfo;
 import com.web.back.domain.Post;
+import com.web.back.mapper.PostMapper;
 import com.web.back.service.PostService;
 import com.web.back.state.ResposeResult;
 import com.web.back.state.RestResponse;
@@ -30,19 +31,19 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping(value = "api/admin/post")
 public class PostController {
     private final PostService postService;
+    private final PostMapper postMapper;
 
     protected final static ModelMapper modelMapper = ModelMapperSingle.Instance();
 
     @Autowired
-    public PostController(PostService postService){
+    public PostController(PostService postService, PostMapper postMapper){
         this.postService = postService;
+        this.postMapper = postMapper;
     }
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
 
     @ResponseBody
-    @ApiOperation("获取所有帖子")
+    @ApiOperation("获取所有帖子，不带回复贴")
     @GetMapping("get_all_posts")
     public List<Post> get_all_posts(){
         return postService.get_all_posts();
@@ -70,7 +71,7 @@ public class PostController {
     @ApiOperation("学生添加帖子")
     public ResposeResult stu_add_post(@RequestParam String student_account,@RequestParam String className, @RequestParam String title, @RequestParam String content){
         System.out.println("学生登录的账户是："+student_account);
-        Post post = new Post(title, content,"stu_account："+student_account,className);
+        Post post = new Post(title, content,"stu_account:"+student_account,className);
         return postService.add_post(post);
 
 
@@ -82,7 +83,7 @@ public class PostController {
     public ResposeResult tea_add_post(@RequestParam String teacher_account, @RequestParam String title, @RequestParam String content,@RequestParam String className){
 
         System.out.println("老师登录的账户是："+teacher_account);
-        Post post = new Post(title, content,"tea_account："+teacher_account,className);
+        Post post = new Post(title, content,"tea_account:"+teacher_account,className);
         return postService.add_post(post);
 
     }
@@ -91,36 +92,32 @@ public class PostController {
     @PostMapping("delete_post/{id}")
     @ApiOperation("删除帖子")
     public RestResponse delete_post(@PathVariable Integer id){
-
-//        Post post = postService.selectById(id);
-//        post.setDeleted(true);
-//        postService.updateByIdFilter(post);
-//        return RestResponse.ok();
-
         postService.delete_post(id);
         return RestResponse.ok();
 
     }
 
+//    @ResponseBody
+//    @ApiOperation("帖子查询")
+//    @PostMapping("select/{id}")
+//    public RestResponse<DebateRequestVM> select(@PathVariable Integer id){
+//        try{
+//            Post post = postService.selectById(id);
+//            DebateRequestVM vm = modelMapper.map(post,DebateRequestVM.class);
+//            return RestResponse.ok(vm);
+//        }catch (Exception e){
+//            return RestResponse.fail(500,"没有此id的帖子");
+//        }
+//    }
+
     @ResponseBody
-    @ApiOperation("帖子查询")
-    @PostMapping("select/{id}")
-    public RestResponse<DebateRequestVM> select(@PathVariable Integer id){
-        try{
-            Post post = postService.selectById(id);
-            DebateRequestVM vm = modelMapper.map(post,DebateRequestVM.class);
-            return RestResponse.ok(vm);
-        }catch (Exception e){
-            return RestResponse.fail(500,"没有此id的帖子");
-        }
+    @ApiOperation("查询某一条帖子详细信息，返回帖子和该条的回复贴")
+    @PostMapping("getPostWithReplies/{id}")
+    public Post getPostWithReplies(Integer postId) {
+        return postMapper.getPostWithReplies(postId);
     }
 
 
-    public String student_redis_get(String key) {
-        return (String) redisTemplate.opsForValue().get(key + "-student");
-    }
-    public String teacher_redis_get(String key) {
-        return (String) redisTemplate.opsForValue().get(key + "-teacher");
-    }
+
 
 }
