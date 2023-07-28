@@ -119,7 +119,7 @@ public class ExamPaperAnswerController {
         eventPublisher.publishEvent(new UserEvent(userEventLog));
 //        examPaperAnswerService.insert(examPaperAnswer); //将做题记录写入库
         System.out.println("答题试卷的id为："+examPaperAnswer.getId());
-        return RestResponse.ok(scoreVm);
+        return RestResponse.ok(examPaperAnswer.getId());
     }
 
 

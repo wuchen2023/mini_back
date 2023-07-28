@@ -34,10 +34,11 @@ public class Post implements Serializable {
     private String content;
 
     private Boolean deleted;
-    public Post(String title, String content,String account) {
+    public Post(String title, String content,String account,String className) {
         this.title = title;
         this.content = content;
         this.createUser = account;
+        this.className = className;
         this.createTime = new Date();
 
     }
@@ -45,6 +46,17 @@ public class Post implements Serializable {
     private String createUser; //由于学生和老师都可以创建，因此存储的不是对应id而是直接存储用户名
 
     private Date createTime;
+
+    private String className;
+
+    private Integer replyCount;
+
+    public Post(Integer id, String title,String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+
+    }
 
 //    @ManyToMany
 //    @JoinTable(
@@ -108,4 +120,20 @@ public class Post implements Serializable {
 //    public void setTags(Set<tag> tags) {
 //        this.tags = tags;
 //    }
+
+    public String getClassName(){
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public Integer getReplyCount(){
+        return replyCount;
+    }
+
+    public void setReplyCount(Integer replyCount) {
+        this.replyCount = replyCount;
+    }
 }

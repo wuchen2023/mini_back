@@ -5,6 +5,7 @@ import io.swagger.models.auth.In;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * @author by hongdou
@@ -22,6 +23,15 @@ public class DebateRequestVM extends BaseVM {
 
     @NotBlank
     private Boolean deleted;
+
+    private String createUser;
+
+    private Date createTime;
+
+    private String className;
+
+    private Integer replyCount;
+
 
 
     public Integer getId(){
@@ -54,5 +64,38 @@ public class DebateRequestVM extends BaseVM {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+
+    public String getClassName(){
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public Integer getReplyCount(){
+        return replyCount;
+    }
+
+    public void setReplyCount(Integer replyCount) {
+        this.replyCount = replyCount;
     }
 }

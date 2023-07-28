@@ -8,18 +8,45 @@
             <id property="id" column="id" jdbcType="INTEGER"/>
             <result property="title" column="title" jdbcType="VARCHAR"/>
             <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="deleted" column="deleted" jdbcType="BIT"/>
+            <result property="createUser" column="create_user" jdbcType="VARCHAR"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="className" column="class_name" jdbcType="VARCHAR"/>
+            <result property="replyCount" column="reply_count" jdbcType="INTEGER"/>
+
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,title,content
+        id,title,content,deleted,create_user,create_time,class_name,reply_count
     </sql>
     <select id="selectList_by_deleted" resultMap="BaseResultMap">
         SELECT * FROM post where deleted = 0
     </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select * from post where id = #{id,jdbcType=INTEGER}
+        select * from post where id = #{id,jdbcType=INTEGER} and deleted = 0
     </select>
     <delete id="delete_post"  parameterType="java.lang.Integer">
         delete FROM post where id = #{id}
     </delete>
+    <select id="page" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.admin.post.PostPageRequestVM">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM post
+        <where>
+            <if test="id != null ">
+                AND id = #{id}
+            </if>
+            <if test="title != null and title != ''">
+                AND title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="content != null and content != ''">
+                AND content LIKE CONCAT('%', #{content}, '%')
+            </if>
+            <if test="className != null and className != ''">
+                AND class_name LIKE CONCAT('%', #{className}, '%')
+            </if>
+        </where>
+    </select>
+
+
 </mapper>

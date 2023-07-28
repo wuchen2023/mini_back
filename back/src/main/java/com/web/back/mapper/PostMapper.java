@@ -3,6 +3,7 @@ package com.web.back.mapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.web.back.domain.Post;
+import com.web.back.viewmodel.admin.post.PostPageRequestVM;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -22,5 +23,7 @@ public interface PostMapper extends BaseMapper<Post> {
     Post delete_post(Integer id);
 
     Post selectByPrimaryKey(Integer id);
+
+    List<Post> page(PostPageRequestVM requestVM);
 
 }
