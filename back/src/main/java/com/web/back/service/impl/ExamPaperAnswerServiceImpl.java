@@ -95,6 +95,8 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
                 ).collect(Collectors.toList());
 
         ExamPaperAnswer examPaperAnswer = ExamPaperAnswerFromVM(examPaperSubmitVM, examPaper, examPaperQuestionCustomerAnswers, uid, now);
+        System.out.println("在这里答题试卷的id为："+examPaperAnswer.getId());
+
         examPaperAnswerInfo.setExamPaper(examPaper);
         examPaperAnswerInfo.setExamPaperAnswer(examPaperAnswer);
         examPaperAnswerInfo.setExamPaperQuestionCustomerAnswers(examPaperQuestionCustomerAnswers);
@@ -197,6 +199,7 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         ExamPaperQuestionCustomerAnswer examPaperQuestionCustomerAnswer = new ExamPaperQuestionCustomerAnswer();
         examPaperQuestionCustomerAnswer.setQuestionId(question.getId());
         examPaperQuestionCustomerAnswer.setExamPaperId(examPaper.getId());
+//        examPaperQuestionCustomerAnswer.setExamPaperAnswerId();
         examPaperQuestionCustomerAnswer.setQuestionScore(question.getScore());
         examPaperQuestionCustomerAnswer.setSubjectId(examPaper.getSubjectId());
         examPaperQuestionCustomerAnswer.setItemOrder(itemOrder);
@@ -211,7 +214,7 @@ public class ExamPaperAnswerServiceImpl extends BaseServiceImpl<ExamPaperAnswer>
         }
         //插入数据
 //        examPaperQuestionCustomerAnswerService.insert(examPaperQuestionCustomerAnswer);
-        examPaperQuestionCustomerAnswerMapper.insert(examPaperQuestionCustomerAnswer);
+//        examPaperQuestionCustomerAnswerMapper.insert(examPaperQuestionCustomerAnswer);
         return examPaperQuestionCustomerAnswer;
     }
 

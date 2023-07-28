@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.web.back.domain.*;
 import com.web.back.domain.enums.QuestionTypeEnum;
 import com.web.back.event.CalculateExamPaperAnswerCompleteEvent;
+import com.web.back.event.UserEvent;
 import com.web.back.service.*;
 import com.web.back.state.ResposeResult;
 import com.web.back.state.RestResponse;
@@ -55,8 +56,10 @@ public class ExamPaperAnswerController {
     private final StudentService studentService;
 
     private final BlindBoxService blindBoxService;
+
+    private final UserEventLogService userEventLogService;
     @Autowired
-    public ExamPaperAnswerController(ExamPaperAnswerService examPaperAnswerService, SubjectService subjectService, ApplicationEventPublisher eventPublisher, ExamPaperService examPaperService, TeacherService teacherService, StudentService studentService, BlindBoxService blindBoxService) {
+    public ExamPaperAnswerController(ExamPaperAnswerService examPaperAnswerService, SubjectService subjectService, ApplicationEventPublisher eventPublisher, ExamPaperService examPaperService, TeacherService teacherService, StudentService studentService, BlindBoxService blindBoxService, UserEventLogService userEventLogService) {
         this.examPaperAnswerService = examPaperAnswerService;
         this.subjectService = subjectService;
         this.eventPublisher = eventPublisher;
@@ -64,6 +67,7 @@ public class ExamPaperAnswerController {
         this.teacherService = teacherService;
         this.studentService = studentService;
         this.blindBoxService = blindBoxService;
+        this.userEventLogService = userEventLogService;
     }
 
     /**
@@ -105,14 +109,16 @@ public class ExamPaperAnswerController {
         Integer userScore = examPaperAnswer.getUserScore();
         System.out.println("userScore:"+userScore);
         String scoreVm = ExamUtil.scoreToVM(userScore);
-//        UserEventLog userEventLog = new UserEventLog(user.getId(), user.getUserName(), user.getRealName(), new Date());
-//        String content = user.getUserName() + " 提交试卷：" + examPaperAnswerInfo.getExamPaper().getName()
-//                + " 得分：" + scoreVm
-//                + " 耗时：" + ExamUtil.secondToVM(examPaperAnswer.getDoTime());
-//        userEventLog.setContent(content);
-//        eventPublisher.publishEvent(new CalculateExamPaperAnswerCompleteEvent(examPaperAnswerInfo));
-//        eventPublisher.publishEvent(new UserEvent(userEventLog));
-        examPaperAnswerService.insert(examPaperAnswer); //将做题记录写入库
+        UserEventLog userEventLog = new UserEventLog(uid, "学生一", new Date());
+        String content = "学生一" + " 提交试卷：" + examPaperAnswerInfo.getExamPaper().getName()
+                + " 得分：" + scoreVm
+                + " 耗时：" + ExamUtil.secondToVM(examPaperAnswer.getDoTime());
+        userEventLog.setContent(content);
+//        userEventLogService.insert(userEventLog);
+        eventPublisher.publishEvent(new CalculateExamPaperAnswerCompleteEvent(examPaperAnswerInfo));
+        eventPublisher.publishEvent(new UserEvent(userEventLog));
+//        examPaperAnswerService.insert(examPaperAnswer); //将做题记录写入库
+        System.out.println("答题试卷的id为："+examPaperAnswer.getId());
         return RestResponse.ok(scoreVm);
     }
 
