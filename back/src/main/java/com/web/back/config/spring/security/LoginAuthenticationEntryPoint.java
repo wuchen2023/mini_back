@@ -4,6 +4,7 @@ import com.web.back.base.SystemCode;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import java.io.IOException;
  * @DESC:webadmin登录入口
  */
 @Component
+@CrossOrigin("http://1.117.75.111:8003")
 public final class LoginAuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint {
     public LoginAuthenticationEntryPoint(){
         super("/api/user/login");

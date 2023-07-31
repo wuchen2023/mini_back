@@ -203,6 +203,14 @@ public class StudentController {
         }
     }
 
+    @ResponseBody
+    @ApiOperation("获取已经签到和未签到的学生信息,list中第一个为签到的list,第二个为未签到的")
+    @GetMapping("get_sign_in_detail")
+    public List<List<Student>> get_no_sign_in(@RequestParam String course_name, @RequestParam Integer teacher_sign_in_id)
+    {
+        return studentService.get_qiandao_detail(course_name, teacher_sign_in_id);
+    }
+
 
     //TODO
     @ResponseBody

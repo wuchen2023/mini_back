@@ -88,4 +88,19 @@ public class Student implements Serializable {
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj == null || !(obj instanceof Student))
+        {
+            return false;
+        }
+        if(obj == this)
+        {
+            return true;
+        }
+        Student other = (Student) obj;
+        return this.account.equals(other.getAccount());
+    }
 }
