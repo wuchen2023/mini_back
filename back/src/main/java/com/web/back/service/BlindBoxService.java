@@ -19,4 +19,6 @@ public interface BlindBoxService extends IService<BlindBox> {
     public List<BlindBox> blindbox_view(String stu_account, Integer exam_paper_id);
 
     public List<BlindBox> blindbox_view_history(String class_name, String stu_account, String teacher_account);
+
+    public List<BlindBox> view_result(String stuAccount);
 }

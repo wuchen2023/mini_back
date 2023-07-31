@@ -39,4 +39,13 @@
             </if>
         </where>
     </select>
+
+    <select id="view_result" resultMap="BaseResultMap">
+        SELECT *
+        FROM blind_box
+        WHERE stu_account = #{studentAccount}
+          AND is_right IS NULL
+          AND true_answer IS NULL
+            LIMIT 1
+    </select>
 </mapper>

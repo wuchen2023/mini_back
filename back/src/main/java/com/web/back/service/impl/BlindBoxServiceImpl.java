@@ -68,6 +68,18 @@ public class BlindBoxServiceImpl extends ServiceImpl<BlindBoxMapper, BlindBox>
             return null;
         }
     }
+    @Override
+    public List<BlindBox> view_result(String stuAccount){
+        try{
+            List<BlindBox> blindBoxList = new ArrayList<>();
+            blindBoxList = blindBoxMapper.view_result(stuAccount);
+            System.out.println("学生查询当前老师抽取情况");
+            return blindBoxList;
+        }catch (Exception e){
+            return null;
+        }
+    }
+
 
 }
 

@@ -206,6 +206,12 @@ public class BlindboxController {
         }
     }
 
+    @ResponseBody
+    @ApiOperation("学生查看老师盲盒是否抽到自己")
+    @PostMapping("view_result")
+    public List<BlindBox> viewResult(@RequestParam String stuAccount){
+        return blindBoxService.view_result(stuAccount);
+    }
 
 
 }
