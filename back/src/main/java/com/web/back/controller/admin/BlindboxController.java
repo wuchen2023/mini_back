@@ -97,9 +97,10 @@ public class BlindboxController {
          */
         StudentClass studentClass = studentClassService.get_student(className);
         Integer student_id = studentClass.getStudentId();
-        String name = studentService.student_id_get_name(student_id);
+        Student student = studentService.student_id_get_name(student_id);
         StudentClassResponseVM studentClassResponseVM = new StudentClassResponseVM();
-        studentClassResponseVM.setName(name);
+        studentClassResponseVM.setStu_name(student.getName());
+        studentClassResponseVM.setStu_account(student.getAccount());
         studentClassResponseVM.setClass_name(className);
 
         return RestResponse.ok(studentClassResponseVM);

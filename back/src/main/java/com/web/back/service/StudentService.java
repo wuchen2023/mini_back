@@ -33,7 +33,7 @@ public interface StudentService extends IService<Student> {
 
     public List<Student> get_all_students();
 
-    public String student_id_get_name(Integer student_id);
+    public Student student_id_get_name(Integer student_id);
 
     public ResposeResult add_group(Grouping grouping, Integer group_number, Integer group_id);
 
