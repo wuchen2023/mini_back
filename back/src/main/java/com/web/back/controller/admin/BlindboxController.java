@@ -1,6 +1,7 @@
 package com.web.back.controller.admin;
 
 import com.alibaba.druid.support.logging.Log;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 import com.web.back.domain.*;
@@ -91,7 +92,7 @@ public class BlindboxController {
     @ResponseBody
     @ApiOperation("抽取一位学生返回学生的姓名和班级名称")
     @PostMapping("get_student")
-    public RestResponse<StudentClassResponseVM> get_student(@RequestParam String className) {
+    public RestResponse<StudentClassResponseVM> get_student(@RequestParam String className, @RequestParam String teacherAccount) {
         /**
          * 传入当前班级的名称，查询出所在班级中所有的学生的id，然后再随机抽一个id，再在学生表中获取学生的信息。
          */
@@ -102,7 +103,9 @@ public class BlindboxController {
         studentClassResponseVM.setStu_name(student.getName());
         studentClassResponseVM.setStu_account(student.getAccount());
         studentClassResponseVM.setClass_name(className);
-
+        //抽完学生后就插入blind_box表中
+        BlindBox blindBox = new BlindBox(student.getAccount(),teacherAccount, className);
+        blindBoxMapper.insert(blindBox);
         return RestResponse.ok(studentClassResponseVM);
     }
 
@@ -113,40 +116,56 @@ public class BlindboxController {
     @ResponseBody
     @ApiOperation("随机抽一道题")
     @PostMapping("blindbox")
-    public RestResponse<ExamPaperEditRequestVM> blindbox(@RequestParam String coursename, @RequestParam String stuaccount, @RequestParam String teacher_account) {
+//    public RestResponse<ExamPaperEditRequestVM> blindbox(@RequestParam Integer blindBoxId,@RequestParam String className, @RequestParam String stuAccount, @RequestParam String teacherAccount) {
+    public RestResponse<ExamPaperEditRequestVM> blindbox(@RequestParam Integer blindBoxId) {
         System.out.println("查询的结果是：" + questionService.selectAllCount());
-        if (questionService.selectAllCount() > 0) {
-            List<Integer> questionNumbers = questionService.findAllQuestionIds();
-            System.out.println("题库中已有的题目号为：" + questionNumbers);
-            Integer randomQuestionNumber = getRandomQuestionNumber(questionNumbers);
-            System.out.println("随机选中的题号是：" + randomQuestionNumber);
-            QuestionEditRequestVM questionVM = questionService.getQuestionEditRequestVM(randomQuestionNumber);
-            //下面把抽到的一道题目设置为一套试卷
-            ExamPaperEditRequestVM examPaperEditRequestVM = new ExamPaperEditRequestVM();
-            examPaperEditRequestVM.setSubjectId(1); //这里学科该怎么设置成不同的呢？或者是对应的学科
-            examPaperEditRequestVM.setPaperType(1);
-            examPaperEditRequestVM.setCourseName(coursename);
-            examPaperEditRequestVM.setStuAccount(stuaccount);
-            //还没有校验学生在不在班级，班级有没有存在
-            examPaperEditRequestVM.setName(createNewName(coursename, stuaccount));
-            examPaperEditRequestVM.setSuggestTime(2);
+        //根据blindboxid查询到该条记录，并获取数据
+        QueryWrapper queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id",blindBoxId);
+        BlindBox blindBox = blindBoxMapper.selectOne(queryWrapper);
+        if(blindBox.getExam_paper_id()!=null && blindBox.getStu_answer()==null){
+            ExamPaper examPaper = examPaperService.selectById(blindBox.getExam_paper_id());
+            ExamPaperEditRequestVM newVM1 = examPaperService.examPaperToVM(examPaper.getId());
+            newVM1.setMention("您已抽过题，请开始答题吧！");
+            return RestResponse.ok(newVM1);
+        }else{
+            if (questionService.selectAllCount() > 0) {
+                List<Integer> questionNumbers = questionService.findAllQuestionIds();
+                System.out.println("题库中已有的题目号为：" + questionNumbers);
+                Integer randomQuestionNumber = getRandomQuestionNumber(questionNumbers);
+                System.out.println("随机选中的题号是：" + randomQuestionNumber);
+                QuestionEditRequestVM questionVM = questionService.getQuestionEditRequestVM(randomQuestionNumber);
+                //下面把抽到的一道题目设置为一套试卷
+                ExamPaperEditRequestVM examPaperEditRequestVM = new ExamPaperEditRequestVM();
+                examPaperEditRequestVM.setSubjectId(1); //这里学科该怎么设置成不同的呢？或者是对应的学科
+                examPaperEditRequestVM.setPaperType(1);
+                examPaperEditRequestVM.setCourseName(blindBox.getClass_name());
+                examPaperEditRequestVM.setStuAccount(blindBox.getStu_account());
+                //还没有校验学生在不在班级，班级有没有存在
+                examPaperEditRequestVM.setName(createNewName(blindBox.getClass_name(), blindBox.getStu_account()));
+                examPaperEditRequestVM.setSuggestTime(2);
 
-            List<ExamPaperTitleItemVM> titleItems = new ArrayList<>();
-            ExamPaperTitleItemVM item1 = new ExamPaperTitleItemVM();
-            item1.setName("题目");
-            List<QuestionEditRequestVM> questionList = new ArrayList<>();
-            questionList.add(questionVM);
-            item1.setQuestionItems(questionList);
-            titleItems.add(item1);
-            examPaperEditRequestVM.setTitleItems(titleItems);
-            Student student = studentService.get_detail_by_account(stuaccount);
-            ExamPaper examPaper = examPaperService.savePaperFromVM_stu(examPaperEditRequestVM, student);
-            ExamPaperEditRequestVM newVM = examPaperService.examPaperToVM(examPaper.getId());
-            // 在blind_box中插入相关数据
-            BlindBox blindBox = new BlindBox(coursename,stuaccount, examPaper.getId(), teacher_account);
-            blindBoxMapper.insert(blindBox);
-            return RestResponse.ok(newVM);
+                List<ExamPaperTitleItemVM> titleItems = new ArrayList<>();
+                ExamPaperTitleItemVM item1 = new ExamPaperTitleItemVM();
+                item1.setName("题目");
+                List<QuestionEditRequestVM> questionList = new ArrayList<>();
+                questionList.add(questionVM);
+                item1.setQuestionItems(questionList);
+                titleItems.add(item1);
+                examPaperEditRequestVM.setTitleItems(titleItems);
+                Student student = studentService.get_detail_by_account(blindBox.getStu_account());
+                ExamPaper examPaper = examPaperService.savePaperFromVM_stu(examPaperEditRequestVM, student);
+                ExamPaperEditRequestVM newVM = examPaperService.examPaperToVM(examPaper.getId());
+                // 在blind_box中插入相关数据
+//            BlindBox blindBox = new BlindBox(coursename,stuaccount, examPaper.getId(), teacher_account);
+//            blindBoxMapper.insert(blindBox);
+
+                BlindBox blindBox1 = new BlindBox(examPaper.getId());
+                blindBoxMapper.update(blindBox1,queryWrapper);
+                return RestResponse.ok(newVM);
+            }
         }
+
         return null;
     }
     public  String createNewName(String coursename, String stuaccount) {

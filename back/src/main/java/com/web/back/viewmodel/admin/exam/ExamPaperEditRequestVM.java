@@ -9,6 +9,7 @@ import java.util.List;
 
 
 public class ExamPaperEditRequestVM {
+    private  String mention;
     private Integer id;
     //    @NotNull
     private Integer level;
@@ -33,6 +34,14 @@ public class ExamPaperEditRequestVM {
     private List<ExamPaperTitleItemVM> titleItems;
 
     private String score;
+
+    public String getMention() {
+        return mention;
+    }
+
+    public void setMention(String mention) {
+        this.mention = mention;
+    }
 
     public Integer getId() {
         return id;
