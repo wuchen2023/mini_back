@@ -9,6 +9,7 @@
             <result property="stu_account" column="stu_account" jdbcType="VARCHAR"/>
             <result property="exam_paper_id" column="exam_paper_id" jdbcType="INTEGER"/>
             <result property="is_right" column="is_right" jdbcType="INTEGER"/>
+            <result property="stu_answer" column="stu_answer" jdbcType="VARCHAR"/>
             <result property="true_answer" column="true_answer" jdbcType="VARCHAR"/>
             <result property="teacher_account" column="teacher_account" jdbcType="VARCHAR"/>
             <result property="class_name" column="class_name" jdbcType="VARCHAR"/>
@@ -18,7 +19,7 @@
 
     <sql id="Base_Column_List">
         id,stu_account,exam_paper_id,is_right,
-        true_answer,teacher_account,class_name
+        true_answer,teacher_account,class_name,stu_answer
     </sql>
 
     <select id="findInfo" resultMap="BaseResultMap">
@@ -48,4 +49,7 @@
           AND true_answer IS NULL
             LIMIT 1
     </select>
+
+
+
 </mapper>

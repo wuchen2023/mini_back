@@ -197,9 +197,10 @@ public class BlindboxController {
     @ApiOperation("盲盒某一条记录删除，点击某一条记录，输入该条记录的id")
     @PostMapping("blindbox_delete")
     public ResposeResult blindbox_delete(@RequestParam Integer id){
-
+        //这里仅仅是删除盲盒记录，但是和盲盒记录关联的学生答题试卷记录和答题试卷并没有删除
         try{
             blindBoxMapper.deleteById(id);
+//            blindBoxMapper.delete_by_id_and_delete_exam(id);
             return new ResposeResult(1, "删除成功");
         }catch (Exception e){
             return new ResposeResult(0, "删除失败");

@@ -41,17 +41,18 @@ public class BlindBox implements Serializable {
 
     private String class_name;
 
-
+    private  String stu_answer;
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    public BlindBox(String stu_account, Integer exam_paper_id, Integer is_right, String true_answer, String teacher_account, String class_name){
+    public BlindBox(String stu_account, Integer exam_paper_id, Integer is_right, String true_answer, String teacher_account, String class_name,String stu_answer){
         this.stu_account =stu_account;
         this.exam_paper_id = exam_paper_id;
         this.is_right = is_right;
         this.true_answer = true_answer;
         this.teacher_account = teacher_account;
         this.class_name = class_name;
+        this.stu_answer = stu_answer;
     }
 
     public BlindBox(String coursename, String stuaccount, Integer examPaper_id, String teacher_account){
@@ -115,5 +116,13 @@ public class BlindBox implements Serializable {
 
     public void setClass_name(String class_name){
         this.class_name =class_name;
+    }
+
+    public String getStu_answer() {
+        return stu_answer;
+    }
+
+    public void setStu_answer(String stu_answer) {
+        this.stu_answer = stu_answer;
     }
 }

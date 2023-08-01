@@ -34,4 +34,6 @@ public interface ExamPaperMapper extends BaseMapper<ExamPaper>{
     int clearTaskPaper(@Param("paperIds") List<Integer> paperIds);
 
     List<ExamPaper> examPage(ExamPaperPageVM requestVM);
+
+//    int delete_by_examPaperId(Integer exam_paper_id);
 }

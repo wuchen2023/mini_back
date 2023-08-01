@@ -21,6 +21,8 @@ public interface BlindBoxMapper extends BaseMapper<BlindBox> {
 
     List<BlindBox> view_result(String stuAccount);
 
+//    int delete_by_id_and_delete_exam(Integer id);
+
 }
 
 
