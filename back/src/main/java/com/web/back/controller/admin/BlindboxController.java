@@ -9,13 +9,17 @@ import com.web.back.mapper.BlindBoxMapper;
 import com.web.back.service.*;
 import com.web.back.state.ResposeResult;
 import com.web.back.state.RestResponse;
+import com.web.back.utils.DateTimeUtil;
 import com.web.back.utils.ModelMapperSingle;
 import com.web.back.utils.PageInfoHelper;
+import com.web.back.viewmodel.admin.blindbox.PageInfoBlindBoxRequestVM;
+import com.web.back.viewmodel.admin.blindbox.ViewHistoryVM;
 import com.web.back.viewmodel.admin.exam.ExamPaperEditRequestVM;
 import com.web.back.viewmodel.admin.exam.ExamPaperTitleItemVM;
 import com.web.back.viewmodel.admin.question.QuestionEditRequestVM;
 import com.web.back.viewmodel.admin.studentclass.StudentClassPageRequestVM;
 import com.web.back.viewmodel.admin.studentclass.StudentClassResponseVM;
+import com.web.back.viewmodel.student.exam.ExamPaperPageResponseVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.modelmapper.ModelMapper;
@@ -120,9 +124,10 @@ public class BlindboxController {
     public RestResponse<ExamPaperEditRequestVM> blindbox(@RequestParam Integer blindBoxId) {
         System.out.println("查询的结果是：" + questionService.selectAllCount());
         //根据blindboxid查询到该条记录，并获取数据
-        QueryWrapper queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("id",blindBoxId);
-        BlindBox blindBox = blindBoxMapper.selectOne(queryWrapper);
+//        QueryWrapper queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq("id",blindBoxId);
+//        BlindBox blindBox = blindBoxMapper.selectOne(queryWrapper);
+        BlindBox blindBox = blindBoxMapper.findInfoById(blindBoxId);
         if(blindBox.getExam_paper_id()!=null && blindBox.getStu_answer()==null){
             ExamPaper examPaper = examPaperService.selectById(blindBox.getExam_paper_id());
             ExamPaperEditRequestVM newVM1 = examPaperService.examPaperToVM(examPaper.getId());
@@ -159,7 +164,8 @@ public class BlindboxController {
                 // 在blind_box中插入相关数据
 //            BlindBox blindBox = new BlindBox(coursename,stuaccount, examPaper.getId(), teacher_account);
 //            blindBoxMapper.insert(blindBox);
-
+                QueryWrapper queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("id",blindBoxId);
                 BlindBox blindBox1 = new BlindBox(examPaper.getId());
                 blindBoxMapper.update(blindBox1,queryWrapper);
                 return RestResponse.ok(newVM);
@@ -205,10 +211,28 @@ public class BlindboxController {
      */
 
     @ResponseBody
-    @ApiOperation("盲盒老师或者学生查看盲盒记录，只能返回抽到过哪些学生以及回答正确的情况，老师端就只需要输入课程名和老师账户，学生就输入课程名和学生账户")
+    @ApiOperation("盲盒老师或者学生查看盲盒记录，查看该老师获学所有的盲盒记录，老师端就只需要输入课程名和老师账户，学生就输入课程名和学生账户")
     @PostMapping("blindbox_view_history")
-    public List<BlindBox>  blindbox_view_history(@RequestParam(required = true) String class_name, @RequestParam(required = false) String stu_account, @RequestParam(required = false) String teacher_account){
-            return blindBoxService.blindbox_view_history(class_name, stu_account, teacher_account);
+    public RestResponse<PageInfo<ViewHistoryVM>> blindbox_view_history(@RequestParam Integer pageIndex, @RequestParam Integer pageSize, @RequestParam(required = true) String class_name, @RequestParam(required = false) String stu_account, @RequestParam(required = false) String teacher_account){
+        PageInfoBlindBoxRequestVM model = new PageInfoBlindBoxRequestVM();
+        model.setClass_name(class_name);
+        model.setStu_account(stu_account);
+        model.setTeacher_account(teacher_account);
+        model.setPageIndex(pageIndex);
+        model.setPageSize(pageSize);
+        PageInfo<BlindBox> pageInfo =  blindBoxService.blindBoxPage(model);//这里就将请求的model带入进行查询了
+        PageInfo<ViewHistoryVM> page = PageInfoHelper.copyMap(pageInfo, e -> {
+            ViewHistoryVM vm = modelMapper.map(e, ViewHistoryVM.class);
+            if(vm.getExam_paper_id()!=null){ //必须满足抽题了有试卷才能写入题目
+                ExamPaperEditRequestVM vm1 = examPaperService.examPaperToVM(vm.getExam_paper_id());
+                String question_title = vm1.getTitleItems().get(0).getQuestionItems().get(0).getTitle();
+                System.out.println(question_title);
+                vm.setQuestion_title(question_title);
+            }
+
+            return vm;
+        });
+        return RestResponse.ok(page);
     }
 
 

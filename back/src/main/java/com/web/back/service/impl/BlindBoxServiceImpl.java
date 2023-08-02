@@ -2,10 +2,13 @@ package com.web.back.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.web.back.service.BlindBoxService;
 import com.web.back.domain.BlindBox;
 import com.web.back.mapper.BlindBoxMapper;
 import com.web.back.state.ResposeResult;
+import com.web.back.viewmodel.admin.blindbox.PageInfoBlindBoxRequestVM;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -57,17 +60,7 @@ public class BlindBoxServiceImpl extends ServiceImpl<BlindBoxMapper, BlindBox>
             return null;
         }
     }
-    @Override
-    public List<BlindBox> blindbox_view_history(String class_name, String stu_account, String teacher_account){
-        try{
-            List<BlindBox> blindBoxList = new ArrayList<>();
-            blindBoxList = blindBoxMapper.findInfo_condition(class_name, stu_account, teacher_account);
-            System.out.println("按条件查询盲盒历史记录");
-            return blindBoxList;
-        }catch (Exception e){
-            return null;
-        }
-    }
+
     @Override
     public List<BlindBox> view_result(String stuAccount){
         try{
@@ -78,6 +71,11 @@ public class BlindBoxServiceImpl extends ServiceImpl<BlindBoxMapper, BlindBox>
         }catch (Exception e){
             return null;
         }
+    }
+    @Override
+    public  PageInfo<BlindBox> blindBoxPage(PageInfoBlindBoxRequestVM requestVM){
+        return PageHelper.startPage(requestVM.getPageIndex(), requestVM.getPageSize(), "id desc").doSelectPageInfo(() ->
+                blindBoxMapper.blindBoxPage(requestVM));
     }
 
 

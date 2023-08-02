@@ -13,9 +13,10 @@
             <result property="true_answer" column="true_answer" jdbcType="VARCHAR"/>
             <result property="teacher_account" column="teacher_account" jdbcType="VARCHAR"/>
             <result property="class_name" column="class_name" jdbcType="VARCHAR"/>
-
-
     </resultMap>
+
+
+
 
     <sql id="Base_Column_List">
         id,stu_account,exam_paper_id,is_right,
@@ -25,21 +26,10 @@
     <select id="findInfo" resultMap="BaseResultMap">
         SELECT * FROM blind_box WHERE stu_account = #{stu_account, jdbcType=VARCHAR} and exam_paper_id = #{exam_paper_id, jdbcType=INTEGER}
     </select>
-
-    <select id="findInfo_condition" resultMap="BaseResultMap">
-        SELECT
-            *
-            FROM blind_box
-        <where>
-            and class_name =#{class_name}
-            <if test="stu_account != null and stu_account != '' ">
-                and stu_account=#{stu_account}
-            </if>
-            <if test="teacher_account != null and teacher_account != '' ">
-                and teacher_account=#{teacher_account}
-            </if>
-        </where>
+    <select id="findInfoById" resultMap="BaseResultMap">
+        SELECT * FROM blind_box WHERE id = #{id, jdbcType=INTEGER}
     </select>
+
 
     <select id="view_result" resultMap="BaseResultMap">
         SELECT *
@@ -50,7 +40,19 @@
           AND stu_answer IS NULL
             LIMIT 1
     </select>
-
-
+    <select id="blindBoxPage" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.admin.blindbox.PageInfoBlindBoxRequestVM">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM blind_box
+        <where>
+            and class_name =#{class_name}
+            <if test="stu_account != null and stu_account != '' ">
+                and stu_account=#{stu_account}
+            </if>
+            <if test="teacher_account != null and teacher_account != '' ">
+                and teacher_account=#{teacher_account}
+            </if>
+        </where>
+    </select>
 
 </mapper>

@@ -1,8 +1,12 @@
 package com.web.back.service;
 
+import com.github.pagehelper.PageInfo;
 import com.web.back.domain.BlindBox;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.web.back.domain.ExamPaper;
 import com.web.back.state.ResposeResult;
+import com.web.back.viewmodel.admin.blindbox.PageInfoBlindBoxRequestVM;
+import com.web.back.viewmodel.student.exam.ExamPaperPageVM;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -18,7 +22,8 @@ public interface BlindBoxService extends IService<BlindBox> {
 
     public List<BlindBox> blindbox_view(String stu_account, Integer exam_paper_id);
 
-    public List<BlindBox> blindbox_view_history(String class_name, String stu_account, String teacher_account);
 
     public List<BlindBox> view_result(String stuAccount);
+
+    PageInfo<BlindBox> blindBoxPage(PageInfoBlindBoxRequestVM requestVM);
 }
