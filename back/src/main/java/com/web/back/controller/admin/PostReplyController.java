@@ -30,7 +30,7 @@ public class PostReplyController {
     @ApiOperation("老师添加回复，回复某条帖子")
     @PostMapping("/teacher/add_reply")
     public ResposeResult tea_add_post_reply(@RequestParam Integer postId, @RequestParam String replyContent,@RequestParam String teacher_account){
-        PostReply postReply = new PostReply(postId,replyContent, "tea_account:"+teacher_account);
+        PostReply postReply = new PostReply(postId,replyContent, teacher_account);
         return postReplyService.add_reply(postReply);
     }
 
@@ -38,7 +38,7 @@ public class PostReplyController {
     @ApiOperation("学生添加回复，回复某条帖子")
     @PostMapping("/student/add_reply")
     public ResposeResult stu_add_post_reply(@RequestParam Integer postId, @RequestParam String replyContent,@RequestParam String student_account){
-        PostReply postReply = new PostReply(postId,replyContent, "stu_account:"+student_account);
+        PostReply postReply = new PostReply(postId,replyContent, student_account);
         return postReplyService.add_reply(postReply);
     }
 

@@ -59,7 +59,9 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post> implements Po
     @Override
     public ResposeResult add_post(Post post){
         try{
-            QueryWrapper queryWrapper = new QueryWrapper<>().eq("title",post.getTitle());
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("title",post.getTitle());
+            queryWrapper.eq("content",post.getContent());
             if(postMapper.exists(queryWrapper)){
                 throw new Exception();
             }

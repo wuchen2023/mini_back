@@ -71,7 +71,7 @@ public class PostController {
     @ApiOperation("学生添加帖子")
     public ResposeResult stu_add_post(@RequestParam String student_account,@RequestParam String className, @RequestParam String title, @RequestParam String content){
         System.out.println("学生登录的账户是："+student_account);
-        Post post = new Post(title, content,"stu_account:"+student_account,className);
+        Post post = new Post(title, content,student_account,className);
         return postService.add_post(post);
 
 
@@ -83,7 +83,7 @@ public class PostController {
     public ResposeResult tea_add_post(@RequestParam String teacher_account, @RequestParam String title, @RequestParam String content,@RequestParam String className){
 
         System.out.println("老师登录的账户是："+teacher_account);
-        Post post = new Post(title, content,"tea_account:"+teacher_account,className);
+        Post post = new Post(title, content,teacher_account,className);
         return postService.add_post(post);
 
     }
