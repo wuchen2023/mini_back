@@ -54,6 +54,7 @@ public interface StudentService extends IService<Student> {
 
 
     Student getStuByStuName(String name);
+    String  getStuNameByStuAccount(String stuAccount);
 
     int updateByIdFilter(Student record);
 

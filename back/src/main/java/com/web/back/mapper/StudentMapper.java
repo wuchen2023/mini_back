@@ -19,6 +19,7 @@ public interface StudentMapper extends BaseMapper<Student> {
 
     Student getStuByStuName(String name);
 
+    String getStuNameByStuAccount(String stuAccount);
     int updateByPrimaryKeySelective(Student record);
     int insertSelective(Student record);
 

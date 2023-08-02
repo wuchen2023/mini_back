@@ -333,6 +333,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         return studentMapper.getStuByStuName(name);
     }
 
+    @Override
+    public  String getStuNameByStuAccount(String stuAccount){
+        return studentMapper.getStuNameByStuAccount(stuAccount);
+
+    }
+
     //重写
     @Override
     public int updateByIdFilter(Student record){

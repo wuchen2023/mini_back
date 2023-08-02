@@ -46,6 +46,12 @@
         where name=#{value} limit 1
     </select>
 
+    <select id="getStuNameByStuAccount" resultType="java.lang.String">
+        select name
+        from student
+        where account=#{stuAccount} limit 1
+    </select>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.web.back.domain.Student">
         update student
         <set>

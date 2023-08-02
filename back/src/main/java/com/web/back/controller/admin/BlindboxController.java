@@ -59,6 +59,7 @@ public class BlindboxController {
     private final BlindBoxService blindBoxService;
 
     private final BlindBoxMapper blindBoxMapper;
+
     @Autowired
     public BlindboxController(QuestionService questionService, TextContentService textContentService, StudentService studentService, StudentClassService studentClassService, ExamPaperService examPaperService, TeacherService teacherService, BlindBoxService blindBoxService, BlindBoxMapper blindBoxMapper) {
         this.questionService = questionService;
@@ -223,6 +224,8 @@ public class BlindboxController {
         PageInfo<BlindBox> pageInfo =  blindBoxService.blindBoxPage(model);//这里就将请求的model带入进行查询了
         PageInfo<ViewHistoryVM> page = PageInfoHelper.copyMap(pageInfo, e -> {
             ViewHistoryVM vm = modelMapper.map(e, ViewHistoryVM.class);
+            String stu_name = studentService.getStuNameByStuAccount(vm.getStu_account());
+            vm.setStu_name(stu_name);
             if(vm.getExam_paper_id()!=null){ //必须满足抽题了有试卷才能写入题目
                 ExamPaperEditRequestVM vm1 = examPaperService.examPaperToVM(vm.getExam_paper_id());
                 String question_title = vm1.getTitleItems().get(0).getQuestionItems().get(0).getTitle();

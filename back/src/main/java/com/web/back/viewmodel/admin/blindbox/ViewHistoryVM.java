@@ -13,20 +13,31 @@ public class ViewHistoryVM {
     /**
      *
      */
+    private String stu_name;
+
     private String stu_account;
+    private String teacher_account;
 
     private Integer exam_paper_id;
     private Integer is_right;
 
     private String true_answer;
 
-    private String teacher_account;
 
-    private String class_name;
 
     private String stu_answer;
+    private String class_name;
 
     private String question_title;
+
+
+    public String getStu_name() {
+        return stu_name;
+    }
+
+    public void setStu_name(String stu_name) {
+        this.stu_name = stu_name;
+    }
 
     public Integer getId() {
         return id;
