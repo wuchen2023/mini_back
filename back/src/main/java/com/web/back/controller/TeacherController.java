@@ -208,12 +208,12 @@ public class TeacherController {
     @ResponseBody
     @ApiOperation("老师进行分组，同时得到每组的分组人数,和分组表的id,group_type为分组的目的")
     @PostMapping("create_group_task")
-    public ResposeResult<TeacherGroupResult> create_group_task(@RequestParam String teacher_account, @RequestParam Integer teacher_id, @RequestParam String code, @RequestParam Integer group_number, @RequestParam String group_type)
+    public ResposeResult<TeacherGroupResult> create_group_task(@RequestParam String teacher_account, @RequestParam Integer teacher_id, @RequestParam String code, @RequestParam Integer group_number, @RequestParam String group_type, @RequestParam String course_name)
     {
         if(code.equals(redis_get(teacher_account)))
         {
             Group group = new Group(group_number, group_type);
-            return teacherService.create_group_task(group, teacher_id);
+            return teacherService.create_group_task(group, teacher_id, course_name);
         }else
         {
             return new ResposeResult<>(0, "未登录，请登录！", null);
@@ -271,9 +271,9 @@ public class TeacherController {
     @ResponseBody
     @ApiOperation("获取老师所有的分组任务")
     @PostMapping("get_all_group_task")
-    public List<TeacherGroupRes> get_all_teacher_group_task(@RequestParam Integer teacher_id)
+    public List<TeacherGroupRes> get_all_teacher_group_task(@RequestParam Integer teacher_id, @RequestParam String course_name)
     {
-        return teacherService.get_all_teacher_group_task(teacher_id);
+        return teacherService.get_all_teacher_group_task(teacher_id, course_name);
     }
 
     @ResponseBody

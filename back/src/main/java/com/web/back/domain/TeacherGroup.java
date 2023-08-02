@@ -33,11 +33,14 @@ public class TeacherGroup implements Serializable {
      */
     private Integer groupId;
 
+    private String course_name;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
-    public TeacherGroup(Integer teacherId, Integer groupId) {
+    public TeacherGroup(Integer teacherId, Integer groupId, String course_name) {
         this.teacherId = teacherId;
         this.groupId = groupId;
+        this.course_name = course_name;
     }
 }

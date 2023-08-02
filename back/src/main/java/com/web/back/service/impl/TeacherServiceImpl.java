@@ -248,7 +248,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
     }
 
     @Override
-    public ResposeResult<TeacherGroupResult> create_group_task(Group group, Integer teacher_id) {
+    public ResposeResult<TeacherGroupResult> create_group_task(Group group, Integer teacher_id, String course_name) {
         try {
             Group group1 = groupMapper.get_one(group.getGroupType());
             if(group1 != null)
@@ -258,10 +258,11 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
             groupMapper.insert_one(group.getGroupSize(), group.getGroupType());
             //由于自己完善的方法，所没有自动组装
             group1 = groupMapper.get_one(group.getGroupType());
-            TeacherGroup teacherGroup = new TeacherGroup(teacher_id, group1.getId());
+            TeacherGroup teacherGroup = new TeacherGroup(teacher_id, group1.getId(), course_name);
             QueryWrapper queryWrapper1 = new QueryWrapper<>();
             queryWrapper1.eq("teacher_id", teacher_id);
-            queryWrapper1.eq("group_id", group.getId());
+            queryWrapper1.eq("group_id", group1.getId());
+            queryWrapper1.eq("course_name", course_name);
             TeacherGroup teacherGroup1 = teacherGroupMapper.selectOne(queryWrapper1);
             if(teacherGroup1 != null)
             {
@@ -320,8 +321,8 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
     }
 
     @Override
-    public List<TeacherGroupRes> get_all_teacher_group_task(Integer teacher_id) {
-        return teacherGroupMapper.getListWithGroupType(teacher_id);
+    public List<TeacherGroupRes> get_all_teacher_group_task(Integer teacher_id, String course_name) {
+        return teacherGroupMapper.getListWithGroupType(teacher_id, course_name);
     }
 
     @Override

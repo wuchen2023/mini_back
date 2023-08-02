@@ -37,7 +37,7 @@ public interface TeacherService extends IService<Teacher> {
 
     public List<Teacher> get_all_teacher();
 
-    public ResposeResult<TeacherGroupResult> create_group_task(Group group, Integer teacher_id);
+    public ResposeResult<TeacherGroupResult> create_group_task(Group group, Integer teacher_id, String course_name);
 
     public ResposeResult add_group_of_number(StudentGroup studentGroup);
 
@@ -47,7 +47,7 @@ public interface TeacherService extends IService<Teacher> {
 
     public List<StudentGroup> get_all_student_group_by_teacher_group_id(Integer teacher_group_id);
 
-    public List<TeacherGroupRes> get_all_teacher_group_task(Integer teacher_id);
+    public List<TeacherGroupRes> get_all_teacher_group_task(Integer teacher_id, String course_name);
 
     public Group get_group_by_group_id(Integer group_id);
 
