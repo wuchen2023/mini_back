@@ -210,8 +210,8 @@ public class ExamPaperAnswerController {
 
     @PostMapping("/blindbox_answerSubmit")
     @ApiOperation("盲盒-学生答题提交")
-    public ResposeResult blindbox_answerSubmit(@RequestParam Integer exam_paper_id, @RequestParam Integer is_right, @RequestParam String stuanswer,@RequestParam String true_answer){
-        return blindBoxService.blindbox_answerSubmit(exam_paper_id,is_right,stuanswer,true_answer);
+    public ResposeResult blindbox_answerSubmit(@RequestParam Integer blindBoxId, @RequestParam Integer is_right, @RequestParam String stuanswer,@RequestParam String true_answer){
+        return blindBoxService.blindbox_answerSubmit(blindBoxId,is_right,stuanswer,true_answer);
     }
 
     @PostMapping("/blindbox_view")
