@@ -25,6 +25,14 @@ import com.web.back.viewmodel.admin.user.UserResponseVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.Model;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,8 +42,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -343,10 +356,44 @@ public class StudentController extends BaseController {
     }
 
     @PostMapping("/api/webadmin/student/export")
-    public void export(HttpServletResponse response, Student student)
-    {
+    public void export(HttpServletResponse response, Student student) throws IOException {
         List<Student> list = studentService.selectStudentList(student);
         ExcelUtil<Student> util = new ExcelUtil<Student>(Student.class);
         util.exportExcel(response, list, "用户数据");
+//        //创建一个XSSFWorkbook对象
+//        XSSFWorkbook workbook = new XSSFWorkbook();
+//        //创建一个XSSFSheet对象，命名为"用户数据"
+//        XSSFSheet sheet = workbook.createSheet("用户数据");
+//        //创建一个XSSFRow对象，作为表头行，索引为0
+//        XSSFRow headerRow = sheet.createRow(0);
+//        //创建五个XSSFCell对象，分别设置值为"id","姓名","权限","账号","密码"
+//        headerRow.createCell(0).setCellValue("id");
+//        headerRow.createCell(1).setCellValue("姓名");
+//        headerRow.createCell(2).setCellValue("账号");
+//        headerRow.createCell(3).setCellValue("密码");
+//        //遍历list，从索引为1开始创建数据行
+//        int rowNum = 1;
+//        for (Student student1 : list) {
+//            //创建一个XSSFRow对象，作为数据行
+//            XSSFRow dataRow = sheet.createRow(rowNum);
+//            //创建五个XSSFCell对象，分别设置值为student的属性
+//            dataRow.createCell(0).setCellValue(student1.getId());
+//            dataRow.createCell(1).setCellValue(student1.getName());
+//            dataRow.createCell(2).setCellValue(student1.getAccount());
+//            dataRow.createCell(3).setCellValue(student1.getPassword());
+//            //增加行号
+//            rowNum++;
+//        }
+//        // 设置响应的内容类型和头信息
+//        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+//        response.setHeader("Content-Disposition", "attachment; filename=student_data.xlsx");
+//
+//        // 将workbook写入输出流
+//        ServletOutputStream outputStream = response.getOutputStream();
+//        workbook.write(outputStream);
+//
+//        // 关闭workbook和输出流
+//        workbook.close();
+//        outputStream.close();
     }
 }
