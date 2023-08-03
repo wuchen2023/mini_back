@@ -66,7 +66,7 @@ public class Student implements Serializable {
     private Integer role;
 
 
-    private Boolean deleted;
+//    private Boolean deleted;
 
 
     @TableField(exist = false)
@@ -87,13 +87,13 @@ public class Student implements Serializable {
     public Student(){
 
     }
-    public Boolean getDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
+//    public Boolean getDeleted() {
+//        return deleted;
+//    }
+//
+//    public void setDeleted(Boolean deleted) {
+//        this.deleted = deleted;
+//    }
 
     @Override
     public boolean equals(Object obj)
@@ -120,7 +120,6 @@ public class Student implements Serializable {
                 .append("createTime", getCreateTime())
                 .append("gender", getGender())
                 .append("role", getRole())
-                .append("deleted", getDeleted())
                 .toString();
     }
 }

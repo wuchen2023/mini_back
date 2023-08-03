@@ -3,8 +3,10 @@ package com.web.back.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.github.pagehelper.PageInfo;
+import com.web.back.controller.webadmin.BaseController;
 import com.web.back.domain.*;
 import com.web.back.domain.result.StudentClassRes;
+import com.web.back.mapper.StudentMapper;
 import com.web.back.service.AuthenticationService;
 import com.web.back.service.StudentService;
 import com.web.back.service.StudentSignInService;
@@ -41,7 +43,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @Api("学生的Api")
-public class StudentController {
+public class StudentController extends BaseController {
     @Resource
     StudentService studentService;
 
@@ -270,7 +272,7 @@ public class StudentController {
             student.setPassword(model.getPassword());
 //            student.setUserUuid(UUID.randomUUID().toString());
             student.setCreateTime(new Date());
-            student.setDeleted(false);
+//            student.setDeleted(false);
 //            student.setLastActiveTime(new Date());
 //            student.setDeleted(false);
 //            下面要进行插入的操作，不要忘记写数据库了
@@ -300,9 +302,14 @@ public class StudentController {
 
     @RequestMapping(value = "/api/webadmin/student/delete/{id}", method = RequestMethod.POST)
     public RestResponse delete(@PathVariable Integer id) {
-       Student student = studentService.getById(id);
-       student.setDeleted(true);
-       studentService.updateByIdFilter(student);
+//       Student student = studentService.getById(id);
+//       student.setDeleted(true);
+//       studentService.updateByIdFilter(student);
+        try {
+            studentService.deleteById(id);
+        }catch (Exception e){
+            return RestResponse.fail(500,"删除失败");
+        }
        return RestResponse.ok();
     }
 
@@ -313,12 +320,33 @@ public class StudentController {
         return util.importTemplateExcel("用户数据");
     }
 
+//    @PostMapping("/api/webadmin/student/importData")
+//    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+//    {
+//        ExcelUtil<Student> util = new ExcelUtil<Student>(Student.class);
+//        List<Student> userList = util.importExcel(file.getInputStream());
+//        String message = studentService.importUser(userList, updateSupport);
+//        return success(message);
+//    }
+
     @PostMapping("/api/webadmin/student/importData")
-    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) {
+        try {
+            ExcelUtil<Student> util = new ExcelUtil<>(Student.class);
+            List<Student> userList = util.importExcel(file.getInputStream());
+            String message = studentService.importUser(userList, updateSupport);
+            return success(message);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return success("Import failed: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/api/webadmin/student/export")
+    public void export(HttpServletResponse response, Student student)
     {
+        List<Student> list = studentService.selectStudentList(student);
         ExcelUtil<Student> util = new ExcelUtil<Student>(Student.class);
-        List<Student> userList = util.importExcel(file.getInputStream());
-        String message = studentService.importUser(userList, updateSupport);
-        return AjaxResult.success(message);
+        util.exportExcel(response, list, "用户数据");
     }
 }

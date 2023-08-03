@@ -65,5 +65,7 @@ public interface StudentService extends IService<Student> {
     boolean deleteById(Integer id);
 
     public String importUser(List<Student> userList, Boolean isUpdateSupport);
+    public List<Student> selectStudentList(Student student);
+
 
 }

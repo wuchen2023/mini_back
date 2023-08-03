@@ -23,6 +23,8 @@ public interface StudentMapper extends BaseMapper<Student> {
     int updateByPrimaryKeySelective(Student record);
     int insertSelective(Student record);
 
+    public List<Student> selectStudentList(Student student);
+
 
 }
 

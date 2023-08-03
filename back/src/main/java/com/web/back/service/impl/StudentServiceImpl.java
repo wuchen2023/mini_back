@@ -381,18 +381,27 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
                     BeanValidators.validateWithException(validator, student);
 //                    user.setPassword(SecurityUtils.encryptPassword(password));
 //                    user.setCreateBy(operName);
-                    studentMapper.insertSelective(student);
+                    student.setRole(1);
+                    QueryWrapper queryWrapper = new QueryWrapper<>();
+                    queryWrapper.eq("id",student.getId());
+                    Student student1 = studentMapper.selectOne(queryWrapper);
+                    if(student1!=null){
+                        studentMapper.updateByPrimaryKeySelective(student);
+                    }else{
+                        studentMapper.insertSelective(student);
+                    }
+
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、账号 " + student.getName() + " 导入成功");
                 }
-                else if (isUpdateSupport)
+                else if (u.getId()!=null)
                 {
-//                    BeanValidators.validateWithException(validator, user);
+//                    BeanValidators.validateWithException(validator, student);
 //                    checkUserAllowed(u);
 //                    checkUserDataScope(u.getUserId());
-//                    user.setUserId(u.getUserId());
+//                    student.setId(u.getId());
 //                    user.setUpdateBy(operName);
-//                    userMapper.updateUser(user);
+                    studentMapper.updateByPrimaryKeySelective(student);
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、账号 " + student.getName() + " 更新成功");
                 }
@@ -421,6 +430,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
         }
         return successMsg.toString();
     }
+
+    @Override
+    public List<Student> selectStudentList(Student student){
+        return studentMapper.selectStudentList(student);
+    }
+
 
 }
 
