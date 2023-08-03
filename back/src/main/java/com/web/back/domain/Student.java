@@ -7,8 +7,11 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.web.back.annotation.Excel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 
@@ -22,11 +25,13 @@ public class Student implements Serializable {
      * 
      */
     @TableId(type = IdType.AUTO)
+    @Excel(name = "序号", cellType = Excel.ColumnType.NUMERIC, prompt = "序号")
     private Integer id;
 
     /**
      * 
      */
+    @Excel(name = "姓名")
     private String name;
 
     /**
@@ -37,6 +42,7 @@ public class Student implements Serializable {
     /**
      * 
      */
+    @Excel(name = "学号")
     private String account;
 
     /**
@@ -102,5 +108,19 @@ public class Student implements Serializable {
         }
         Student other = (Student) obj;
         return this.account.equals(other.getAccount());
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("id", getId())
+                .append("name", getName())
+                .append("permission", getPermission())
+                .append("account", getAccount())
+                .append("createTime", getCreateTime())
+                .append("gender", getGender())
+                .append("role", getRole())
+                .append("deleted", getDeleted())
+                .toString();
     }
 }

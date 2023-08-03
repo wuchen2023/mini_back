@@ -10,9 +10,11 @@ import com.web.back.service.StudentService;
 import com.web.back.service.StudentSignInService;
 import com.web.back.state.ResposeResult;
 import com.web.back.state.RestResponse;
+import com.web.back.utils.AjaxResult;
 import com.web.back.utils.GetOnlyCode;
 import com.web.back.utils.ModelMapperSingle;
 import com.web.back.utils.PageInfoHelper;
+import com.web.back.utils.poi.ExcelUtil;
 import com.web.back.viewmodel.admin.stu.StuCreateVM;
 import com.web.back.viewmodel.admin.stu.StuPageRequestVM;
 import com.web.back.viewmodel.admin.stu.StuResponseVM;
@@ -27,8 +29,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
@@ -302,4 +306,19 @@ public class StudentController {
        return RestResponse.ok();
     }
 
+
+    @PostMapping("/api/webadmin/student/importTemplate")
+    public AjaxResult importTemplate( ){
+        ExcelUtil<Student> util = new ExcelUtil<Student>(Student.class);
+        return util.importTemplateExcel("用户数据");
+    }
+
+    @PostMapping("/api/webadmin/student/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception
+    {
+        ExcelUtil<Student> util = new ExcelUtil<Student>(Student.class);
+        List<Student> userList = util.importExcel(file.getInputStream());
+        String message = studentService.importUser(userList, updateSupport);
+        return AjaxResult.success(message);
+    }
 }

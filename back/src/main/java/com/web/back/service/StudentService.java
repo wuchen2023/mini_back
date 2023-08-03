@@ -64,4 +64,6 @@ public interface StudentService extends IService<Student> {
     //实现删除
     boolean deleteById(Integer id);
 
+    public String importUser(List<Student> userList, Boolean isUpdateSupport);
+
 }
