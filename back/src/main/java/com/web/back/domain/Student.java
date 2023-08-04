@@ -27,7 +27,8 @@ public class Student implements Serializable {
     @TableId(type = IdType.AUTO)
     @Excel(name = "序号", cellType = Excel.ColumnType.NUMERIC, prompt = "序号")
     private Integer id;
-
+    @Excel(name = "学号")
+    private String account;
     /**
      * 
      */
@@ -42,8 +43,7 @@ public class Student implements Serializable {
     /**
      * 
      */
-    @Excel(name = "学号")
-    private String account;
+
 
     /**
      * 

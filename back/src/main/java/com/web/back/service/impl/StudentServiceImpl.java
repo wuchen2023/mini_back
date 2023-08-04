@@ -382,6 +382,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
 //                    user.setPassword(SecurityUtils.encryptPassword(password));
 //                    user.setCreateBy(operName);
                     student.setRole(1);
+                    student.setPassword( student.getAccount().substring(student.getAccount().length() - 6));
                     QueryWrapper queryWrapper = new QueryWrapper<>();
                     queryWrapper.eq("id",student.getId());
                     Student student1 = studentMapper.selectOne(queryWrapper);
@@ -401,6 +402,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
 //                    checkUserDataScope(u.getUserId());
 //                    student.setId(u.getId());
 //                    user.setUpdateBy(operName);
+                    student.setPassword( student.getAccount().substring(student.getAccount().length() - 6));
                     studentMapper.updateByPrimaryKeySelective(student);
                     successNum++;
                     successMsg.append("<br/>" + successNum + "、账号 " + student.getName() + " 更新成功");
