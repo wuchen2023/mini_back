@@ -5,24 +5,29 @@
 <mapper namespace="com.web.back.mapper.QiangdaMapper">
 
     <resultMap id="BaseResultMap" type="com.web.back.domain.Qiangda">
-            <id property="id" column="id" jdbcType="INTEGER"/>
-            <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
-            <result property="qiangdaType" column="qiangda_type" jdbcType="VARCHAR"/>
-            <result property="courseName" column="course_name" jdbcType="VARCHAR"/>
-            <result property="isFinished" column="is_finished" jdbcType="INTEGER"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="question" column="question" jdbcType="VARCHAR"/>
-            <result property="reference_answer" column="reference_answer" jdbcType="VARCHAR"/>
-            <result property="stu_answer" column="stu_answer" jdbcType="VARCHAR"/>
-            <result property="is_right" column="is_right" jdbcType="VARCHAR"/>
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="teacherId" column="teacher_id" jdbcType="INTEGER"/>
+        <result property="qiangdaType" column="qiangda_type" jdbcType="VARCHAR"/>
+        <result property="courseName" column="course_name" jdbcType="VARCHAR"/>
+        <result property="isFinished" column="is_finished" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="question" column="question" jdbcType="VARCHAR"/>
+        <result property="reference_answer" column="reference_answer" jdbcType="VARCHAR"/>
+        <result property="stu_answer" column="stu_answer" jdbcType="VARCHAR"/>
+        <result property="is_right" column="is_right" jdbcType="VARCHAR"/>
+
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,teacher_id,qiangda_type,
+        id
+        ,teacher_id,qiangda_type,
         course_name,is_finished,create_time,question,reference_answer,stu_answer,is_right
     </sql>
 
-    <select id = "find_info" resultMap="BaseResultMap">
-        SELECT * FROM  qiangda WHERE course_name  = #{course_name} and teacher_id = #{teacher_id};
+    <select id="find_info" resultMap="BaseResultMap">
+        SELECT *
+        FROM qiangda
+        WHERE course_name = #{course_name}
+          and teacher_id = #{teacher_id};
     </select>
 </mapper>

@@ -4,6 +4,8 @@ package com.web.back.domain.result;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 public class ActicityRes {
@@ -15,6 +17,8 @@ public class ActicityRes {
     String activity_type;
 
     String teacher_name;
+
+    Date create_time;
 
     public Integer getActivity_id() {
         return activity_id;
@@ -46,5 +50,13 @@ public class ActicityRes {
 
     public void setTeacher_name(String teacher_name) {
         this.teacher_name = teacher_name;
+    }
+
+    public Date getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(Date create_time) {
+        this.create_time = create_time;
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
 */
 public interface ActivityMapper extends BaseMapper<Activity> {
 
-    @Select("SELECT activity.id as activity_id, activity.teacher_id, activity.activity_type, teacher.`name` as teacher_name FROM `activity`, `teacher` where activity.teacher_id = #{teacher_id} and teacher.id = #{teacher_id} and activity.course_name = #{course_name}")
+    @Select("SELECT activity.id as activity_id, activity.teacher_id, activity.activity_type, teacher.`name` as teacher_name, activity.create_time  FROM `activity`, `teacher` where activity.teacher_id = #{teacher_id} and teacher.id = #{teacher_id} and activity.course_name = #{course_name}")
     List<ActicityRes> get_all_activity(Integer teacher_id, String course_name);
 
 }

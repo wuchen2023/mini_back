@@ -2,6 +2,8 @@ package com.web.back.viewmodel.admin.studentclass;
 
 import com.web.back.viewmodel.admin.BaseVM;
 
+import java.util.Date;
+
 /**
  * @author by hongdou
  * @date 2023/5/10.
@@ -15,6 +17,8 @@ public class StudentClassResponseVM extends BaseVM {
     private String class_name;
 
     private String stu_account;
+
+    private Date create_time;
 
     public StudentClassResponseVM() {
     }
@@ -43,20 +47,11 @@ public class StudentClassResponseVM extends BaseVM {
         this.stu_account = stu_account;
     }
 
-    //    public Integer getId() {
-//        return id;
-//    }
-//
-//    public void setId(Integer id) {
-//        this.id = id;
-//    }
-//
-//    public Integer getStudent_id() {
-//        return student_id;
-//    }
-//
-//    public void setStudent_id(Integer student_id) {
-//        this.student_id = student_id;
-//    }
+    public Date getCreate_time() {
+        return create_time;
+    }
 
+    public void setCreate_time(Date create_time) {
+        this.create_time = create_time;
+    }
 }

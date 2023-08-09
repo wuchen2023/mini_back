@@ -12,11 +12,13 @@
             <result property="positive_side_student_group_id" column="positive_side_student_group_id" jdbcType="INTEGER"/>
             <result property="negative_side_student_group_id" column="negative_side_student_group_id" jdbcType="INTEGER"/>
             <result property="course_name" column="course_name" jdbcType="VARCHAR"/>
+            <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+
     </resultMap>
 
     <sql id="Base_Column_List">
         id,activity_id,debate_topic,
-        is_finished,positive_side_student_group_id,negative_side_student_group_id,course_name
+        is_finished,positive_side_student_group_id,negative_side_student_group_id,course_name,create_time
     </sql>
 
     <select id="select_by_coursename" resultMap="BaseResultMap">

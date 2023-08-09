@@ -41,6 +41,8 @@ public class BlindBox implements Serializable {
 
     private String class_name;
 
+    private Date create_time;
+
 //    private String title;
 
 //    public void setTitle(String title) {
@@ -85,6 +87,7 @@ public class BlindBox implements Serializable {
         this.stu_account = stu_account;
         this.teacher_account = teacher_account;
         this.class_name = class_name;
+        this.create_time = new Date();
     }
 
     public BlindBox(Integer exam_paper_id){
@@ -157,5 +160,13 @@ public class BlindBox implements Serializable {
 
     public void setStu_answer(String stu_answer) {
         this.stu_answer = stu_answer;
+    }
+
+    public Date getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(Date create_time) {
+        this.create_time = create_time;
     }
 }

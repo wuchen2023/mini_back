@@ -3,6 +3,8 @@ package com.web.back.domain.result;
 
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class TeacherGroupRes {
     private Integer id;
@@ -10,12 +12,14 @@ public class TeacherGroupRes {
     private Integer groupId;
 
     private String groupType;
+    private Date groupTime;
 
     public TeacherGroupRes(Integer id, Integer teacherId, Integer groupId, String groupType) {
         this.id = id;
         this.teacherId = teacherId;
         this.groupId = groupId;
         this.groupType = groupType;
+//        this.groupTime = groupTime;
     }
 
     public Integer getId() {
@@ -48,5 +52,13 @@ public class TeacherGroupRes {
 
     public void setGroupType(String groupType) {
         this.groupType = groupType;
+    }
+
+    public Date getGroupTime() {
+        return groupTime;
+    }
+
+    public void setGroupTime(Date groupTime) {
+        this.groupTime = groupTime;
     }
 }

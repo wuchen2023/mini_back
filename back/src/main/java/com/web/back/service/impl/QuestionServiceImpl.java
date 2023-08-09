@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class QuestionServiceImpl extends BaseServiceImpl<Question> implements QuestionService{
+public class QuestionServiceImpl extends BaseServiceImpl<Question> implements QuestionService {
     protected final static ModelMapper modelMapper = ModelMapperSingle.Instance();
     private final QuestionMapper questionMapper;
     private final TextContentService textContentService;
@@ -83,6 +83,7 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
 
     /**
      * 新增题目
+     *
      * @param model
      * @param userId
      * @return
@@ -223,7 +224,13 @@ public class QuestionServiceImpl extends BaseServiceImpl<Question> implements Qu
     }
 
     @Override
-    public  List<Integer> findAllQuestionIds(){
+    public List<Integer> findAllQuestionIds() {
         return questionMapper.findAllQuestionIds();
     }
+
+    @Override
+    public List<Integer> findSingleQuestions() {
+        return questionMapper.findSingleQuestions();
+    }
+
 }

@@ -228,4 +228,8 @@
   <select id="findAllQuestionIds" resultType="java.lang.Integer">
     SELECT id FROM question
   </select>
+
+  <select id="findSingleQuestions" resultType="java.lang.Integer">
+    SELECT id FROM question WHERE  question_type = 1
+  </select>
 </mapper>

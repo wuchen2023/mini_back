@@ -2,6 +2,8 @@ package com.web.back.viewmodel.admin.blindbox;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 
+import java.util.Date;
+
 /**
  * @author by hongdou
  * @date 2023/7/24.
@@ -30,7 +32,7 @@ public class ViewHistoryVM {
 
     private String question_title;
 
-
+    private Date create_time;
     public String getStu_name() {
         return stu_name;
     }
@@ -110,5 +112,13 @@ public class ViewHistoryVM {
 
     public void setQuestion_title(String question_title) {
         this.question_title = question_title;
+    }
+
+    public Date getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(Date create_time) {
+        this.create_time = create_time;
     }
 }

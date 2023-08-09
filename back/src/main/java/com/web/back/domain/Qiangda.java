@@ -81,6 +81,7 @@ public class Qiangda implements Serializable {
         this.isFinished = isFinished;
         this.question = question;
         this.reference_answer = reference_answer;
+        this.createTime = new Date();
     }
 
     public Qiangda(String stu_answer){
@@ -100,5 +101,11 @@ public class Qiangda implements Serializable {
         this.reference_answer = reference_answer;
     }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
 
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 }

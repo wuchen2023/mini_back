@@ -22,6 +22,7 @@ import com.web.back.viewmodel.admin.studentclass.StudentClassResponseVM;
 import com.web.back.viewmodel.student.exam.ExamPaperPageResponseVM;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -110,6 +111,7 @@ public class BlindboxController {
         studentClassResponseVM.setClass_name(className);
         //抽完学生后就插入blind_box表中
         BlindBox blindBox = new BlindBox(student.getAccount(),teacherAccount, className);
+        studentClassResponseVM.setCreate_time(blindBox.getCreate_time());
         blindBoxMapper.insert(blindBox);
         return RestResponse.ok(studentClassResponseVM);
     }
@@ -136,7 +138,8 @@ public class BlindboxController {
             return RestResponse.ok(newVM1);
         }else{
             if (questionService.selectAllCount() > 0) {
-                List<Integer> questionNumbers = questionService.findAllQuestionIds();
+//                List<Integer> questionNumbers = questionService.findAllQuestionIds();
+                List<Integer> questionNumbers = questionService.findSingleQuestions(); //抽盲盒只抽单选题
                 System.out.println("题库中已有的题目号为：" + questionNumbers);
                 Integer randomQuestionNumber = getRandomQuestionNumber(questionNumbers);
                 System.out.println("随机选中的题号是：" + randomQuestionNumber);

@@ -35,4 +35,6 @@ public interface QuestionService extends BaseService<Question>{
     List<Integer> selectMothCount();
 
     List<Integer> findAllQuestionIds();
+
+    List<Integer> findSingleQuestions();
 }

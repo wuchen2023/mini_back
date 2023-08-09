@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,6 +47,9 @@ public class Debate implements Serializable {
     private Integer negative_side_student_group_id;
 
     private String course_name;
+
+    private Date create_time;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -56,6 +60,7 @@ public class Debate implements Serializable {
         this.positive_side_student_group_id = positive_side_student_group_id;
         this.negative_side_student_group_id = negative_side_student_group_id;
         this.course_name = course_name;
+        this.create_time = new Date();
     }
 
     public Integer getId(){
@@ -112,5 +117,13 @@ public class Debate implements Serializable {
 
     public void setCourse_name(String course_name){
         this.course_name = course_name;
+    }
+
+    public Date getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(Date create_time) {
+        this.create_time = create_time;
     }
 }

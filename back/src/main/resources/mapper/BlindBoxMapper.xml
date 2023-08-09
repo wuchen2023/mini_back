@@ -13,6 +13,7 @@
             <result property="true_answer" column="true_answer" jdbcType="VARCHAR"/>
             <result property="teacher_account" column="teacher_account" jdbcType="VARCHAR"/>
             <result property="class_name" column="class_name" jdbcType="VARCHAR"/>
+            <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
     </resultMap>
 
 
@@ -20,7 +21,7 @@
 
     <sql id="Base_Column_List">
         id,stu_account,exam_paper_id,is_right,
-        true_answer,teacher_account,class_name,stu_answer
+        true_answer,teacher_account,class_name,stu_answer,create_time
     </sql>
 
     <select id="findInfo" resultMap="BaseResultMap">
