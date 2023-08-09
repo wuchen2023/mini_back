@@ -48,6 +48,7 @@ public class Student implements Serializable {
     /**
      * 
      */
+    @Excel(name = "密码", type = Excel.Type.EXPORT)
     private String password;
 
     /**

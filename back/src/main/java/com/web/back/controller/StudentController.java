@@ -244,30 +244,21 @@ public class StudentController extends BaseController {
                 return new RestResponse<>(3, "密码不能为空");
             }
         }
-//        if (StringUtils.isBlank(model.getBirthDay())) {
-//            model.setBirthDay(null);
-//        }
         Student student = modelMapper.map(model, Student.class);
 
         if (model.getId() == null) {
             System.out.println("进入到了这一步");
-//            String encodePwd = authenticationService.pwdEncode(model.getPassword());
             student.setPassword(model.getPassword());
-//            student.setUserUuid(UUID.randomUUID().toString());
             student.setCreateTime(new Date());
-//            student.setDeleted(false);
-//            student.setLastActiveTime(new Date());
-//            student.setDeleted(false);
 //            下面要进行插入的操作，不要忘记写数据库了
             studentService.insertByFilter(student);
         } else {
             //如果点击的存在数据进行编辑，传入的id不为空
             System.out.println("传入的学生id不为空");
             if (!StringUtils.isBlank(model.getPassword())) {
-                String encodePwd = authenticationService.pwdEncode(model.getPassword());
-                student.setPassword(encodePwd);
+//                String encodePwd = authenticationService.pwdEncode(model.getPassword());
+                student.setPassword(model.getPassword());
             }
-//            student.setModifyTime(new Date());
             //否则就进行更新
             studentService.updateByIdFilter(student);
         }
