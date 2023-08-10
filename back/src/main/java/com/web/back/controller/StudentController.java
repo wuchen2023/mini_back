@@ -10,16 +10,16 @@ import com.web.back.mapper.StudentMapper;
 import com.web.back.service.AuthenticationService;
 import com.web.back.service.StudentService;
 import com.web.back.service.StudentSignInService;
+import com.web.back.service.SubjectClassService;
 import com.web.back.state.ResposeResult;
 import com.web.back.state.RestResponse;
-import com.web.back.utils.AjaxResult;
-import com.web.back.utils.GetOnlyCode;
-import com.web.back.utils.ModelMapperSingle;
-import com.web.back.utils.PageInfoHelper;
+import com.web.back.utils.*;
+import com.web.back.utils.constant.HttpStatus;
 import com.web.back.utils.poi.ExcelUtil;
 import com.web.back.viewmodel.admin.stu.StuCreateVM;
 import com.web.back.viewmodel.admin.stu.StuPageRequestVM;
 import com.web.back.viewmodel.admin.stu.StuResponseVM;
+import com.web.back.viewmodel.admin.stu.stu1;
 import com.web.back.viewmodel.admin.user.UserPageRequestVM;
 import com.web.back.viewmodel.admin.user.UserResponseVM;
 import io.swagger.annotations.Api;
@@ -66,6 +66,8 @@ public class StudentController extends BaseController {
     @Resource
     AuthenticationService authenticationService;
 
+    @Resource
+    SubjectClassService subjectClassService;
     @Autowired
     public StudentController(StudentService studentService, StudentSignInService studentSignInService) {
         this.studentService = studentService;
@@ -250,6 +252,7 @@ public class StudentController extends BaseController {
             System.out.println("进入到了这一步");
             student.setPassword(model.getPassword());
             student.setCreateTime(new Date());
+            student.setSubjectId(model.getSubjectId());
 //            下面要进行插入的操作，不要忘记写数据库了
             studentService.insertByFilter(student);
         } else {
@@ -318,8 +321,11 @@ public class StudentController extends BaseController {
     }
 
     @PostMapping("/api/webadmin/student/export")
-    public void export(HttpServletResponse response, Student student) throws IOException {
-        List<Student> list = studentService.selectStudentList(student);
+    public void export(HttpServletResponse response,@RequestBody stu1 queryParams) throws IOException {
+        Student student = new Student();
+        System.out.println(queryParams.getSubjectId());
+        student.setSubjectId(queryParams.getSubjectId());
+        List<Student> list = studentService.newselectStudentList(student);
         ExcelUtil<Student> util = new ExcelUtil<Student>(Student.class);
         util.exportExcel(response, list, "用户数据");
 //        //创建一个XSSFWorkbook对象
@@ -357,5 +363,39 @@ public class StudentController extends BaseController {
 //        // 关闭workbook和输出流
 //        workbook.close();
 //        outputStream.close();
+    }
+
+    @GetMapping("/api/webadmin/student/subjectclassTree")
+    public AjaxResult subjectclassTree(SubjectClass subjectClass)
+    {
+        return success(subjectClassService.selectSubjectClassTreeList(subjectClass));
+    }
+    /**
+     * 设置请求分页数据
+     */
+    protected void startPage()
+    {
+        PageUtils.startPage();
+    }
+    /**
+     * 响应请求分页数据
+     */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    protected TableDataInfo getDataTable(List<?> list)
+    {
+        TableDataInfo rspData = new TableDataInfo();
+        rspData.setCode(HttpStatus.SUCCESS);
+        rspData.setMsg("查询成功");
+        rspData.setRows(list);
+        rspData.setTotal(new PageInfo(list).getTotal());
+        return rspData;
+    }
+
+    @GetMapping("/api/webadmin/student/list")
+    public TableDataInfo list(Student student)
+    {
+        startPage();
+        List<Student> list = studentService.newselectStudentList(student);
+        return getDataTable(list);
     }
 }

@@ -12,14 +12,25 @@
             <result property="password" column="password" jdbcType="VARCHAR"/>
             <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="gender" column="gender" jdbcType="VARCHAR"/>
-            <result property="role" column="role" jdbcType="INTEGER"/>
-
+            <result property="subjectId" column="subject_id" jdbcType="INTEGER"/>
+            <association property="subjectClass"    column="subject_id" javaType="com.web.back.domain.SubjectClass" resultMap="SubjectClassResult" />
     </resultMap>
 
+    <resultMap id="SubjectClassResult" type="com.web.back.domain.SubjectClass">
+        <id     property="subjectId"    column="subject_id"     />
+        <result property="parentId"  column="parent_id"   />
+        <result property="subjectName"  column="subject_name"   />
+        <result property="ancestors" column="ancestors"   />
+        <result property="orderNum"  column="order_num"   />
+        <result property="leader"    column="leader"      />
+        <result property="status"    column="status" />
+    </resultMap>
     <sql id="Base_Column_List">
-        id,name,permission,
-        account,password,create_time,
-        gender
+        select s.id,s.name,s.permission,
+        s.account,s.password,s.create_time,
+        s.gender,s.subject_id
+        su.subject_id su.subject_name su.leader from student s
+            left join subjectclass su on s.subject_id=su.subject_id
     </sql>
 
     <select id="studentPage" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.admin.stu.StuPageRequestVM">
@@ -38,9 +49,10 @@
     </select>
 
     <select id="getStuByStuName" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from student
+        select s.id,s.name,s.permission,
+               s.account,s.password,s.create_time,
+               s.gender,s.subject_id
+        from student s
         where name=#{value} limit 1
     </select>
 
@@ -105,6 +117,9 @@
             <if test="permission != null">
                 permission,
             </if>
+            <if test="subjectId != null">
+                subject_id,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null and id !=''">
@@ -131,6 +146,9 @@
             <if test="permission != null">
                 #{permission,jdbcType=VARCHAR},
             </if>
+            <if test="subjectId != null">
+                #{subjectId,jdbcType=INTEGER},
+            </if>
         </trim>
     </insert>
 
@@ -143,6 +161,27 @@
                 and id= #{id}
             </if>
 
+        </where>
+    </select>
+
+    <select id="newselectStudentList" parameterType="com.web.back.domain.Student" resultMap="BaseResultMap">
+        select ss.id, ss.subject_id, ss.name, ss.name, ss.permission, ss.account, ss.password, ss.create_time, ss.gender,s.subject_name, s.leader from student ss
+        left join subjectclass s on ss.subject_id = s.subject_id
+        <where>
+        <if test="id != null and id != 0">
+            AND ss.id = #{id}
+        </if>
+        <if test="name != null and name != ''">
+            AND ss.name like concat('%', #{name}, '%')
+        </if>
+        <if test="account != null and account != ''">
+            AND ss.account like concat('%', #{account}, '%')
+        </if>
+        <if test="subjectId != null and subjectId != 0">
+            AND (ss.subject_id = #{subjectId} OR ss.subject_id IN ( SELECT t.subject_id FROM subjectclass t WHERE find_in_set(#{subjectId}, ancestors) ))
+        </if>
+        <!-- 数据范围过滤 -->
+        ${params.dataScope}
         </where>
     </select>
 </mapper>

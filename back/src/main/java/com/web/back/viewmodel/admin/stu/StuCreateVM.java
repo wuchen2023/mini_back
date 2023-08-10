@@ -53,6 +53,8 @@ public class StuCreateVM {
      */
     private Integer role;
 
+    private Long subjectId;
+
     public Integer getId(){
         return id;
     }
@@ -107,5 +109,13 @@ public class StuCreateVM {
 
     public void setRole(Integer role){
         this.role = role;
+    }
+
+    public Long getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(Long subjectId) {
+        this.subjectId = subjectId;
     }
 }

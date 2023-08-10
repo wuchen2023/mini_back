@@ -359,4 +359,9 @@ public class TeacherController {
             return RestResponse.fail(400,"删除失败");
         }
     }
+
+//    @RequestMapping(value = "/api/webadmin/teacher/current", method = RequestMethod.POST)
+//    public RestResponse<UserResponseVM> current(){
+//
+//    }
 }
