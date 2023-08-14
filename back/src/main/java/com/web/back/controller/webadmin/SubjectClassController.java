@@ -73,7 +73,7 @@ public class SubjectClassController extends BaseController{
     {
         if (!subjectClassService.checkSubjectClassNameUnique(subjectClass))
         {
-            return error("新增部门'" + subjectClass.getSubjectName() + "'失败，部门名称已存在");
+            return error("新增专业/班级'" + subjectClass.getSubjectName() + "'失败，专业/班级名称已存在");
         }
         subjectClass.setCreateBy("管理员");
         return toAjax(subjectClassService.insertSubjectClass(subjectClass));
@@ -115,11 +115,11 @@ public class SubjectClassController extends BaseController{
     {
         if (subjectClassService.hasChildBySubjectId(subjectId))
         {
-            return warn("存在下级部门,不允许删除");
+            return warn("存在下级专业/班级,不允许删除");
         }
         if (subjectClassService.checkSubjectClassExistUser(subjectId))
         {
-            return warn("部门存在用户,不允许删除");
+            return warn("班级存在用户,不允许删除");
         }
 //        subjectClassService.checkSubjectClassDataScope(subjectId);
         return toAjax(subjectClassService.deleteSubjectClassById(subjectId));

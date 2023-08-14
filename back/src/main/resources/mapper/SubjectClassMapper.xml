@@ -53,7 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
     
     <select id="checkSubjectClassExistUser" parameterType="Long" resultType="int">
-		select count(1) from student where subjectclass_id = #{subjectId}
+		select count(1) from student where subject_id = #{subjectId}
 	</select>
 	
 	<select id="hasChildBySubjectId" parameterType="Long" resultType="int">
