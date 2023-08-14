@@ -432,6 +432,7 @@ public class ExcelUtil<T>
                 list.add(entity);
             }
         }
+        is.close();
         return list;
     }
 
@@ -552,6 +553,7 @@ public class ExcelUtil<T>
         {
             writeSheet();
             wb.write(response.getOutputStream());
+            response.getOutputStream().close();
         }
         catch (Exception e)
         {

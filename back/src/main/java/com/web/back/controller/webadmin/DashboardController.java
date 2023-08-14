@@ -6,6 +6,7 @@ import com.web.back.state.RestResponse;
 import com.web.back.utils.DateTimeUtil;
 import com.web.back.viewmodel.admin.dashboard.IndexVM;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import java.util.List;
  * @DESC:
  */
 @RestController
+@CrossOrigin("http://1.117.75.111:8003")
 @RequestMapping(value = "/api/webadmin/dashboard")
 public class DashboardController {
     private final ExamPaperService examPaperService;
