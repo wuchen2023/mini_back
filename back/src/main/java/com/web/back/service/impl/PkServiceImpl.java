@@ -101,12 +101,14 @@ public class PkServiceImpl extends ServiceImpl<PkMapper, Pk>
                 examPaperEditRequestVM1.setCourseName(course_name);
                 examPaperEditRequestVM2.setCourseName(course_name);
                 //依据学生id查询学生account
-                QueryWrapper queryWrapper2 = new QueryWrapper<>();
-                queryWrapper2.eq("id", student_id_1);
-                String stu1_account = studentMapper.selectOne(queryWrapper2).getAccount();
-                QueryWrapper queryWrapper3 = new QueryWrapper<>();
-                queryWrapper3.eq("id", student_id_2);
-                String stu2_account = studentMapper.selectOne(queryWrapper3).getAccount();
+//                QueryWrapper queryWrapper2 = new QueryWrapper<>();
+//                queryWrapper2.eq("id", student_id_1);
+//                String stu1_account = studentMapper.selectOne(queryWrapper2).getAccount();
+//                QueryWrapper queryWrapper3 = new QueryWrapper<>();
+//                queryWrapper3.eq("id", student_id_2);
+//                String stu2_account = studentMapper.selectOne(queryWrapper3).getAccount();
+                String stu1_account = studentMapper.getStuById(student_id_1).getAccount();
+                String stu2_account = studentMapper.getStuById(student_id_2).getAccount();
                 examPaperEditRequestVM1.setStuAccount(stu1_account);
                 examPaperEditRequestVM2.setStuAccount(stu2_account);
                 examPaperEditRequestVM1.setName(createNewName(course_name, stu1_account));

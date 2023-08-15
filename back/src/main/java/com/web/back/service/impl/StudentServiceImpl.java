@@ -178,9 +178,10 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     @Override
     public Student student_id_get_name(Integer student_id) {
         try {
-            QueryWrapper queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("id", student_id);
-            Student student = studentMapper.selectOne(queryWrapper);
+//            QueryWrapper queryWrapper = new QueryWrapper<>();
+//            queryWrapper.eq("id", student_id);
+//            Student student = studentMapper.selectOne(queryWrapper);
+            Student student = studentMapper.getStuById(student_id);
             if (student == null) {
                 throw new Exception();
             }

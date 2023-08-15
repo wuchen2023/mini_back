@@ -30,6 +30,7 @@ public interface StudentMapper extends BaseMapper<Student> {
     public List<Student> selectStudentList(Student student);
     public List<Student> newselectStudentList(Student student);
 
+    Student getStuById(Integer id);
 
 }
 

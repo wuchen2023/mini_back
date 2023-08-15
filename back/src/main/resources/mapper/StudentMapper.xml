@@ -25,14 +25,18 @@
         <result property="leader"    column="leader"      />
         <result property="status"    column="status" />
     </resultMap>
-    <sql id="Base_Column_List">
+    <sql id="Webadmin_Column_List">
         select s.id,s.name,s.permission,
         s.account,s.password,s.create_time,
         s.gender,s.subject_id
         su.subject_id su.subject_name su.leader from student s
             left join subjectclass su on s.subject_id=su.subject_id
     </sql>
-
+   <sql id="Base_Column_List">
+        select s.id,s.name,s.permission,
+        s.account,s.password,s.create_time,
+        s.gender,s.subject_id from student
+    </sql>
     <select id="studentPage" resultMap="BaseResultMap" parameterType="com.web.back.viewmodel.admin.stu.StuPageRequestVM">
         SELECT
         <include refid="Base_Column_List"/>
@@ -71,7 +75,13 @@
         from student s
     </select>
 
-
+    <select id="getStuById" resultMap="BaseResultMap">
+         select s.id,s.name,s.permission,
+               s.account,s.password,s.create_time,
+               s.gender,s.subject_id
+        from student s
+        where id=#{id} limit 1
+    </select>
 
     <select id="getStuNameByStuAccount" resultType="java.lang.String">
         select name
@@ -171,7 +181,7 @@
 
     <select id="selectStudentList" parameterType="com.web.back.domain.Student" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        <include refid="Webadmin_Column_List"/>
         FROM student
         <where>
             <if test="id != null ">
