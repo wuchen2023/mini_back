@@ -56,6 +56,23 @@
         where name=#{value} limit 1
     </select>
 
+    <select id="getStuByAccount" resultMap="BaseResultMap">
+        select s.id,s.name,s.permission,
+               s.account,s.password,s.create_time,
+               s.gender,s.subject_id
+        from student s
+        where account=#{value} limit 1
+    </select>
+
+    <select id="getall" resultMap="BaseResultMap">
+        select s.id,s.name,s.permission,
+               s.account,s.password,s.create_time,
+               s.gender,s.subject_id
+        from student s
+    </select>
+
+
+
     <select id="getStuNameByStuAccount" resultType="java.lang.String">
         select name
         from student

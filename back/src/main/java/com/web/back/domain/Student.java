@@ -93,6 +93,8 @@ public class Student implements Serializable {
         this.role = role;
     }
 
+
+
     public Student(Integer id){
         this.id = id;
     }
@@ -142,6 +144,8 @@ public class Student implements Serializable {
     public void setParams(Map<String, Object> params) {
         this.params = params;
     }
+
+
 
     @Override
     public String toString() {

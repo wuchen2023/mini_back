@@ -77,8 +77,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     @Override
     public ResposeResult student_login(String account, String password) {
         try {
-            QueryWrapper queryWrapper = new QueryWrapper<>().eq("account", account);
-            Student student = studentMapper.selectOne(queryWrapper);
+            Student student = studentMapper.getStuByAccount(account);
             if (student == null) {
                 throw new Exception();
             }
@@ -152,9 +151,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
     @Override
     public Student get_detail_by_account(String account) {
         try {
-            QueryWrapper queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("account", account);
-            Student student = studentMapper.selectOne(queryWrapper);
+            Student student = studentMapper.getStuByAccount(account);
             if (student == null) {
                 throw new Exception();
             }
@@ -167,8 +164,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student>
 
     @Override
     public List<Student> get_all_students() {
-        QueryWrapper queryWrapper = new QueryWrapper<>();
-        List<Student> studentList = studentMapper.selectList(queryWrapper);
+        List<Student> studentList = studentMapper.getall();
         return studentList.stream().map(student -> {
             return get_safe_teacher(student);
         }).collect(Collectors.toList());

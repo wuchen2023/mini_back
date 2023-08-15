@@ -20,8 +20,12 @@ public interface StudentMapper extends BaseMapper<Student> {
     Student getStuByStuName(String name);
 
     String getStuNameByStuAccount(String stuAccount);
+
+    Student getStuByAccount(String account);
     int updateByPrimaryKeySelective(Student record);
     int insertSelective(Student record);
+
+    List<Student> getall();
 
     public List<Student> selectStudentList(Student student);
     public List<Student> newselectStudentList(Student student);
