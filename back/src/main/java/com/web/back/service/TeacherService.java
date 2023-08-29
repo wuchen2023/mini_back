@@ -73,4 +73,10 @@ public interface TeacherService extends IService<Teacher> {
     boolean deleteById(Integer id);
 
     public String get_courseName_by_id(Integer id);
+
+    //删除班级
+    public ResposeResult delete_teacher_class(Integer teacher_class_id);
+
+    //修改班级名称
+    public ResposeResult update_teacher_class(Integer teacher_class_id, String course_name);
 }

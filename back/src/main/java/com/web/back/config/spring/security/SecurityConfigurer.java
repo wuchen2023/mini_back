@@ -114,7 +114,7 @@ public class SecurityConfigurer {
                     .and().csrf().disable()
                     .cors().configurationSource(request -> {
                 CorsConfiguration cors = new CorsConfiguration();
-                cors.setAllowedOrigins(Arrays.asList("http://localhost:8003"));
+                cors.setAllowedOrigins(Arrays.asList("http://1.117.75.111:8003"));
                 cors.setAllowedMethods(Arrays.asList("GET","POST"));
                 cors.setAllowCredentials(true);
                 return cors;

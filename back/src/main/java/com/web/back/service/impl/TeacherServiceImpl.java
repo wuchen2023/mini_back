@@ -215,6 +215,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
         }
     }
 
+
     @Override
     public ResposeResult add_student_points(Integer points, String student_id, String course_name) {
         try{
@@ -377,6 +378,52 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher>
     @Override
     public boolean deleteById(Integer id){
         return this.removeById(id); //直接使用内置的
+    }
+
+
+    @Override
+    public ResposeResult delete_teacher_class(Integer teacher_class_id) {
+        QueryWrapper queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", teacher_class_id);
+        try {
+            TeacherClass teacherClass = teacherClassMapper.selectOne(queryWrapper);
+            if(teacherClass == null)
+            {
+                throw new Exception();
+            }
+            teacherClassMapper.delete(queryWrapper);
+            return new ResposeResult(1, "删除成功");
+        }catch (Exception e)
+        {
+            return new ResposeResult(0, "删除失败");
+        }
+    }
+
+    @Override
+    public ResposeResult update_teacher_class(Integer teacher_class_id, String course_name)
+    {
+        try {
+            QueryWrapper queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("id", teacher_class_id);
+            TeacherClass teacherClass = teacherClassMapper.selectOne(queryWrapper);
+            if(teacherClass == null){
+                throw new Exception();
+            }
+            QueryWrapper queryWrapper1 = new QueryWrapper<>();
+            queryWrapper1.eq("course_name", course_name);
+            TeacherClass teacherClass1 = teacherClassMapper.selectOne(queryWrapper1);
+            if(teacherClass1 != null)
+            {
+                throw new Exception();
+            }
+            teacherClass.setCourseName(course_name);
+            teacherClassMapper.update(teacherClass, queryWrapper);
+            return new ResposeResult(1, "修改成功");
+
+        }catch (Exception e)
+        {
+            return new ResposeResult(0, "修改失败");
+        }
     }
 }
 

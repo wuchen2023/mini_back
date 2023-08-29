@@ -285,6 +285,22 @@ public class TeacherController {
     }
 
 
+    @ResponseBody
+    @ApiOperation("根据班级id删除班级")
+    @PostMapping("delete_class_by_id")
+    public ResposeResult delete_teacher_class(@RequestParam Integer teacher_class_id)
+    {
+        return teacherService.delete_teacher_class(teacher_class_id);
+    }
+
+    @ResponseBody
+    @ApiOperation("根据班级id修改班级名称")
+    @PostMapping("update_teacher_class_name")
+    public ResposeResult update_teacher_class(Integer teacher_class_id, String course_name){
+        return teacherService.update_teacher_class(teacher_class_id, course_name);
+    }
+
+
 
 
 
