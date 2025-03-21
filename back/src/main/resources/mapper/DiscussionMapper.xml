@@ -16,4 +16,19 @@
         id,discussion_topic,publish_time,
         is_reviewed,review_status
     </sql>
+
+    <!-- 查询待审核的讨论 -->
+    <select id="selectPendingReviews" resultType="com.web.back.domain.Discussion">
+        SELECT *
+        FROM discussion
+        WHERE is_reviewed = 0  <!-- 假设 is_reviewed = 0 表示待审核 -->
+    </select>
+
+    <!-- 根据讨论类型查询讨论 -->
+    <select id="selectByDiscussionType" resultType="com.web.back.domain.Discussion">
+        SELECT *
+        FROM discussion
+        WHERE discussion_type = #{discussionType}
+    </select>
 </mapper>
+

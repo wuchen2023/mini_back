@@ -15,4 +15,10 @@
         id,discussion_id,teacher_id,
         review_status
     </sql>
+    <!-- 查询某个讨论的所有审核记录 -->
+    <select id="selectReviewHistoryByDiscussionId" resultType="com.web.back.domain.ReviewDiscussion">
+        SELECT *
+        FROM review_discussion
+        WHERE discussion_id = #{discussionId}
+    </select>
 </mapper>
